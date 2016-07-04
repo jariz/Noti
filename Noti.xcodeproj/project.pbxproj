@@ -7,19 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		162B919FE4321ED9BC86AD09 /* Pods_Noti.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2C7615AF577BAEAF32B8516 /* Pods_Noti.framework */; };
+		4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */; };
+		4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3D21D23E6AB005F1641 /* IntroViewController.swift */; };
+		498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498499FD1D1BE46F007FC963 /* PushManager.swift */; };
+		499DD0F61D2ACA0B00BB759D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 499DD0F51D2ACA0B00BB759D /* .gitignore */; };
 		49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */; };
-		49B43B0E1D1ADFB200A24585 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0D1D1ADFB200A24585 /* ViewController.swift */; };
+		49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */; };
 		49B43B101D1ADFB200A24585 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B0F1D1ADFB200A24585 /* Assets.xcassets */; };
 		49B43B131D1ADFB200A24585 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B111D1ADFB200A24585 /* Main.storyboard */; };
+		49B43B1B1D1AE0F200A24585 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B1A1D1AE0F200A24585 /* Podfile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F7FEC6A353CB04118DDEBF6 /* Pods-Noti.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Noti.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Noti/Pods-Noti.debug.xcconfig"; sourceTree = "<group>"; };
+		4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
+		4901D3D21D23E6AB005F1641 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		498499FD1D1BE46F007FC963 /* PushManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushManager.swift; sourceTree = "<group>"; };
+		499DD0F51D2ACA0B00BB759D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		49B43B081D1ADFB200A24585 /* Noti.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Noti.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		49B43B0D1D1ADFB200A24585 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		49B43B0F1D1ADFB200A24585 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49B43B121D1ADFB200A24585 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		49B43B141D1ADFB200A24585 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49B43B1A1D1AE0F200A24585 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		6B7FFCDDDAD1689D9A4BE578 /* Pods-Noti.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Noti.release.xcconfig"; path = "Pods/Target Support Files/Pods-Noti/Pods-Noti.release.xcconfig"; sourceTree = "<group>"; };
+		B2C7615AF577BAEAF32B8516 /* Pods_Noti.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Noti.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				162B919FE4321ED9BC86AD09 /* Pods_Noti.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -36,8 +51,12 @@
 		49B43AFF1D1ADFB100A24585 = {
 			isa = PBXGroup;
 			children = (
+				499DD0F51D2ACA0B00BB759D /* .gitignore */,
+				49B43B1A1D1AE0F200A24585 /* Podfile */,
 				49B43B0A1D1ADFB200A24585 /* Noti */,
 				49B43B091D1ADFB200A24585 /* Products */,
+				D0EECD8F29ED53BD727C95F8 /* Pods */,
+				5BAC699C03C9C573FDF4B2D8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -53,12 +72,32 @@
 			isa = PBXGroup;
 			children = (
 				49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */,
-				49B43B0D1D1ADFB200A24585 /* ViewController.swift */,
+				49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */,
 				49B43B0F1D1ADFB200A24585 /* Assets.xcassets */,
 				49B43B111D1ADFB200A24585 /* Main.storyboard */,
+				4901D3D21D23E6AB005F1641 /* IntroViewController.swift */,
 				49B43B141D1ADFB200A24585 /* Info.plist */,
+				498499FD1D1BE46F007FC963 /* PushManager.swift */,
+				4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */,
 			);
 			path = Noti;
+			sourceTree = "<group>";
+		};
+		5BAC699C03C9C573FDF4B2D8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B2C7615AF577BAEAF32B8516 /* Pods_Noti.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D0EECD8F29ED53BD727C95F8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0F7FEC6A353CB04118DDEBF6 /* Pods-Noti.debug.xcconfig */,
+				6B7FFCDDDAD1689D9A4BE578 /* Pods-Noti.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,9 +107,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49B43B171D1ADFB200A24585 /* Build configuration list for PBXNativeTarget "Noti" */;
 			buildPhases = (
+				C46969CE10D5230F33E29F6C /* 📦 Check Pods Manifest.lock */,
 				49B43B041D1ADFB200A24585 /* Sources */,
 				49B43B051D1ADFB200A24585 /* Frameworks */,
 				49B43B061D1ADFB200A24585 /* Resources */,
+				003C003AFFFD5A40A37BC17E /* 📦 Embed Pods Frameworks */,
+				9E2550AE761EB3113626074C /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -93,6 +135,7 @@
 				TargetAttributes = {
 					49B43B071D1ADFB200A24585 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = JHKDY4UQ72;
 					};
 				};
 			};
@@ -119,6 +162,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				499DD0F61D2ACA0B00BB759D /* .gitignore in Resources */,
+				49B43B1B1D1AE0F200A24585 /* Podfile in Resources */,
 				49B43B101D1ADFB200A24585 /* Assets.xcassets in Resources */,
 				49B43B131D1ADFB200A24585 /* Main.storyboard in Resources */,
 			);
@@ -126,12 +171,63 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		003C003AFFFD5A40A37BC17E /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Noti/Pods-Noti-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9E2550AE761EB3113626074C /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Noti/Pods-Noti-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C46969CE10D5230F33E29F6C /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		49B43B041D1ADFB200A24585 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49B43B0E1D1ADFB200A24585 /* ViewController.swift in Sources */,
+				4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */,
+				498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */,
+				49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */,
+				4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */,
 				49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,24 +330,28 @@
 		};
 		49B43B181D1ADFB200A24585 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0F7FEC6A353CB04118DDEBF6 /* Pods-Noti.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Noti/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = oberon.nl.Noti;
+				PRODUCT_BUNDLE_IDENTIFIER = io.jari.Noti;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
 		49B43B191D1ADFB200A24585 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B7FFCDDDAD1689D9A4BE578 /* Pods-Noti.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Noti/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = oberon.nl.Noti;
+				PRODUCT_BUNDLE_IDENTIFIER = io.jari.Noti;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -275,6 +375,7 @@
 				49B43B191D1ADFB200A24585 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
