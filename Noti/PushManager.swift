@@ -5,6 +5,8 @@
 //  Created by Jari on 23/06/16.
 //  Copyright © 2016 Jari Zwarts. All rights reserved.
 //
+//  PushManager is in charge of maintaining the websocket, and dispatching user notifications when needed.
+//
 
 import Foundation
 import Starscream
@@ -17,10 +19,12 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     var pushHistory = [JSON]()
     var userInfo:JSON?;
     var token:String;
+    var ephemerals:Ephemerals;
     
     init(token: String) {
         self.token = token
         self.socket = WebSocket(url: NSURL(string: "wss://stream.pushbullet.com/websocket/" + token)!)
+        self.ephemerals = Ephemerals(token: token);
         super.init()
         
         center.delegate = self
@@ -35,187 +39,96 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         self.socket!.disconnect()
     }
     
+    //fixme
+    func userNotificationCenter(center: NSUserNotificationCenter, didDismissNotification notification: NSUserNotification) {
+        for item in pushHistory {
+            if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
+                ephemerals.dismissPush(item, trigger_key: nil)
+                break;
+            }
+        }
+    }
     
     func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
         switch notification.activationType {
-        case .ActionButtonClicked:
-            var alternateAction = notification.valueForKey("_alternateActionIndex") as! Int
-            
-            if(alternateAction == Int.max) {
-                //user did not use an alternate action, set the index to 0
-                alternateAction = 0
-            }
-            
-            print("action")
-            print("alternate?", alternateAction)
-            
-            
-            for item in pushHistory {
-                if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
-                    if let actions = item["actions"].array {
-                        dismissPush(item, trigger_key: actions[alternateAction]["trigger_key"].string!)
+            case .ActionButtonClicked:
+                var alternateAction = notification.valueForKey("_alternateActionIndex") as! Int
+                
+                if(alternateAction == Int.max) {
+                    //user did not use an alternate action, set the index to 0
+                    alternateAction = 0
+                }
+                
+                print("action")
+                print("alternate?", alternateAction)
+                
+                for item in pushHistory {
+                    if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
+                        if let actions = item["actions"].array {
+                            ephemerals.dismissPush(item, trigger_key: actions[alternateAction]["trigger_key"].string!)
+                            break;
+                        }
+                    }
+                }
+                break;
+                
+            case .ContentsClicked:
+                Alamofire.request(.GET, "https://update.pushbullet.com/android_mapping.json")
+                    .responseString { response in
+                        if let result = response.result.value {
+                            let mapping = JSON.parse(result)
+                            
+                            for item in self.pushHistory {
+                                if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
+                                    if let url = mapping[item["package_name"].string!].string {
+                                        NSWorkspace.sharedWorkspace().openURL(NSURL(string: url)!)
+                                    }
+                                }
+                            }
+                        }
+                }
+                
+                for item in pushHistory {
+                    if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
+                        ephemerals.dismissPush(item, trigger_key: nil)
                         break;
                     }
                 }
-            }
-            break;
-        case .Replied:
-            let body = notification.response?.string
+                
+                break;
             
-            func doQuickReply() {
-                for item in pushHistory {
-                    if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
-                        quickReply(item, body: body!)
+            case .Replied:
+                let body = notification.response?.string
+                
+                func doQuickReply() {
+                    for item in pushHistory {
+                        if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
+                            ephemerals.quickReply(item, reply: body!)
+                        }
                     }
                 }
-            }
-            
-            //determine if we replied to a sms or a normal notification
-            if notification.identifier?.characters.count > 4 {
-                let index = notification.identifier?.startIndex.advancedBy(4)
-                if notification.identifier?.substringToIndex(index!) == "sms_" {
-                    for item in pushHistory {
-                        if item["type"].string == "sms_changed" {
-                            let metadata = notification.identifier?.substringFromIndex(index!).componentsSeparatedByString("|")
-                            respondToSMS(body, thread_id: metadata![1], source_device_iden: metadata![0])
+                
+                //determine if we replied to a sms or a normal notification
+                if notification.identifier?.characters.count > 4 {
+                    let index = notification.identifier?.startIndex.advancedBy(4)
+                    if notification.identifier?.substringToIndex(index!) == "sms_" {
+                        for item in pushHistory {
+                            if item["type"].string == "sms_changed" {
+                                let metadata = notification.identifier?.substringFromIndex(index!).componentsSeparatedByString("|")
+                                ephemerals.respondToSMS(body, thread_id: metadata![1], source_device_iden: metadata![0])
+                            }
                         }
+                    } else {
+                        doQuickReply()
                     }
                 } else {
                     doQuickReply()
                 }
-            } else {
-                doQuickReply()
-            }
-            
+                
             break;
-            
         default:
             print("did not understand activation type", notification.activationType.rawValue)
             break;
-            
-        }
-    }
-    
-    /**
-     * TODO refactor these functions below
-     **/
-    
-    func respondToSMS(message: String!, thread_id: String!, source_device_iden: String!) {
-        print("respondToSMS", "message", message, "thread_id", thread_id, "source_device_iden", source_device_iden)
-        
-        //get api key from cookies
-        var APIkey:String = ""
-        for cookie in NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies! {
-            if(cookie.domain == "www.pushbullet.com" && cookie.secure && cookie.name == "api_key" && cookie.path == "/") {
-                APIkey = cookie.value
-            }
-        }
-        print("Grabbed API key", APIkey)
-        
-        if(APIkey == "") {
-            let alert = NSAlert()
-            alert.messageText = "Unable to retrieve API key from cookies"
-            alert.informativeText = "Making Noti reauthorize with PushBullet will probably solve this. (click it's icon in your menu and choose 'Reauthorize')"
-            alert.runModal()
-            return
-        }
-        
-        let headers = [
-            "Authorization": "Bearer " + APIkey
-        ];
-        
-        //get thread recipients & send reply to them
-        let body = [
-            "key": source_device_iden + "_threads"
-        ]
-        
-        Alamofire.request(.POST, "https://api.pushbullet.com/v3/get-permanent", headers: headers, encoding: .JSON, parameters: body)
-            .responseString { response in
-                debugPrint(response)
-                if let threads = JSON.parse(response.result.value!)["data"]["threads"].array {
-                    for thread in threads {
-                        if thread["id"].string == thread_id {
-                            for recipient in thread["recipients"].array! {
-                                let body = [
-                                    "push": [
-                                        "conversation_iden": recipient["address"].string!,
-                                        "message": message,
-                                        "package_name": "com.pushbullet.android",
-                                        "source_user_iden": "ujpah72o0",
-                                        "target_device_iden": source_device_iden,
-                                        "type": "messaging_extension_reply"
-                                    ],
-                                    "type": "push"
-                                ]
-                                Alamofire.request(.POST, "https://api.pushbullet.com/v2/ephemerals", headers: headers, encoding: .JSON, parameters: body)
-                                    .responseString { response in
-                                        debugPrint(response)
-                                }
-                            }
-                        }
-                    }
-                }
-        }
-        
-        
-    }
-    
-    func quickReply(push: JSON, body: String) {
-        
-        let body = [
-            "type": "push",
-            "push": [
-                "type": "messaging_extension_reply",
-                "source_user_iden": push["source_user_iden"].string!,
-                "target_device_iden": push["source_device_iden"].string!,
-                "package_name": push["package_name"].string!,
-                "conversation_iden": push["conversation_iden"].string!,
-                "message": body
-            ]
-        ];
-        
-        let headers = [
-            "Access-Token": token
-        ];
-        
-        print("----BODY-----")
-        debugPrint(body)
-        print("-------------")
-        
-        Alamofire.request(.POST, "https://api.pushbullet.com/v2/ephemerals", headers: headers, encoding: .JSON, parameters: body)
-            .responseJSON { response in
-                debugPrint(response)
-        }
-    }
-    
-    func dismissPush(push: JSON, trigger_key: String?) {
-        print("dismissPush", trigger_key);
-        let headers = [
-            "Access-Token": token
-        ];
-        var body = [
-            "type": "push",
-            "push": [
-                "notification_id": push["notification_id"].string!,
-                "package_name": push["package_name"].string!,
-                "source_user_iden": push["source_user_iden"].string!,
-                "type": "dismissal"
-            ]
-        ];
-        
-        if (trigger_key != nil) {
-            var push = body["push"] as! [String: String]
-            push["trigger_key"] = trigger_key!
-            body["push"] = push
-        }
-        
-        print("----BODY-----")
-        debugPrint(body)
-        print("-------------")
-        
-        Alamofire.request(.POST, "https://api.pushbullet.com/v2/ephemerals", headers: headers, encoding: .JSON, parameters: body)
-            .responseJSON { response in
-                debugPrint(response)
         }
     }
     
@@ -255,8 +168,10 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         notification.subtitle = push["application_name"].string // todo: keep or remove?
                         
                         let data = NSData(base64EncodedString: push["icon"].string!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                        notification.setValue(NSImage(data: data), forKeyPath: "_identityImage")
+                        let img = RoundedImage(data: data)
+                        notification.setValue(img?.withRoundCorners(Int(img!.size.width) / 2), forKeyPath: "_identityImage")
                         notification.setValue(false, forKeyPath: "_identityImageHasBorder")
+                        notification.setValue(true, forKeyPath: "_showsButtons")
                         
                         if push["conversation_iden"].isExists() {
                             notification.hasReplyButton = true
@@ -270,7 +185,6 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                                 var titles = [String]()
                                 for action in actions {
                                     titles.append(action["label"].string!)
-                                    
                                 }
                                 notification.actionButtonTitle = "Actions"
                                 notification.setValue(true, forKeyPath: "_alwaysShowAlternateActionMenu")
@@ -313,14 +227,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                                 notification.hasReplyButton = true
                                 notification.identifier = "sms_" + push["source_device_iden"].string! + "|" + sms["thread_id"].string!
                                 
+                                notification.setValue(true, forKeyPath: "_showsButtons")
+                                
                                 notification.soundName = "Glass"
                                 
                                 if let photo = sms["image_url"].string {
                                     Alamofire.request(.GET, photo)
-                                        .responseData{response in
-                                            debugPrint(response)
+                                        .responseData { response in
                                             notification.setValue(NSImage(data: response.result.value!), forKey: "_identityImage")
-                                            
                                             self.center.deliverNotification(notification)
                                     }
                                 } else {

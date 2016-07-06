@@ -12,6 +12,8 @@
 		4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3D21D23E6AB005F1641 /* IntroViewController.swift */; };
 		498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498499FD1D1BE46F007FC963 /* PushManager.swift */; };
 		499DD0F61D2ACA0B00BB759D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 499DD0F51D2ACA0B00BB759D /* .gitignore */; };
+		499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */; };
+		499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */; };
 		49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */; };
 		49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */; };
 		49B43B101D1ADFB200A24585 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B0F1D1ADFB200A24585 /* Assets.xcassets */; };
@@ -25,6 +27,8 @@
 		4901D3D21D23E6AB005F1641 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		498499FD1D1BE46F007FC963 /* PushManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushManager.swift; sourceTree = "<group>"; };
 		499DD0F51D2ACA0B00BB759D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ephemerals.swift; sourceTree = "<group>"; };
+		499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
 		49B43B081D1ADFB200A24585 /* Noti.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Noti.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +83,8 @@
 				49B43B141D1ADFB200A24585 /* Info.plist */,
 				498499FD1D1BE46F007FC963 /* PushManager.swift */,
 				4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */,
+				499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */,
+				499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */,
 			);
 			path = Noti;
 			sourceTree = "<group>";
@@ -225,10 +231,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */,
+				499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */,
 				498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */,
 				49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */,
 				4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */,
 				49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */,
+				499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
