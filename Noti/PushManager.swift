@@ -40,14 +40,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     //fixme
-    func userNotificationCenter(center: NSUserNotificationCenter, didDismissNotification notification: NSUserNotification) {
-        for item in pushHistory {
-            if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
-                ephemerals.dismissPush(item, trigger_key: nil)
-                break;
-            }
-        }
-    }
+//    func userNotificationCenter(center: NSUserNotificationCenter, didDismissNotification notification: NSUserNotification) {
+//        for item in pushHistory {
+//            if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
+//                ephemerals.dismissPush(item, trigger_key: nil)
+//                break;
+//            }
+//        }
+//    }
     
     func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
         switch notification.activationType {
@@ -71,7 +71,6 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     }
                 }
                 break;
-                
             case .ContentsClicked:
                 Alamofire.request(.GET, "https://update.pushbullet.com/android_mapping.json")
                     .responseString { response in
@@ -162,6 +161,9 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     switch(pushType) {
                     case "mirror":
                         let notification = NSUserNotification()
+                        notification.otherButtonTitle = "Dismiss    "
+                        notification.actionButtonTitle = "Show"
+                        notification.hasActionButton = true
                         notification.title = push["title"].string
                         notification.informativeText = push["body"].string
                         notification.identifier = push["notification_id"].string
@@ -201,7 +203,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         for noti in center.deliveredNotifications {
                             if noti.identifier == push["notification_id"].string {
                                 center.removeDeliveredNotification(noti)
-                                print("Removed a noti (", noti.identifier, ")")
+                                print("Removed a noti (", noti.identifier!, ")")
                             }
                         }
                         var i = -1, indexToBeRemoved = -1
