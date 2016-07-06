@@ -38,41 +38,67 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     
     func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
         switch notification.activationType {
-            case .ActionButtonClicked:
-                var alternateAction = notification.valueForKey("_alternateActionIndex") as! Int
-                
-                if(alternateAction == Int.max) {
-                    //user did not use an alternate action, set the index to 0
-                    alternateAction = 0
+        case .ActionButtonClicked:
+            var alternateAction = notification.valueForKey("_alternateActionIndex") as! Int
+            
+            if(alternateAction == Int.max) {
+                //user did not use an alternate action, set the index to 0
+                alternateAction = 0
+            }
+            
+            print("action")
+            print("alternate?", alternateAction)
+            
+            
+            for item in pushHistory {
+                if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
+                    if let actions = item["actions"].array {
+                        dismissPush(item, trigger_key: actions[alternateAction]["trigger_key"].string!)
+                        break;
+                    }
                 }
-                
-                print("action")
-                print("alternate?", alternateAction)
-                
+            }
+            break;
+        case .Replied:
+            let body = notification.response?.string
+            
+            func doQuickReply() {
                 for item in pushHistory {
-                    if item["notification_id"].string == notification.identifier {
-                        if let actions = item["actions"].array {
-                            dismissPush(item, trigger_key: actions[alternateAction]["trigger_key"].string!)
-                            break;
+                    if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
+                        quickReply(item, body: body!)
+                    }
+                }
+            }
+            
+            //determine if we replied to a sms or a normal notification
+            if notification.identifier?.characters.count > 4 {
+                let index = notification.identifier?.startIndex.advancedBy(4)
+                if notification.identifier?.substringToIndex(index!) == "sms_" {
+                    for item in pushHistory {
+                        if item["type"].string == "sms_changed" {
+                            let metadata = notification.identifier?.substringFromIndex(index!).componentsSeparatedByString("|")
+                            respondToSMS(body, thread_id: metadata![1], source_device_iden: metadata![0])
                         }
                     }
+                } else {
+                    doQuickReply()
                 }
-                break;
-            case .Replied:
-                let body = notification.response?.string
-                for item in pushHistory {
-                    if item["type"].string == "sms_changed" {
-                        let metadata = notification.identifier?.componentsSeparatedByString("|")
-                        respondToSMS(body, thread_id: metadata![1], source_device_iden: metadata![0])
-                    }
-                }
-                break;
-            default:
-                print("did not understand activation type", notification.activationType.rawValue)
-                break;
+            } else {
+                doQuickReply()
+            }
+            
+            break;
+            
+        default:
+            print("did not understand activation type", notification.activationType.rawValue)
+            break;
             
         }
     }
+    
+    /**
+     * TODO refactor these functions below
+     **/
     
     func respondToSMS(message: String!, thread_id: String!, source_device_iden: String!) {
         print("respondToSMS", "message", message, "thread_id", thread_id, "source_device_iden", source_device_iden)
@@ -131,7 +157,35 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 }
         }
         
-
+        
+    }
+    
+    func quickReply(push: JSON, body: String) {
+        
+        let body = [
+            "type": "push",
+            "push": [
+                "type": "messaging_extension_reply",
+                "source_user_iden": push["source_user_iden"].string!,
+                "target_device_iden": push["source_device_iden"].string!,
+                "package_name": push["package_name"].string!,
+                "conversation_iden": push["conversation_iden"].string!,
+                "message": body
+            ]
+        ];
+        
+        let headers = [
+            "Access-Token": token
+        ];
+        
+        print("----BODY-----")
+        debugPrint(body)
+        print("-------------")
+        
+        Alamofire.request(.POST, "https://api.pushbullet.com/v2/ephemerals", headers: headers, encoding: .JSON, parameters: body)
+            .responseJSON { response in
+                debugPrint(response)
+        }
     }
     
     func dismissPush(push: JSON, trigger_key: String?) {
@@ -193,87 +247,91 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 
                 if let pushType = push["type"].string {
                     switch(pushType) {
-                        case "mirror":
-                            let notification = NSUserNotification()
-                            notification.title = push["title"].string
-                            notification.informativeText = push["body"].string
-                            notification.identifier = push["notification_id"].string
-                            notification.subtitle = push["application_name"].string // todo: keep or remove?
-                            
-                            let data = NSData(base64EncodedString: push["icon"].string!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                            notification.setValue(NSImage(data: data), forKeyPath: "_identityImage")
-                            notification.setValue(false, forKeyPath: "_identityImageHasBorder")
-                            
-                            if let actions = push["actions"].array {
-                                notification.hasActionButton = true
-                                if(actions.count == 1) {
-                                    notification.actionButtonTitle = actions[0]["label"].string!
+                    case "mirror":
+                        let notification = NSUserNotification()
+                        notification.title = push["title"].string
+                        notification.informativeText = push["body"].string
+                        notification.identifier = push["notification_id"].string
+                        notification.subtitle = push["application_name"].string // todo: keep or remove?
+                        
+                        let data = NSData(base64EncodedString: push["icon"].string!, options: NSDataBase64DecodingOptions(rawValue: 0))!
+                        notification.setValue(NSImage(data: data), forKeyPath: "_identityImage")
+                        notification.setValue(false, forKeyPath: "_identityImageHasBorder")
+                        
+                        if push["conversation_iden"].isExists() {
+                            notification.hasReplyButton = true
+                        }
+                        
+                        if let actions = push["actions"].array {
+                            notification.hasActionButton = true
+                            if(actions.count == 1) {
+                                notification.actionButtonTitle = actions[0]["label"].string!
+                            } else {
+                                var titles = [String]()
+                                for action in actions {
+                                    titles.append(action["label"].string!)
+                                    
+                                }
+                                notification.actionButtonTitle = "Actions"
+                                notification.setValue(true, forKeyPath: "_alwaysShowAlternateActionMenu")
+                                notification.setValue(titles, forKeyPath: "_alternateActionButtonTitles")
+                            }
+                        }
+                        
+                        notification.soundName = NSUserNotificationDefaultSoundName
+                        
+                        center.deliverNotification(notification)
+                        break;
+                    case "dismissal":
+                        //loop through current user notifications, if identifier matches, remove it
+                        for noti in center.deliveredNotifications {
+                            if noti.identifier == push["notification_id"].string {
+                                center.removeDeliveredNotification(noti)
+                                print("Removed a noti (", noti.identifier, ")")
+                            }
+                        }
+                        var i = -1, indexToBeRemoved = -1
+                        for item in pushHistory {
+                            i += 1
+                            if push["notification_id"].string == item["notification_id"].string {
+                                indexToBeRemoved = i
+                                break
+                            }
+                        }
+                        if indexToBeRemoved != -1 {
+                            pushHistory.removeAtIndex(indexToBeRemoved)
+                        }
+                        
+                        break;
+                    case "sms_changed":
+                        if push["notifications"].isExists() {
+                            for sms in push["notifications"].array! {
+                                let notification = NSUserNotification()
+                                
+                                notification.title = "SMS from " + sms["title"].string!
+                                notification.informativeText = sms["body"].string
+                                notification.hasReplyButton = true
+                                notification.identifier = "sms_" + push["source_device_iden"].string! + "|" + sms["thread_id"].string!
+                                
+                                notification.soundName = "Glass"
+                                
+                                if let photo = sms["image_url"].string {
+                                    Alamofire.request(.GET, photo)
+                                        .responseData{response in
+                                            debugPrint(response)
+                                            notification.setValue(NSImage(data: response.result.value!), forKey: "_identityImage")
+                                            
+                                            self.center.deliverNotification(notification)
+                                    }
                                 } else {
-                                    var titles = [String]()
-                                    for action in actions {
-                                        titles.append(action["label"].string!)
-                                        
-                                    }
-                                    notification.actionButtonTitle = "Actions"
-                                    notification.setValue(true, forKeyPath: "_alwaysShowAlternateActionMenu")
-                                    notification.setValue(titles, forKeyPath: "_alternateActionButtonTitles")
+                                    self.center.deliverNotification(notification)
                                 }
                             }
-                            
-                            notification.soundName = NSUserNotificationDefaultSoundName
-                            
-                            center.deliverNotification(notification)
-                            break;
-                        case "dismissal":
-                            //loop through current user notifications, if identifier matches, remove it
-                            for noti in center.deliveredNotifications {
-                                if noti.identifier == push["notification_id"].string {
-                                    center.removeDeliveredNotification(noti)
-                                    print("Removed a noti (", noti.identifier, ")")
-                                }
-                            }
-                            var i = -1, indexToBeRemoved = -1
-                            for item in pushHistory {
-                                i += 1
-                                if push["notification_id"].string == item["notification_id"].string {
-                                    indexToBeRemoved = i
-                                    break
-                                }
-                            }
-                            if indexToBeRemoved != -1 {
-                                pushHistory.removeAtIndex(indexToBeRemoved)
-                            }
-                            
-                            break;
-                        case "sms_changed":
-                            if push["notifications"].isExists() {
-                                for sms in push["notifications"].array! {
-                                    let notification = NSUserNotification()
-                                    
-                                    notification.title = "SMS from " + sms["title"].string!
-                                    notification.informativeText = sms["body"].string
-                                    notification.hasReplyButton = true
-                                    notification.identifier = push["source_device_iden"].string! + "|" + sms["thread_id"].string!
-                                    
-                                    notification.soundName = "Glass"
-                                    
-                                    if let photo = sms["image_url"].string {
-                                        Alamofire.request(.GET, photo)
-                                            .responseData{response in
-                                                debugPrint(response)
-                                                notification.setValue(NSImage(data: response.result.value!), forKey: "_identityImage")
-                                                
-                                                self.center.deliverNotification(notification)
-                                            }
-                                    } else {
-                                        self.center.deliverNotification(notification)
-                                    }
-                                }
-                            }
-                            break;
-                        default:
-                            print("Unknown type of push", pushType)
-                            break;
+                        }
+                        break;
+                    default:
+                        print("Unknown type of push", pushType)
+                        break;
                     }
                 }
                 break;
