@@ -30,14 +30,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             let storyboard = NSStoryboard(name: "Main", bundle: nil)
             iwc = storyboard.instantiateControllerWithIdentifier("IntroWindowController") as? NSWindowController
+            NSApplication.sharedApplication().activateIgnoringOtherApps(true)
             iwc!.showWindow(self)
+            iwc!.window?.makeKeyAndOrderFront(self)
         }
-    }
-    
-    @IBAction func reauthorize(sender: AnyObject?) {
-        //delete token & restart push manager
-        userDefaults.removeObjectForKey("token")
-        loadPushManager()
     }
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {

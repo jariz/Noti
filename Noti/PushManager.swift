@@ -20,6 +20,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     var userInfo:JSON?;
     var token:String;
     var ephemerals:Ephemerals;
+    var killed = false;
     
     init(token: String) {
         self.token = token
@@ -29,14 +30,38 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
         center.delegate = self
         connect()
+//        getUserInfo { Void in
+//            
+//        }
+//        [].map() {
+//            
+//        }
     }
     
-    deinit {
-        self.socket?.disconnect()
-    }
+//    deinit {
+//        self.socket?.disconnect()
+//    }
     
     internal func disconnect() {
-        self.socket!.disconnect()
+        //stops attempts to reconnect
+        killed = true
+        
+        //disconnect now!
+        self.socket!.disconnect(forceTimeout: 0)
+    }
+    
+    func getUserInfo(test:Void) {
+        let headers = [
+            "Access-Token": token
+        ];
+        
+        Alamofire.request(.GET, "https://api.pushbullet.com/v2/users/me", headers: headers)
+            .responseString { response in
+                if let info = response.result.value {
+                    self.userInfo = JSON.parse(info)
+                }
+        }
+        
     }
     
     //fixme
@@ -136,17 +161,23 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         socket!.connect()
     }
     
-    func websocketDidConnect(socket: WebSocket) {
+    internal func websocketDidConnect(socket: WebSocket) {
         print("PushManager", "Is connected")
     }
     
-    func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
-        print("PushManager", "Is disconnected: \(error?.localizedDescription)", "Reconnecting in 5 sec")
+    internal func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
+        print("PushManager", "Is disconnected: \(error?.localizedDescription)")
         
-        NSTimer.scheduledTimerWithTimeInterval(5, target: NSBlockOperation(block: self.connect), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
+        if(killed) {
+            print("Reconnecting in 5 sec");
+            NSTimer.scheduledTimerWithTimeInterval(5, target: NSBlockOperation(block: self.connect), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
+        } else {
+            print("Not going to reconnect: I'm killed")
+        }
+        
     }
     
-    func websocketDidReceiveMessage(socket: WebSocket, text: String) {
+    internal func websocketDidReceiveMessage(socket: WebSocket, text: String) {
         print("PushManager", "receive", text)
         
         let message = JSON.parse(text);
@@ -260,7 +291,6 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     func websocketDidReceiveData(socket: WebSocket, data: NSData) {
-        print("PushManager", "Received data???: \(data.length)")
-        print("PushManager", "We don't handle raw data, so ignored...")
+        
     }
 }

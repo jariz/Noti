@@ -22,4 +22,15 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
         }
         
     }
+    
+    @IBAction func reauthorize(sender: AnyObject?) {
+        //delete token & restart push manager
+        let appDelegate = NSApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.userDefaults.removeObjectForKey("token")
+        appDelegate.loadPushManager()
+    }
+    
+    @IBAction func quit(sender: AnyObject?) {
+        NSApplication.sharedApplication().terminate(self)
+    }
 }

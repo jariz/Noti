@@ -36,5 +36,7 @@
 	<string>NSApplication</string>
 	<key>NSUserNotificationAlertStyle</key>
 	<string>banner</string>
+	<key>SUFeedURL</key>
+	<string>https://rawgit.com/jariz/Noti-appcast/master/appcast.xml</string>
 </dict>
 </plist>
