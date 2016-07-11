@@ -1,6 +1,7 @@
 <div align="center">
 <img src="https://raw.githubusercontent.com/jariz/Noti/master/Noti/Assets.xcassets/AppIcon.appiconset/256.png">
 <br><img src="https://jari.lol/0suH6tw4vE.svg">
+<br><img src="https://travis-ci.org/jariz/Noti.svg?branch=master">
 </div>
 
 ###What is Noti?  
