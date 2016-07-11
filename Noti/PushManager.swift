@@ -29,18 +29,16 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         super.init()
         
         center.delegate = self
-        connect()
-//        getUserInfo { Void in
-//            
-//        }
-//        [].map() {
-//            
-//        }
+        
+        print("Getting user info...")
+        getUserInfo { () in
+            self.connect()
+        }
     }
     
-//    deinit {
-//        self.socket?.disconnect()
-//    }
+    deinit {
+        disconnect()
+    }
     
     internal func disconnect() {
         //stops attempts to reconnect
@@ -50,7 +48,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         self.socket!.disconnect(forceTimeout: 0)
     }
     
-    func getUserInfo(test:Void) {
+    func getUserInfo(callback: () -> Void) {
         let headers = [
             "Access-Token": token
         ];
@@ -59,6 +57,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             .responseString { response in
                 if let info = response.result.value {
                     self.userInfo = JSON.parse(info)
+                    callback()
                 }
         }
         
@@ -139,7 +138,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         for item in pushHistory {
                             if item["type"].string == "sms_changed" {
                                 let metadata = notification.identifier?.substringFromIndex(index!).componentsSeparatedByString("|")
-                                ephemerals.respondToSMS(body, thread_id: metadata![1], source_device_iden: metadata![0])
+                                ephemerals.respondToSMS(body, thread_id: metadata![1], source_device_iden: metadata![0], source_user_iden: self.userInfo!["iden"].string!)
                             }
                         }
                     } else {

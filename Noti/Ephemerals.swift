@@ -48,7 +48,7 @@ class Ephemerals: NSObject {
         }
     }
     
-    func respondToSMS(message: String!, thread_id: String!, source_device_iden: String!) {
+    func respondToSMS(message: String!, thread_id: String!, source_device_iden: String!, source_user_iden: String!) {
         print("respondToSMS", "message", message, "thread_id", thread_id, "source_device_iden", source_device_iden)
         
         //get api key from cookies
@@ -89,7 +89,7 @@ class Ephemerals: NSObject {
                                         "conversation_iden": recipient["address"].string!,
                                         "message": message,
                                         "package_name": "com.pushbullet.android",
-                                        "source_user_iden": "ujpah72o0",
+                                        "source_user_iden": source_user_iden,
                                         "target_device_iden": source_device_iden,
                                         "type": "messaging_extension_reply"
                                     ],
