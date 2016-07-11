@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "PushManager.(respondToSMS(String!, thread_id : String!, source_device_iden : String!) -&gt; ()).(closure #1):PushManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "JSON(response.result.value!)[&quot;data&quot;].array">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AppDelegate.loadPushManager() -&gt; ():AppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "awc">
+            </PersistentString>
+            <PersistentString
+               value = "pushManager != nil">
+            </PersistentString>
+            <PersistentString
+               value = "iwc!.window!">
+            </PersistentString>
+            <PersistentString
+               value = "avc">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PushManager.(websocketDidReceiveMessage(WebSocket, text : String) -&gt; ()).(closure #1):PushManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "notification.contentImage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PushManager.disconnect() -&gt; ():PushManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "PushManager.websocketDidReceiveMessage(WebSocket, text : String) -&gt; ():PushManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "sms[&quot;image_url&quot;].string">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PushManager.dismissPush(JSON, trigger_key : String?) -&gt; ():PushManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "body[&quot;push&quot;] as! [String: String]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PushManager.quickReply(JSON, body : String) -&gt; ():PushManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "debugPrint(push)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PushManager.userNotificationCenter(NSUserNotificationCenter, didActivateNotification : NSUserNotification) -&gt; ():PushManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "index.debugDescription">
+            </PersistentString>
+            <PersistentString
+               value = "notification.identifier?.startIndex.advancedBy(4)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
