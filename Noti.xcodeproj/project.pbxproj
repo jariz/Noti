@@ -114,8 +114,8 @@
 			buildConfigurationList = 49B43B171D1ADFB200A24585 /* Build configuration list for PBXNativeTarget "Noti" */;
 			buildPhases = (
 				C46969CE10D5230F33E29F6C /* 📦 Check Pods Manifest.lock */,
-				49B43B041D1ADFB200A24585 /* Sources */,
 				49B43B051D1ADFB200A24585 /* Frameworks */,
+				49B43B041D1ADFB200A24585 /* Sources */,
 				49B43B061D1ADFB200A24585 /* Resources */,
 				003C003AFFFD5A40A37BC17E /* 📦 Embed Pods Frameworks */,
 				9E2550AE761EB3113626074C /* 📦 Copy Pods Resources */,
