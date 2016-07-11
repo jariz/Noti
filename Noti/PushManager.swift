@@ -48,7 +48,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         self.socket!.disconnect(forceTimeout: 0)
     }
     
-    func getUserInfo(callback: () -> Void) {
+    func getUserInfo(callback: (() -> Void)?) {
         let headers = [
             "Access-Token": token
         ];
@@ -56,22 +56,15 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         Alamofire.request(.GET, "https://api.pushbullet.com/v2/users/me", headers: headers)
             .responseString { response in
                 if let info = response.result.value {
+                    debugPrint(info)
                     self.userInfo = JSON.parse(info)
-                    callback()
+                    if callback != nil {
+                        callback!()
+                    }
                 }
         }
         
     }
-    
-    //fixme
-//    func userNotificationCenter(center: NSUserNotificationCenter, didDismissNotification notification: NSUserNotification) {
-//        for item in pushHistory {
-//            if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
-//                ephemerals.dismissPush(item, trigger_key: nil)
-//                break;
-//            }
-//        }
-//    }
     
     func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
         switch notification.activationType {
@@ -183,6 +176,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
         if let type = message["type"].string {
             switch type {
+                
+            case "tickle":
+                if let subtype = message["subtype"].string {
+                    if(subtype == "account") {
+                        getUserInfo(nil)
+                    }
+                }
+                break;
             case "push":
                 let push = message["push"];
                 pushHistory.append(push)
@@ -211,7 +212,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         
                         if let actions = push["actions"].array {
                             notification.hasActionButton = true
-                            if(actions.count == 1) {
+                            if(actions.count == 1 || !userInfo!["pro"].bool!) {
                                 notification.actionButtonTitle = actions[0]["label"].string!
                             } else {
                                 var titles = [String]()
