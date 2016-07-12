@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CryptoSwift
 
 public class Crypt {
     var key: [UInt8];
@@ -16,11 +15,9 @@ public class Crypt {
         self.key = key
     }
     
-    static func generateKey(password: String, salt: String) -> [UInt8]? {
-        let password: Array<UInt8> = password.utf8.map {$0}
-        let salt: Array<UInt8> = salt.utf8.map {$0}
-        print("Noti is generating a key!")
-        return try? PKCS5.PBKDF2(password: password, salt: salt, iterations: 30000, keyLength: 32, variant: .sha256).calculate()
+    static func generateKey(password: String, salt: String) -> NSData? {
+        print("Generating a new key...")
+        return try? CC.KeyDerivation.PBKDF2(password, salt: salt.dataUsingEncoding(NSUTF8StringEncoding)!, prf: .sha256, rounds: 30000)
     }
     
     func decryptMessage(cipher: String) -> String? {
@@ -28,7 +25,7 @@ public class Crypt {
         var rawBytes = [UInt8](count: rawData!.length / sizeof(UInt8), repeatedValue: 0)
         rawData?.getBytes(&rawBytes, length: rawBytes.count)
         
-//        let tag = [UInt8](rawBytes[1...16])
+        let tag = NSData(bytes: [UInt8](rawBytes[1...16]))
         let iv = [UInt8](rawBytes[17...28])
         let message = [UInt8](rawBytes[29..<rawBytes.count])
         
@@ -36,14 +33,14 @@ public class Crypt {
         if res == nil {
             return nil
         } else {
-            //todo tag verification
-            return String(data: res!.0, encoding: NSUTF8StringEncoding)
+            //is the resulting tag correct?
+            if tag == res!.1 {
+                return String(data: res!.0, encoding: NSUTF8StringEncoding)
+            } else {
+                return nil
+            }
         }
         
-//        let input = NSData()
-//        let decrypted = try! input.decrypt(AES(key: key!, iv: iv))
-//
-//        let decoded = NSString(data: decrypted, encoding: NSUTF8StringEncoding)
     }
     
 }

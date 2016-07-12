@@ -214,7 +214,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             else if(pwd.stringValue != "") {
                 let iden = userInfo!["iden"].string!
                 let key = Crypt.generateKey(pwd.stringValue, salt: iden)
-                userDefaults.setObject(NSData(bytes: key!), forKey: "secureKey")
+                userDefaults.setObject(key, forKey: "secureKey")
             } else {
                 userDefaults.removeObjectForKey("secureKey")
             }

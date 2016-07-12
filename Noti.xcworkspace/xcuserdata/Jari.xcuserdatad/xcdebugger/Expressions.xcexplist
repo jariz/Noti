@@ -69,6 +69,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "Crypt.decryptMessage(String) -&gt; String?:Crypt.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "tag == res!.1">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "PushManager.userNotificationCenter(NSUserNotificationCenter, didActivateNotification : NSUserNotification) -&gt; ():PushManager.swift">
          <PersistentStrings>
             <PersistentString
