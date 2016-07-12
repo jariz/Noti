@@ -30,6 +30,11 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
         appDelegate.loadPushManager()
     }
     
+    @IBAction func setPassword(sender: AnyObject?) {
+        let appDelegate = NSApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.pushManager?.displayPasswordForm()
+    }
+    
     @IBAction func quit(sender: AnyObject?) {
         NSApplication.sharedApplication().terminate(self)
     }

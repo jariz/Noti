@@ -5,4 +5,5 @@ target 'Noti' do
     pod 'SwiftyJSON'
     pod 'Alamofire', '~> 3.4'
     pod 'Sparkle'
+    pod 'CryptoSwift'
 end

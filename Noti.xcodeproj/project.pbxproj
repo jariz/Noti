@@ -10,6 +10,8 @@
 		162B919FE4321ED9BC86AD09 /* Pods_Noti.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2C7615AF577BAEAF32B8516 /* Pods_Noti.framework */; };
 		4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */; };
 		4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3D21D23E6AB005F1641 /* IntroViewController.swift */; };
+		498275F01D34E03200AB7029 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498275EF1D34E03200AB7029 /* SwCrypt.swift */; };
+		498275F21D35101A00AB7029 /* Crypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498275F11D35101A00AB7029 /* Crypt.swift */; };
 		498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498499FD1D1BE46F007FC963 /* PushManager.swift */; };
 		499DD0F61D2ACA0B00BB759D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 499DD0F51D2ACA0B00BB759D /* .gitignore */; };
 		499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */; };
@@ -25,6 +27,9 @@
 		0F7FEC6A353CB04118DDEBF6 /* Pods-Noti.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Noti.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Noti/Pods-Noti.debug.xcconfig"; sourceTree = "<group>"; };
 		4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
 		4901D3D21D23E6AB005F1641 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		498275EE1D34E03200AB7029 /* SwCrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwCrypt.h; sourceTree = "<group>"; };
+		498275EF1D34E03200AB7029 /* SwCrypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwCrypt.swift; sourceTree = "<group>"; };
+		498275F11D35101A00AB7029 /* Crypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypt.swift; sourceTree = "<group>"; };
 		498499FD1D1BE46F007FC963 /* PushManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushManager.swift; sourceTree = "<group>"; };
 		499DD0F51D2ACA0B00BB759D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ephemerals.swift; sourceTree = "<group>"; };
@@ -75,6 +80,8 @@
 		49B43B0A1D1ADFB200A24585 /* Noti */ = {
 			isa = PBXGroup;
 			children = (
+				498275EE1D34E03200AB7029 /* SwCrypt.h */,
+				498275EF1D34E03200AB7029 /* SwCrypt.swift */,
 				49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */,
 				49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */,
 				49B43B0F1D1ADFB200A24585 /* Assets.xcassets */,
@@ -85,6 +92,7 @@
 				4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */,
 				499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */,
 				499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */,
+				498275F11D35101A00AB7029 /* Crypt.swift */,
 			);
 			path = Noti;
 			sourceTree = "<group>";
@@ -234,9 +242,11 @@
 				499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */,
 				498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */,
 				49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */,
+				498275F01D34E03200AB7029 /* SwCrypt.swift in Sources */,
 				4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */,
 				49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */,
 				499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */,
+				498275F21D35101A00AB7029 /* Crypt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

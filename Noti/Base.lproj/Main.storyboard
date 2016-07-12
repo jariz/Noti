@@ -659,6 +659,12 @@
                                 <action selector="reauthorize:" target="8Oo-kR-uVy" id="Iat-JG-VnX"/>
                             </connections>
                         </menuItem>
+                        <menuItem title="Set encryption password" keyEquivalent="E" id="Bxv-sA-grV">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="setPassword:" target="8Oo-kR-uVy" id="zJ5-eK-Ogw"/>
+                            </connections>
+                        </menuItem>
                         <menuItem title="Check for updates" keyEquivalent="U" id="4ao-7K-V6w">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>

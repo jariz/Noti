@@ -42,7 +42,13 @@
          contextName = "PushManager.websocketDidReceiveMessage(WebSocket, text : String) -&gt; ():PushManager.swift">
          <PersistentStrings>
             <PersistentString
-               value = "sms[&quot;image_url&quot;].string">
+               value = "userInfo![&quot;iden&quot;].string!">
+            </PersistentString>
+            <PersistentString
+               value = "userInfo![&quot;iden&quot;].string!.dataUsingEncoding(NSUTF8StringEncoding)!">
+            </PersistentString>
+            <PersistentString
+               value = "String(data: res.0, encoding: NSUTF8StringEncoding)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -70,6 +76,14 @@
             </PersistentString>
             <PersistentString
                value = "notification.identifier?.startIndex.advancedBy(4)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AES.init(key : [UInt8], iv : [UInt8]?, blockMode : CipherBlockMode, padding : Padding) throws -&gt; AES:AES.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "AES.blockSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

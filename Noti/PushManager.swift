@@ -12,15 +12,18 @@ import Foundation
 import Starscream
 import SwiftyJSON
 import Alamofire
+import CryptoSwift
 
 class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate {
     var socket:WebSocket?
-    var center = NSUserNotificationCenter.defaultUserNotificationCenter()
+    let center = NSUserNotificationCenter.defaultUserNotificationCenter()
     var pushHistory = [JSON]()
-    var userInfo:JSON?;
-    var token:String;
-    var ephemerals:Ephemerals;
-    var killed = false;
+    var userInfo:JSON?
+    var token:String
+    var ephemerals:Ephemerals
+    var crypt:Crypt?
+    var killed = false
+    let userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     
     init(token: String) {
         self.token = token
@@ -29,6 +32,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         super.init()
         
         center.delegate = self
+        self.initCrypt()
         
         print("Getting user info...")
         getUserInfo { () in
@@ -46,6 +50,19 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
         //disconnect now!
         self.socket!.disconnect(forceTimeout: 0)
+    }
+    
+    func initCrypt() {
+        let keyData = userDefaults.objectForKey("secureKey") as? NSData
+        if keyData != nil {
+            var key = [UInt8](count: keyData!.length / sizeof(UInt8), repeatedValue: 0)
+            keyData!.getBytes(&key, length: keyData!.length)
+            self.crypt = Crypt(key: key)
+            print("Encryption enabled!")
+        } else {
+            self.crypt = nil
+            print("Encryption not enabled")
+        }
     }
     
     func getUserInfo(callback: (() -> Void)?) {
@@ -89,6 +106,12 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 }
                 break;
             case .ContentsClicked:
+                //check if this is the encryption warning notification
+                if(notification.identifier == "noti_encrypt") {
+                    displayPasswordForm()
+                    return
+                }
+                
                 Alamofire.request(.GET, "https://update.pushbullet.com/android_mapping.json")
                     .responseString { response in
                         if let result = response.result.value {
@@ -166,13 +189,44 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         } else {
             print("Not going to reconnect: I'm killed")
         }
+    }
+    
+    func displayPasswordForm() {
+        let alert = NSAlert()
+        let pwd = NSSecureTextField.init(frame: NSMakeRect(0, 0, 300, 24))
+        alert.accessoryView = pwd
         
+        //indicate that encryption is enabled.
+        if crypt != nil {
+            pwd.stringValue = "************"
+        }
+        
+        alert.addButtonWithTitle("Apply")
+        alert.addButtonWithTitle("Cancel")
+        alert.messageText = "Enter your PushBullet password"
+        alert.informativeText = "Leave blank to disable encryption.\nMake sure you set the same password on your other devices as well.\nSaving your password might take a few seconds."
+        let button = alert.runModal()
+        
+        if button == NSAlertFirstButtonReturn {
+            if(pwd.stringValue == "************") {
+                return
+            }
+            else if(pwd.stringValue != "") {
+                let iden = userInfo!["iden"].string!
+                let key = Crypt.generateKey(pwd.stringValue, salt: iden)
+                userDefaults.setObject(NSData(bytes: key!), forKey: "secureKey")
+            } else {
+                userDefaults.removeObjectForKey("secureKey")
+            }
+            initCrypt()
+            
+        }
     }
     
     internal func websocketDidReceiveMessage(socket: WebSocket, text: String) {
         print("PushManager", "receive", text)
         
-        let message = JSON.parse(text);
+        var message = JSON.parse(text);
         
         if let type = message["type"].string {
             switch type {
@@ -188,13 +242,38 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 let push = message["push"];
                 pushHistory.append(push)
                 
+                if push["encrypted"].isExists() && push["encrypted"].bool! {
+                    func warnUser() {
+                        let noti = NSUserNotification()
+                        noti.title = "I'm not sure what to make of this!"
+                        noti.informativeText = "It appears you're using encryption, click to set password."
+                        noti.actionButtonTitle = "Enter password"
+                        noti.identifier = "noti_encrypt"
+                        center.deliverNotification(noti)
+                    }
+                    
+                    if crypt != nil {
+                        let decrypted = crypt?.decryptMessage(push["ciphertext"].string!)
+                        if decrypted == nil {
+                            warnUser()
+                        } else {
+                            message["push"] = JSON.parse(decrypted!)
+                            //handle decrypted message
+                            websocketDidReceiveMessage(socket, text: message.rawString()!)
+                        }
+                    } else {
+                        warnUser()
+                    }
+                    
+                    return
+                }
+                
                 if let pushType = push["type"].string {
                     switch(pushType) {
                     case "mirror":
                         let notification = NSUserNotification()
                         notification.otherButtonTitle = "Dismiss    "
                         notification.actionButtonTitle = "Show"
-                        notification.hasActionButton = true
                         notification.title = push["title"].string
                         notification.informativeText = push["body"].string
                         notification.identifier = push["notification_id"].string
@@ -211,7 +290,6 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         }
                         
                         if let actions = push["actions"].array {
-                            notification.hasActionButton = true
                             if(actions.count == 1 || !userInfo!["pro"].bool!) {
                                 notification.actionButtonTitle = actions[0]["label"].string!
                             } else {
