@@ -686,7 +686,7 @@
         <scene sceneID="nqJ-Nt-r4F">
             <objects>
                 <windowController storyboardIdentifier="IntroWindowController" id="pfC-yc-kZb" sceneMemberID="viewController">
-                    <window key="window" title="Hi!" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="alertPanel" frameAutosaveName="" id="BzP-7X-X1L">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="alertPanel" frameAutosaveName="" id="BzP-7X-X1L">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" fullSizeContentView="YES"/>
                         <rect key="contentRect" x="-1626" y="-38" width="480" height="300"/>
                         <rect key="screenRect" x="-1920" y="-400" width="1920" height="1177"/>
