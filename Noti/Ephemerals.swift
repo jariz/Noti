@@ -15,16 +15,29 @@ import Alamofire
 import SwiftyJSON
 
 class Ephemerals: NSObject {
-    var token:String;
+    var token:String
+    var crypt:Crypt?
     
     init(token:String) {
         self.token = token
     }
     
     internal func sendEphemeral(body: [String: AnyObject]) {
+        var body = body
         let headers = [
             "Access-Token": token
         ];
+        
+        if crypt != nil && body["type"] as? String == "push" {
+            print("Encrypting ephemeral...")
+            let json = JSON.init(body)
+            
+            let cipher = crypt!.encryptMessage(json["push"].rawString()!)
+            body["push"] = [
+                "encrypted": true,
+                "ciphertext": cipher!
+            ]
+        }
         
         print("Sending ephemeral...")
         print("-------- BODY --------")

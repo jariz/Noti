@@ -12,7 +12,6 @@ import Foundation
 import Starscream
 import SwiftyJSON
 import Alamofire
-import CryptoSwift
 
 class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate {
     var socket:WebSocket?
@@ -55,14 +54,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     func initCrypt() {
         let keyData = userDefaults.objectForKey("secureKey") as? NSData
         if keyData != nil {
-            var key = [UInt8](count: keyData!.length / sizeof(UInt8), repeatedValue: 0)
-            keyData!.getBytes(&key, length: keyData!.length)
-            self.crypt = Crypt(key: key)
+            let key = keyData?.toArray()
+            self.crypt = Crypt(key: key!)
             print("Encryption enabled!")
         } else {
             self.crypt = nil
             print("Encryption not enabled")
         }
+        self.ephemerals.crypt = self.crypt
     }
     
     func getUserInfo(callback: (() -> Void)?) {

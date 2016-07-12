@@ -36,6 +36,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "Ephemerals.sendEphemeral([String : AnyObject]) -&gt; ():Ephemerals.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "json.rawString()">
+            </PersistentString>
+            <PersistentString
+               value = "json[&quot;push&quot;].rawString()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "PushManager.disconnect() -&gt; ():PushManager.swift">
       </ContextState>
       <ContextState

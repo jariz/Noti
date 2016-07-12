@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CryptoSwift
 
 public class Crypt {
     var key: [UInt8];
@@ -22,8 +23,7 @@ public class Crypt {
     
     func decryptMessage(cipher: String) -> String? {
         let rawData = NSData(base64EncodedString: cipher, options: NSDataBase64DecodingOptions(rawValue: 0))
-        var rawBytes = [UInt8](count: rawData!.length / sizeof(UInt8), repeatedValue: 0)
-        rawData?.getBytes(&rawBytes, length: rawBytes.count)
+        var rawBytes = rawData!.toArray()
         
         let tag = NSData(bytes: [UInt8](rawBytes[1...16]))
         let iv = [UInt8](rawBytes[17...28])
@@ -33,14 +33,41 @@ public class Crypt {
         if res == nil {
             return nil
         } else {
-            //is the resulting tag correct?
+            //verify the resulting tag...
             if tag == res!.1 {
                 return String(data: res!.0, encoding: NSUTF8StringEncoding)
             } else {
                 return nil
             }
         }
-        
     }
     
+    func encryptMessage(message: String) -> String? {
+        let iv = CC.generateRandom(12)
+        let messageData = message.dataUsingEncoding(NSUTF8StringEncoding)!
+        let res = try? CC.GCM.crypt(CC.OpMode.encrypt, algorithm: .aes, data: messageData, key: NSData(bytes: key), iv: iv, aData: NSData(), tagLength: 16)
+        if res == nil {
+            return nil
+        }
+        
+        let tag = res!.1
+        var data = [UInt8]()
+        data.append(49) // 1
+        data.appendContentsOf(tag.toArray())
+        data.appendContentsOf(iv.toArray())
+        data.appendContentsOf(res!.0.toArray())
+        
+        let out = NSData(bytes: data).base64EncodedStringWithOptions(NSDataBase64EncodingOptions.init(rawValue: 0))
+        
+        return out
+    }
+    
+}
+
+extension NSData {
+    func toArray() -> [UInt8] {
+        var bytes = [UInt8](count: self.length / sizeof(UInt8), repeatedValue: 0)
+        self.getBytes(&bytes, length: bytes.count)
+        return bytes
+    }
 }
