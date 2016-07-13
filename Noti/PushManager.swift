@@ -45,7 +45,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     
     internal func disconnect() {
         //stops attempts to reconnect
-        killed = true
+        self.killed = true
         
         //disconnect now!
         self.socket!.disconnect(forceTimeout: 0)
@@ -106,9 +106,12 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 break;
             case .ContentsClicked:
                 //check if this is the encryption warning notification
-                if(notification.identifier == "noti_encrypt") {
-                    displayPasswordForm()
-                    return
+                if notification.identifier?.characters.count > 12 {
+                    let index = notification.identifier!.startIndex.advancedBy(12)
+                    if notification.identifier?.substringToIndex(index) == "noti_encrypt" {
+                        displayPasswordForm()
+                        return
+                    }
                 }
                 
                 Alamofire.request(.GET, "https://update.pushbullet.com/android_mapping.json")
@@ -182,7 +185,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     internal func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
         print("PushManager", "Is disconnected: \(error?.localizedDescription)")
         
-        if(killed) {
+        if(!self.killed) {
             print("Reconnecting in 5 sec");
             NSTimer.scheduledTimerWithTimeInterval(5, target: NSBlockOperation(block: self.connect), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
         } else {
@@ -203,7 +206,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         alert.addButtonWithTitle("Apply")
         alert.addButtonWithTitle("Cancel")
         alert.messageText = "Enter your PushBullet password"
-        alert.informativeText = "Leave blank to disable encryption.\nMake sure you set the same password on your other devices as well.\nSaving your password might take a few seconds."
+        alert.informativeText = "Leave blank to disable encryption.\nMake sure you set the same password on your other devices as well."
         let button = alert.runModal()
         
         if button == NSAlertFirstButtonReturn {
@@ -244,10 +247,10 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 if push["encrypted"].isExists() && push["encrypted"].bool! {
                     func warnUser() {
                         let noti = NSUserNotification()
-                        noti.title = "I'm not sure what to make of this!"
+                        noti.title = "I received data I couldn't understand!"
                         noti.informativeText = "It appears you're using encryption, click to set password."
                         noti.actionButtonTitle = "Enter password"
-                        noti.identifier = "noti_encrypt"
+                        noti.identifier = "noti_encrypt" + String(arc4random())
                         center.deliverNotification(noti)
                     }
                     
@@ -278,10 +281,13 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         notification.identifier = push["notification_id"].string
                         notification.subtitle = push["application_name"].string // todo: keep or remove?
                         
-                        let data = NSData(base64EncodedString: push["icon"].string!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                        let img = RoundedImage(data: data)
-                        notification.setValue(img?.withRoundCorners(Int(img!.size.width) / 2), forKeyPath: "_identityImage")
-                        notification.setValue(false, forKeyPath: "_identityImageHasBorder")
+                        if let icon = push["icon"].string {
+                            let data = NSData(base64EncodedString: icon, options: NSDataBase64DecodingOptions(rawValue: 0))!
+                            let img = RoundedImage(data: data)
+                            notification.setValue(img?.withRoundCorners(Int(img!.size.width) / 2), forKeyPath: "_identityImage")
+                            notification.setValue(false, forKeyPath: "_identityImageHasBorder")
+                        }
+                        
                         notification.setValue(true, forKeyPath: "_showsButtons")
                         
                         if push["conversation_iden"].isExists() {

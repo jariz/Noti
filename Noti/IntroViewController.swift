@@ -27,34 +27,31 @@ class IntroViewController: NSViewController {
     @IBOutlet weak var authImg:NSImageView!;
     
     func authSuccess(notification: NSNotification) {
-        if notification.object as! Bool {
-            //we are authorized now
-            authBtn.enabled = false
-            self.authTxt.alphaValue = 1
-            self.authTxt.alphaValue = self.authBtn.alphaValue
-            self.view.window!.styleMask -= NSClosableWindowMask
+        authBtn.enabled = false
+        self.authTxt.alphaValue = 1
+        self.authTxt.alphaValue = self.authBtn.alphaValue
+        self.view.window!.styleMask -= NSClosableWindowMask
+        
+        NSAnimationContext.runAnimationGroup({ (context) -> Void in
+            context.duration = 0.25
+            self.authTxt.animator().alphaValue = 0
+            self.authBtn.animator().alphaValue = 0
             
-            NSAnimationContext.runAnimationGroup({ (context) -> Void in
-                context.duration = 0.25
-                self.authTxt.animator().alphaValue = 0
-                self.authBtn.animator().alphaValue = 0
+            }, completionHandler: { () -> Void in
+                self.authTxt.hidden = true
+                self.authBtn.hidden = true
+                self.authImg.hidden = false
+                self.authImg.alphaValue = 0
                 
-                }, completionHandler: { () -> Void in
-                    self.authTxt.hidden = true
-                    self.authBtn.hidden = true
-                    self.authImg.hidden = false
-                    self.authImg.alphaValue = 0
-                    
-                    NSAnimationContext.runAnimationGroup({ (context) -> Void in
-                        context.duration = 0.25
-                        self.authImg.animator().alphaValue = 1
-                    }, completionHandler: nil)
-                    
-            })
-            
-            NSTimer.scheduledTimerWithTimeInterval(1.5, target: NSBlockOperation(block: self.view.window!.close), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
-            
-        }
+                NSAnimationContext.runAnimationGroup({ (context) -> Void in
+                    context.duration = 0.25
+                    self.authImg.animator().alphaValue = 1
+                }, completionHandler: nil)
+                
+        })
+        
+        NSTimer.scheduledTimerWithTimeInterval(1.5, target: NSBlockOperation(block: self.view.window!.close), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
+
     }
     
     @IBAction func startAuth(sender: AnyObject) {

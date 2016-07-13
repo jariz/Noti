@@ -45,7 +45,7 @@ class AuthViewController: NSViewController, WebFrameLoadDelegate {
                     appDelegate.loadPushManager()
                     
                     self.view.window?.close()
-                    NSNotificationCenter.defaultCenter().postNotificationName("AuthStateChange", object: true)
+                    NSNotificationCenter.defaultCenter().postNotificationName("AuthSuccess", object: nil)
                 }
             }
         }
