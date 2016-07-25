@@ -23,6 +23,5 @@ If a notification has any actions, you can execute those straight from the notif
 
 ##What it can't do as of yet
 
-- E2E encryption (kind of important, very likely to still be added)
 - Conversation interface (nice to have)
 - File upload (nice to have)
