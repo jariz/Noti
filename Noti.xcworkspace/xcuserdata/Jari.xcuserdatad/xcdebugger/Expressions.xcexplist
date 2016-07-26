@@ -3,10 +3,21 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "PushManager.(respondToSMS(String!, thread_id : String!, source_device_iden : String!) -&gt; ()).(closure #1):PushManager.swift">
+         contextName = "PushManager.disconnect() -&gt; ():PushManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "PushManager.quickReply(JSON, body : String) -&gt; ():PushManager.swift">
          <PersistentStrings>
             <PersistentString
-               value = "JSON(response.result.value!)[&quot;data&quot;].array">
+               value = "debugPrint(push)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PushManager.userNotificationCenter(NSUserNotificationCenter, didActivateNotification : NSUserNotification) -&gt; ():PushManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "sms[&quot;thread_id&quot;].string">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -28,14 +39,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "PushManager.(websocketDidReceiveMessage(WebSocket, text : String) -&gt; ()).(closure #1):PushManager.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "notification.contentImage">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "Ephemerals.sendEphemeral([String : AnyObject]) -&gt; ():Ephemerals.swift">
          <PersistentStrings>
             <PersistentString
@@ -47,21 +50,23 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "PushManager.disconnect() -&gt; ():PushManager.swift">
-      </ContextState>
-      <ContextState
-         contextName = "PushManager.websocketDidReceiveMessage(WebSocket, text : String) -&gt; ():PushManager.swift">
+         contextName = "AES.init(key : [UInt8], iv : [UInt8]?, blockMode : CipherBlockMode, padding : Padding) throws -&gt; AES:AES.swift">
          <PersistentStrings>
             <PersistentString
-               value = "userInfo![&quot;iden&quot;].string!">
-            </PersistentString>
-            <PersistentString
-               value = "userInfo![&quot;iden&quot;].string!.dataUsingEncoding(NSUTF8StringEncoding)!">
-            </PersistentString>
-            <PersistentString
-               value = "String(data: res.0, encoding: NSUTF8StringEncoding)">
+               value = "AES.blockSize">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PushManager.(respondToSMS(String!, thread_id : String!, source_device_iden : String!) -&gt; ()).(closure #1):PushManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "JSON(response.result.value!)[&quot;data&quot;].array">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StatusMenuController.stateChange(NSObject) -&gt; ():StatusMenuController.swift">
       </ContextState>
       <ContextState
          contextName = "PushManager.dismissPush(JSON, trigger_key : String?) -&gt; ():PushManager.swift">
@@ -72,10 +77,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "PushManager.quickReply(JSON, body : String) -&gt; ():PushManager.swift">
+         contextName = "StatusMenuController.stateChange(NSNotification) -&gt; ():StatusMenuController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "debugPrint(push)">
+               value = "NSMakeSize(CGFloat(20), CGFloat(20))">
+            </PersistentString>
+            <PersistentString
+               value = "txt!">
+            </PersistentString>
+            <PersistentString
+               value = "notification.object as! String">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -88,21 +99,30 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "PushManager.userNotificationCenter(NSUserNotificationCenter, didActivateNotification : NSUserNotification) -&gt; ():PushManager.swift">
+         contextName = "PushManager.websocketDidReceiveMessage(WebSocket, text : String) -&gt; ():PushManager.swift">
          <PersistentStrings>
             <PersistentString
-               value = "index.debugDescription">
+               value = "userInfo![&quot;iden&quot;].string!">
             </PersistentString>
             <PersistentString
-               value = "notification.identifier?.startIndex.advancedBy(4)">
+               value = "userInfo![&quot;iden&quot;].string!.dataUsingEncoding(NSUTF8StringEncoding)!">
+            </PersistentString>
+            <PersistentString
+               value = "sms[&quot;timestamp&quot;].int!">
+            </PersistentString>
+            <PersistentString
+               value = "notification.identifier">
+            </PersistentString>
+            <PersistentString
+               value = "String(data: res.0, encoding: NSUTF8StringEncoding)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "AES.init(key : [UInt8], iv : [UInt8]?, blockMode : CipherBlockMode, padding : Padding) throws -&gt; AES:AES.swift">
+         contextName = "PushManager.(websocketDidReceiveMessage(WebSocket, text : String) -&gt; ()).(closure #1):PushManager.swift">
          <PersistentStrings>
             <PersistentString
-               value = "AES.blockSize">
+               value = "notification.contentImage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -3,7 +3,7 @@
 //  Noti
 //
 //  Created by Jari on 06/07/16.
-//  Copyright © 2016 Oberon. All rights reserved.
+//  Copyright © 2016 Jari Zwarts. All rights reserved.
 //
 //  Converted to Swift by me, taken from
 //  https://github.com/venj/Cocoa-blog-code/blob/master/Round%20Corner%20Image/Round%20Corner%20Image/NSImage%2BRoundCorner.m

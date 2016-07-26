@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
         <plugIn identifier="com.apple.WebKitIBPlugin" version="10117"/>
     </dependencies>
@@ -648,11 +647,16 @@
                 <customObject id="8Oo-kR-uVy" customClass="StatusMenuController" customModule="Noti" customModuleProvider="target">
                     <connections>
                         <outlet property="menu" destination="P5i-8m-dBU" id="QDV-qb-Bh1"/>
+                        <outlet property="menuItem" destination="wTQ-e6-phS" id="E3D-ot-3kQ"/>
                     </connections>
                 </customObject>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <menu id="P5i-8m-dBU">
                     <items>
+                        <menuItem title="Logging in..." id="wTQ-e6-phS">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                        <menuItem isSeparatorItem="YES" id="JDX-TC-DAQ"/>
                         <menuItem title="Reauthenticate" keyEquivalent="R" id="hvp-SW-6jm">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
@@ -671,7 +675,6 @@
                                 <action selector="checkForUpdates:" target="s8W-Yb-maQ" id="gIv-17-fEP"/>
                             </connections>
                         </menuItem>
-                        <menuItem isSeparatorItem="YES" id="1e6-fV-m66"/>
                         <menuItem title="Quit" keyEquivalent="q" id="yQ6-dX-wom">
                             <connections>
                                 <action selector="quit:" target="8Oo-kR-uVy" id="Tey-PX-4y6"/>

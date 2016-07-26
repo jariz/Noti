@@ -22,12 +22,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     var ephemerals:Ephemerals
     var crypt:Crypt?
     var killed = false
-    let userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    let userDefaults = NSUserDefaults.standardUserDefaults()
+    var userState: String
     
     init(token: String) {
         self.token = token
         self.socket = WebSocket(url: NSURL(string: "wss://stream.pushbullet.com/websocket/" + token)!)
         self.ephemerals = Ephemerals(token: token);
+        self.userState = "Initializing..."
         super.init()
         
         center.delegate = self
@@ -64,6 +66,20 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         self.ephemerals.crypt = self.crypt
     }
     
+    func setState(state: String, image: NSImage? = nil, disabled: Bool? = nil) {
+        userState = state
+        var object:[String: AnyObject] = [
+            "title": state
+        ]
+        if image != nil {
+            object["image"] = image!
+        }
+        if disabled != nil {
+            object["disabled"] = disabled
+        }
+        NSNotificationCenter.defaultCenter().postNotificationName("StateChange", object: object)
+    }
+    
     func getUserInfo(callback: (() -> Void)?) {
         let headers = [
             "Access-Token": token
@@ -77,6 +93,8 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     if callback != nil {
                         callback!()
                     }
+                } else if response.result.error != nil {
+                    self.setState("I'm RIP") //todo
                 }
         }
         
@@ -153,11 +171,28 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 if notification.identifier?.characters.count > 4 {
                     let index = notification.identifier?.startIndex.advancedBy(4)
                     if notification.identifier?.substringToIndex(index!) == "sms_" {
+                        var indexToBeRemoved = -1, i = -1;
                         for item in pushHistory {
+                            i += 1;
                             if item["type"].string == "sms_changed" {
                                 let metadata = notification.identifier?.substringFromIndex(index!).componentsSeparatedByString("|")
-                                ephemerals.respondToSMS(body, thread_id: metadata![1], source_device_iden: metadata![0], source_user_iden: self.userInfo!["iden"].string!)
+                                let thread_id = metadata![1], source_device_iden = metadata![0], timestamp = metadata![2]
+                                
+                                for (_, sms):(String, JSON) in item["notifications"] {
+                                    if(sms["thread_id"].string! == thread_id && String(sms["timestamp"].int!) == timestamp) {
+                                        ephemerals.respondToSMS(body, thread_id: thread_id, source_device_iden: source_device_iden, source_user_iden: self.userInfo!["iden"].string!);
+                                        indexToBeRemoved = i
+                                        break;
+                                    }
+                                }
+                                
+                                if(indexToBeRemoved != -1) {
+                                    break;
+                                }
                             }
+                        }
+                        if(indexToBeRemoved != -1) {
+                            pushHistory.removeAtIndex(indexToBeRemoved)
                         }
                     } else {
                         doQuickReply()
@@ -179,6 +214,16 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     internal func websocketDidConnect(socket: WebSocket) {
+        if let photo = self.userInfo!["image_url"].string {
+            Alamofire.request(.GET, photo)
+                .responseData { response in
+                    self.setState("Logged in as: " + self.userInfo!["name"].string!, image: NSImage(data: response.result.value!), disabled: false)
+            }
+        } else {
+            self.setState("Logged in as: " + self.userInfo!["name"].string!, disabled: false)
+        }
+        
+        
         print("PushManager", "Is connected")
     }
     
@@ -187,6 +232,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
         if(!self.killed) {
             print("Reconnecting in 5 sec");
+            setState("Disconnected, retrying in 5 seconds.", disabled: true)
             NSTimer.scheduledTimerWithTimeInterval(5, target: NSBlockOperation(block: self.connect), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
         } else {
             print("Not going to reconnect: I'm killed")
@@ -295,7 +341,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         }
                         
                         if let actions = push["actions"].array {
-                            if(actions.count == 1 || !userInfo!["pro"].bool!) {
+                            if(actions.count == 1 || !(userInfo!["pro"].isExists())) {
                                 notification.actionButtonTitle = actions[0]["label"].string!
                             } else {
                                 var titles = [String]()
@@ -341,7 +387,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                                 notification.title = "SMS from " + sms["title"].string!
                                 notification.informativeText = sms["body"].string
                                 notification.hasReplyButton = true
-                                notification.identifier = "sms_" + push["source_device_iden"].string! + "|" + sms["thread_id"].string!
+                                notification.identifier = "sms_" + push["source_device_iden"].string! + "|" + sms["thread_id"].string! + "|" + String(sms["timestamp"].int!)
                                 
                                 notification.setValue(true, forKeyPath: "_showsButtons")
                                 
