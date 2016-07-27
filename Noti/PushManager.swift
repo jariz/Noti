@@ -36,7 +36,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         self.initCrypt()
         
         print("Getting user info...")
-        getUserInfo { () in
+        getUserInfo {
             self.connect()
         }
     }
@@ -80,7 +80,11 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         NSNotificationCenter.defaultCenter().postNotificationName("StateChange", object: object)
     }
     
+    var _callback:(() -> Void)? = nil
     func getUserInfo(callback: (() -> Void)?) {
+        //todo: this is kinda dirty ...
+        self._callback = callback
+        
         let headers = [
             "Access-Token": token
         ];
@@ -90,15 +94,35 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 if let info = response.result.value {
                     debugPrint(info)
                     self.userInfo = JSON.parse(info)
-                    if callback != nil {
-                        callback!()
+                    
+                    if self.userInfo!["error"].isExists() {
+                        self.killed = true
+                        self.disconnect()
+                        self.setState("Disconnected: " + self.userInfo!["error"]["message"].string!, disabled: true)
+                    } else {
+                        if callback != nil {
+                            callback!()
+                        }
                     }
+                    
                 } else if response.result.error != nil {
-                    self.setState("I'm RIP") //todo
+                    if callback == nil {
+                        self.killed = true
+                        self.disconnect()
+                        self.setState("Failed to log in.")
+                    } else {
+                        self.setState("Failed to log in, retrying in 2 seconds...")
+                        NSTimer.scheduledTimerWithTimeInterval(2, target: NSBlockOperation(block: self.retryUserInfo), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
+                    }
+                    
                 }
         }
-        
     }
+    
+    func retryUserInfo() {
+        getUserInfo(self._callback)
+    }
+    
     
     func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
         switch notification.activationType {
@@ -232,10 +256,17 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
         if(!self.killed) {
             print("Reconnecting in 5 sec");
-            setState("Disconnected, retrying in 5 seconds.", disabled: true)
+            if error != nil {
+                setState("Disconnected: \(error!.localizedDescription), retrying...", disabled: true)
+            }
+            else {
+                setState("Disconnected, retrying...", disabled: true)
+            }
+            
             NSTimer.scheduledTimerWithTimeInterval(5, target: NSBlockOperation(block: self.connect), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
         } else {
             print("Not going to reconnect: I'm killed")
+            setState("Disconnected. Please log in.", disabled: true)
         }
     }
     

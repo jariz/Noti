@@ -653,7 +653,7 @@
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <menu id="P5i-8m-dBU">
                     <items>
-                        <menuItem title="Logging in..." id="wTQ-e6-phS">
+                        <menuItem title="Disconnected. Please log in." id="wTQ-e6-phS">
                             <modifierMask key="keyEquivalentModifierMask"/>
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="JDX-TC-DAQ"/>

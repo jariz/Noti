@@ -33,7 +33,7 @@ class IntroViewController: NSViewController {
         self.view.window!.styleMask -= NSClosableWindowMask
         
         NSAnimationContext.runAnimationGroup({ (context) -> Void in
-            context.duration = 0.25
+            context.duration = 0.50
             self.authTxt.animator().alphaValue = 0
             self.authBtn.animator().alphaValue = 0
             
@@ -44,13 +44,13 @@ class IntroViewController: NSViewController {
                 self.authImg.alphaValue = 0
                 
                 NSAnimationContext.runAnimationGroup({ (context) -> Void in
-                    context.duration = 0.25
+                    context.duration = 0.50
                     self.authImg.animator().alphaValue = 1
                 }, completionHandler: nil)
                 
         })
         
-        NSTimer.scheduledTimerWithTimeInterval(1.5, target: NSBlockOperation(block: self.view.window!.close), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(3, target: NSBlockOperation(block: self.view.window!.close), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
 
     }
     

@@ -22,6 +22,7 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
             button.image = NSImage(named: "StatusBarButtonImage")
             statusItem.menu = menu;
         }
+        statusItem.button?.appearsDisabled = true
         menuItem.enabled = true
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StatusMenuController.stateChange(_:)), name:"StateChange", object: nil)
@@ -46,7 +47,6 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
                 newImage.size = destSize
                 let finalImage = NSImage(data: newImage.TIFFRepresentation!)!
                 menuItem.image = finalImage
-                
             } else {
                 menuItem.image = nil
             }

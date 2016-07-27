@@ -17,7 +17,7 @@ class AuthViewController: NSViewController, WebFrameLoadDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let req = NSURLRequest(URL:NSURL(string:"https://www.pushbullet.com/authorize?client_id=K5fHgHU2IipmPaMov3CkOHkJb0DKC6Oc&redirect_uri=https%3A%2F%2Fjari.io%2Fnoti%2Fredirect&response_type=token&scope=everything")!)
+        let req = NSURLRequest(URL:NSURL(string:"https://www.pushbullet.com/authorize?client_id=QTVK7zATuEcu4sME8TrwLBMuoW7vC7Wr&redirect_uri=about:blank&response_type=token&scope=everything")!)
         webView.frameLoadDelegate = self
         webView.mainFrame.loadRequest(req)
     }
@@ -35,8 +35,8 @@ class AuthViewController: NSViewController, WebFrameLoadDelegate {
 
         if let ds = frame.dataSource {
             if let url = ds.response.URL {
-                if url.absoluteString.hasPrefix("https://jari.io/noti/redirect") {
-                    let token = (url.absoluteString as NSString).substringFromIndex(43)
+                if url.absoluteString.hasPrefix("about:blank") {
+                    let token = (url.absoluteString as NSString).substringFromIndex(27)
                     let appDelegate = NSApplication.sharedApplication().delegate as! AppDelegate
                     
                     print("Got token!", token, "saving and restarting PushManager")
