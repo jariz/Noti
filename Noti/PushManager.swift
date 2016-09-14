@@ -184,10 +184,17 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 let body = notification.response?.string
                 
                 func doQuickReply() {
+                    var indexToBeRemoved = -1, i = -1;
                     for item in pushHistory {
+                        i += 1;
                         if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
-                            ephemerals.quickReply(item, reply: body!)
+                            ephemerals.quickReply(item, reply: body!);
+                            indexToBeRemoved = i;
+                            break;
                         }
+                    }
+                    if(indexToBeRemoved != -1) {
+                        pushHistory.removeAtIndex(indexToBeRemoved)
                     }
                 }
                 
