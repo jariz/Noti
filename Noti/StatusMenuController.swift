@@ -14,15 +14,18 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
     let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
     @IBOutlet weak var menu: NSMenu!
     @IBOutlet weak var menuItem: NSMenuItem!
+    var appDelegate: AppDelegate?;
     
     override func awakeFromNib() {
         print("StatusMenuController alive")
         
+        appDelegate = NSApplication.sharedApplication().delegate as? AppDelegate
+        
         if let button = statusItem.button {
-            button.image = NSImage(named: "StatusBarButtonImage")
+            button.image = NSImage(named: "StatusBarButtonImageFail")
             statusItem.menu = menu;
+            button.appearsDisabled = true
         }
-        statusItem.button?.appearsDisabled = true
         menuItem.enabled = true
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StatusMenuController.stateChange(_:)), name:"StateChange", object: nil)
@@ -36,7 +39,9 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
             }
             
             if let disabled = info["disabled"] as? Bool {
+                statusItem.button?.image = NSImage(named: disabled ? "StatusBarButtonImageFail" : "StatusBarButtonImage")
                 statusItem.button?.appearsDisabled = disabled
+                
             }
             
             if let image = info["image"] as? NSImage {
@@ -55,14 +60,16 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
     
     @IBAction func reauthorize(sender: AnyObject?) {
         //delete token & restart push manager
-        let appDelegate = NSApplication.sharedApplication().delegate as! AppDelegate
-        appDelegate.userDefaults.removeObjectForKey("token")
-        appDelegate.loadPushManager()
+        appDelegate!.userDefaults.removeObjectForKey("token")
+        appDelegate!.loadPushManager()
+    }
+    
+    @IBAction func preferences(sender: AnyObject?) {
+        appDelegate!.displayPreferencesWindow()
     }
     
     @IBAction func setPassword(sender: AnyObject?) {
-        let appDelegate = NSApplication.sharedApplication().delegate as! AppDelegate
-        appDelegate.pushManager?.displayPasswordForm()
+        appDelegate!.pushManager?.displayPasswordForm()
     }
     
     @IBAction func quit(sender: AnyObject?) {

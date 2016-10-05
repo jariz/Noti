@@ -15,6 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var pushManager: PushManager?
     let userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var iwc:NSWindowController?;
+    var pwc:NSWindowController?;
     
     func loadPushManager() {
         let token = userDefaults.stringForKey("token")
@@ -35,9 +36,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             iwc!.window?.makeKeyAndOrderFront(self)
         }
     }
+    
+    func displayPreferencesWindow() {
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        pwc = storyboard.instantiateControllerWithIdentifier("PreferencesWindowController") as? NSWindowController
+        NSApplication.sharedApplication().activateIgnoringOtherApps(true)
+        pwc!.showWindow(self)
+        pwc!.window?.makeKeyAndOrderFront(self)
+    }
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         loadPushManager()
+//        displayPreferencesWindow()
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

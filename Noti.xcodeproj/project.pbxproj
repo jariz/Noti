@@ -10,6 +10,7 @@
 		162B919FE4321ED9BC86AD09 /* Pods_Noti.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2C7615AF577BAEAF32B8516 /* Pods_Noti.framework */; };
 		4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */; };
 		4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3D21D23E6AB005F1641 /* IntroViewController.swift */; };
+		495CFD9D1DA05B9900E13865 /* NotificationPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CFD9C1DA05B9900E13865 /* NotificationPreferencesViewController.swift */; };
 		498275F21D35101A00AB7029 /* Crypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498275F11D35101A00AB7029 /* Crypt.swift */; };
 		498275FB1D3567D500AB7029 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498275FA1D3567D500AB7029 /* SwCrypt.swift */; };
 		498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498499FD1D1BE46F007FC963 /* PushManager.swift */; };
@@ -27,6 +28,7 @@
 		0F7FEC6A353CB04118DDEBF6 /* Pods-Noti.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Noti.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Noti/Pods-Noti.debug.xcconfig"; sourceTree = "<group>"; };
 		4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
 		4901D3D21D23E6AB005F1641 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		495CFD9C1DA05B9900E13865 /* NotificationPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationPreferencesViewController.swift; sourceTree = "<group>"; };
 		498275F11D35101A00AB7029 /* Crypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypt.swift; sourceTree = "<group>"; };
 		498275F91D3567D500AB7029 /* SwCrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwCrypt.h; sourceTree = "<group>"; };
 		498275FA1D3567D500AB7029 /* SwCrypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwCrypt.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */,
 				499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */,
 				498275F11D35101A00AB7029 /* Crypt.swift */,
+				495CFD9C1DA05B9900E13865 /* NotificationPreferencesViewController.swift */,
 			);
 			path = Noti;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */,
 				498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */,
 				49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */,
+				495CFD9D1DA05B9900E13865 /* NotificationPreferencesViewController.swift in Sources */,
 				4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */,
 				49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */,
 				499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */,
