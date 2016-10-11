@@ -46,8 +46,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-//        loadPushManager()
-        displayPreferencesWindow()
+        loadPushManager()
+//        displayPreferencesWindow()
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

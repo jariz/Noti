@@ -786,130 +786,155 @@ Whenever your devices have something to say, I'll let you know!</string>
             <objects>
                 <windowController storyboardIdentifier="PreferencesWindowController" id="IRr-8c-DaA" sceneMemberID="viewController">
                     <window key="window" title="Noti Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="9cq-Nf-Ydw">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES" unifiedTitleAndToolbar="YES"/>
                         <rect key="contentRect" x="163" y="199" width="480" height="100"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
                     </window>
                     <connections>
-                        <segue destination="et9-8v-2NC" kind="relationship" relationship="window.shadowedContentViewController" id="C9t-aU-7LW"/>
+                        <segue destination="CX0-Su-Wwc" kind="relationship" relationship="window.shadowedContentViewController" id="88a-Pl-6vW"/>
                     </connections>
                 </windowController>
                 <customObject id="qRx-vq-yZB" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1242" y="-278"/>
         </scene>
-        <!--Preferences View Controller-->
-        <scene sceneID="Oxo-21-cGZ">
+        <!--Tab View Controller-->
+        <scene sceneID="NlH-DC-XRR">
             <objects>
-                <viewController id="et9-8v-2NC" customClass="PreferencesViewController" customModule="Noti" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="Eoh-NK-CDb">
-                        <rect key="frame" x="0.0" y="0.0" width="487" height="259"/>
+                <tabViewController selectedTabViewItemIndex="0" tabStyle="toolbar" id="CX0-Su-Wwc" sceneMemberID="viewController">
+                    <tabViewItems>
+                        <tabViewItem label="Notifications" identifier="" image="IntroLogo" id="xwd-FY-Yq9"/>
+                        <tabViewItem label="Advanced" identifier="" image="NSAdvanced" id="RRD-o0-dAe"/>
+                        <tabViewItem id="NzX-y6-lCo"/>
+                    </tabViewItems>
+                    <tabView key="tabView" type="noTabsNoBorder" id="Rs6-ok-pgY">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="136"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <font key="font" metaFont="message"/>
+                        <tabViewItems/>
+                    </tabView>
+                    <connections>
+                        <segue destination="et9-8v-2NC" kind="relationship" relationship="tabItems" id="KIh-an-Unl"/>
+                        <segue destination="ZgD-VS-Oqj" kind="relationship" relationship="tabItems" id="bdO-8Z-Jia"/>
+                        <segue destination="eLr-Z0-wW5" kind="relationship" relationship="tabItems" id="ZwN-Yc-nBE"/>
+                    </connections>
+                </tabViewController>
+                <customObject id="Dmw-fc-6gT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1257" y="122"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="SBQ-ON-Tc1">
+            <objects>
+                <viewController id="eLr-Z0-wW5" sceneMemberID="viewController">
+                    <view key="view" id="VS3-dG-GCI">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <visualEffectView appearanceType="vibrantDark" ambiguous="YES" blendingMode="behindWindow" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="r10-Gz-oLv">
-                                <rect key="frame" x="0.0" y="0.0" width="487" height="259"/>
-                                <subviews>
-                                    <button fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uWb-nX-g3I">
-                                        <rect key="frame" x="235" y="168" width="234" height="14"/>
-                                        <buttonCell key="cell" type="check" title="Omit app name from notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="njW-Qk-xGY">
-                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <binding destination="Rn0-51-ZbS" name="value" keyPath="values.omitAppName" id="CWo-it-hVW"/>
-                                        </connections>
-                                    </button>
-                                    <button fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zfS-cF-KuW">
-                                        <rect key="frame" x="235" y="134" width="234" height="18"/>
-                                        <buttonCell key="cell" type="check" title="Display rounded images" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7aj-QI-djb">
-                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <binding destination="Rn0-51-ZbS" name="value" keyPath="values.roundedImages" id="TJo-Lg-H6e"/>
-                                        </connections>
-                                    </button>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bjR-Vc-r47">
-                                        <rect key="frame" x="18" y="169" width="115" height="17"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Notification sound" id="E6Q-rM-f4m">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A9R-tf-5rV">
-                                        <rect key="frame" x="48" y="207" width="148" height="17"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="NOTIFICATIONS" id="Tjj-7f-0Zq">
-                                            <font key="font" metaFont="systemLight" size="13"/>
-                                            <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ETN-53-ksc">
-                                        <rect key="frame" x="20" y="204" width="22" height="22"/>
-                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="IntroLogo" id="Ip1-b5-jbM"/>
-                                    </imageView>
-                                    <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Lk8-We-v5E">
-                                        <rect key="frame" x="20" y="195" width="447" height="5"/>
-                                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <font key="titleFont" metaFont="system"/>
-                                    </box>
-                                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xfa-4L-8ed">
-                                        <rect key="frame" x="18" y="137" width="179" height="26"/>
-                                        <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="G0p-cE-suD">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="menu"/>
-                                            <menu key="menu" id="cc5-Qk-6E4"/>
-                                        </popUpButtonCell>
-                                        <connections>
-                                            <binding destination="cfa-NA-uWQ" name="content" keyPath="arrangedObjects" id="YsA-sE-xg5"/>
-                                            <binding destination="Rn0-51-ZbS" name="selectedValue" keyPath="values.sound" previousBinding="YsA-sE-xg5" id="9v1-PN-6BO"/>
-                                        </connections>
-                                    </popUpButton>
-                                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2vd-Wi-tae">
-                                        <rect key="frame" x="18" y="64" width="205" height="18"/>
-                                        <buttonCell key="cell" type="check" title="Enable end-to-end encryption" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="PLR-7x-lmc">
-                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q5d-8L-GAw">
-                                        <rect key="frame" x="48" y="101" width="148" height="17"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="ENCRYPTION" id="jCf-7i-721">
-                                            <font key="font" metaFont="systemLight" size="13"/>
-                                            <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VPX-Yt-Nhb">
-                                        <rect key="frame" x="20" y="98" width="22" height="22"/>
-                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NotiEncryption" id="xyf-z0-DEd"/>
-                                    </imageView>
-                                    <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="mr6-Kw-4s1">
-                                        <rect key="frame" x="20" y="89" width="447" height="5"/>
-                                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <font key="titleFont" metaFont="system"/>
-                                    </box>
-                                    <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sbz-yV-V7T">
-                                        <rect key="frame" x="20" y="34" width="201" height="22"/>
-                                        <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="Ern-xu-rFW">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <allowedInputSourceLocales>
-                                                <string>NSAllRomanInputSourcesLocaleIdentifier</string>
-                                            </allowedInputSourceLocales>
-                                        </secureTextFieldCell>
-                                    </secureTextField>
-                                </subviews>
-                            </visualEffectView>
+                            <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="uGC-VI-VOe">
+                                <rect key="frame" x="20" y="218" width="410" height="5"/>
+                                <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <font key="titleFont" metaFont="system"/>
+                            </box>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KdQ-0g-0Kt">
+                                <rect key="frame" x="20" y="250" width="29" height="27"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="9bM-cq-gzB"/>
+                            </imageView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6C0-h0-c6A">
+                                <rect key="frame" x="60" y="250" width="37" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="04K-KP-sxo">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0jq-fk-CfG">
+                                <rect key="frame" x="325" y="245" width="105" height="25"/>
+                                <buttonCell key="cell" type="roundTextured" title="Reauthorize" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8J8-rF-kKD">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3oR-Kc-JX3">
+                                <rect key="frame" x="20" y="148" width="183" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="OYA-CT-bWG">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Rs-el-UaW">
+                                <rect key="frame" x="18" y="176" width="61" height="18"/>
+                                <buttonCell key="cell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zg4-Y7-iSG">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="ZI8-AF-G0q" name="value" keyPath="selection.encryptionEnabled" id="OIP-42-nXl"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="r10-Gz-oLv" firstAttribute="height" secondItem="Eoh-NK-CDb" secondAttribute="height" id="5TF-e8-LJp"/>
-                            <constraint firstItem="r10-Gz-oLv" firstAttribute="width" secondItem="Eoh-NK-CDb" secondAttribute="width" id="PrA-Ek-LTV"/>
-                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="6Dj-bK-svj" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <objectController id="ZI8-AF-G0q">
+                    <declaredKeys>
+                        <string>encryptionEnabled</string>
+                    </declaredKeys>
+                </objectController>
+            </objects>
+            <point key="canvasLocation" x="-587" y="567"/>
+        </scene>
+        <!--Notification Preferences View Controller-->
+        <scene sceneID="Oxo-21-cGZ">
+            <objects>
+                <viewController id="et9-8v-2NC" customClass="NotificationPreferencesViewController" customModule="Noti" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Eoh-NK-CDb">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="145"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uWb-nX-g3I">
+                                <rect key="frame" x="22" y="114" width="234" height="11"/>
+                                <buttonCell key="cell" type="check" title="Omit app name from notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="njW-Qk-xGY">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="Rn0-51-ZbS" name="value" keyPath="values.omitAppName" id="CWo-it-hVW"/>
+                                </connections>
+                            </button>
+                            <button fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zfS-cF-KuW">
+                                <rect key="frame" x="22" y="86" width="234" height="18"/>
+                                <buttonCell key="cell" type="check" title="Display rounded images" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7aj-QI-djb">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="Rn0-51-ZbS" name="value" keyPath="values.roundedImages" id="TJo-Lg-H6e"/>
+                                </connections>
+                            </button>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xfa-4L-8ed">
+                                <rect key="frame" x="22" y="33" width="158" height="26"/>
+                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="G0p-cE-suD">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="cc5-Qk-6E4"/>
+                                </popUpButtonCell>
+                                <connections>
+                                    <binding destination="cfa-NA-uWQ" name="content" keyPath="arrangedObjects" id="YsA-sE-xg5"/>
+                                    <binding destination="Rn0-51-ZbS" name="selectedValue" keyPath="values.sound" previousBinding="YsA-sE-xg5" id="9v1-PN-6BO"/>
+                                </connections>
+                            </popUpButton>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bjR-Vc-r47">
+                                <rect key="frame" x="22" y="62" width="115" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Notification sound" id="E6Q-rM-f4m">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
                     </view>
                     <connections>
                         <outlet property="sounds" destination="cfa-NA-uWQ" id="eT6-gV-GFb"/>
@@ -925,7 +950,20 @@ Whenever your devices have something to say, I'll let you know!</string>
                 </customObject>
                 <arrayController id="cfa-NA-uWQ"/>
             </objects>
-            <point key="canvasLocation" x="-1154.5" y="75.5"/>
+            <point key="canvasLocation" x="-587" y="-53.5"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="oJP-OL-agA">
+            <objects>
+                <viewController id="ZgD-VS-Oqj" sceneMemberID="viewController">
+                    <view key="view" id="df1-mM-Y11">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="232"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="g7K-5i-bGl" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-587" y="222"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -971,7 +1009,7 @@ Whenever your devices have something to say, I'll let you know!</string>
     </scenes>
     <resources>
         <image name="IntroLogo" width="128" height="128"/>
+        <image name="NSAdvanced" width="32" height="32"/>
         <image name="NSMenuOnStateTemplate" width="12" height="12"/>
-        <image name="NotiEncryption" width="128" height="128"/>
     </resources>
 </document>
