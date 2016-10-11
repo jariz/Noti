@@ -363,12 +363,23 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         notification.title = push["title"].string
                         notification.informativeText = push["body"].string
                         notification.identifier = push["notification_id"].string
-                        notification.subtitle = push["application_name"].string // todo: keep or remove?
+                        let omitAppNameDefaultExists = userDefaults.objectForKey("roundedImages") != nil
+                        let omitAppName = omitAppNameDefaultExists ? userDefaults.boolForKey("omitAppName") : false;
+                        if !omitAppName {
+                            notification.subtitle = push["application_name"].string
+                        }
                         
                         if let icon = push["icon"].string {
                             let data = NSData(base64EncodedString: icon, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                            let img = RoundedImage(data: data)
-                            notification.setValue(img?.withRoundCorners(Int(img!.size.width) / 2), forKeyPath: "_identityImage")
+                            let roundedImagesDefaultExists = userDefaults.objectForKey("roundedImages") != nil
+                            let roundedImages = roundedImagesDefaultExists ? userDefaults.boolForKey("roundedImages") : true;
+                            if roundedImages {
+                                let img = RoundedImage(data: data)
+                                notification.setValue(img?.withRoundCorners(Int(img!.size.width) / 2), forKeyPath: "_identityImage")
+                            } else {
+                                notification.setValue(NSImage(data: data), forKeyPath: "_identityImage")
+                            }
+                            
                             notification.setValue(false, forKeyPath: "_identityImageHasBorder")
                         }
                         
@@ -392,7 +403,10 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                             }
                         }
                         
-                        notification.soundName = NSUserNotificationDefaultSoundName
+                        let soundDefaultExists = userDefaults.objectForKey("roundedImages") != nil
+                        let sound = soundDefaultExists ? userDefaults.stringForKey("sound") : "Glass";
+                        
+                        notification.soundName = sound
                         
                         center.deliverNotification(notification)
                         break;
