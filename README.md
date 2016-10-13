@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://raw.githubusercontent.com/jariz/Noti/master/Noti/Assets.xcassets/AppIcon.appiconset/256.png">
+<img src="https://jari.lol/ZnN0TQeMmi.png">
 <br><img src="https://jari.lol/0suH6tw4vE.svg">
 <p><a href="https://travis-ci.org/jariz/Noti/"><img src="https://travis-ci.org/jariz/Noti.svg?branch=master"></a></p>
 </div>
