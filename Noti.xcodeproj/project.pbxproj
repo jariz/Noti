@@ -16,7 +16,6 @@
 		499DD0F61D2ACA0B00BB759D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 499DD0F51D2ACA0B00BB759D /* .gitignore */; };
 		499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */; };
 		499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */; };
-		49AE29541DB4D86E00B61843 /* SwCrypt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AE29531DB4D86E00B61843 /* SwCrypt.framework */; };
 		49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */; };
 		49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */; };
 		49B43B101D1ADFB200A24585 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B0F1D1ADFB200A24585 /* Assets.xcassets */; };
@@ -52,7 +51,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49AE29541DB4D86E00B61843 /* SwCrypt.framework in Frameworks */,
 				162B919FE4321ED9BC86AD09 /* Pods_Noti.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
