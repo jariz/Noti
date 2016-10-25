@@ -11,7 +11,7 @@ import Cocoa
 import ImageIO
 
 class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
-    let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
+    let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
     @IBOutlet weak var menu: NSMenu!
     @IBOutlet weak var menuItem: NSMenuItem!
     var appDelegate: AppDelegate?;
@@ -19,19 +19,19 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
     override func awakeFromNib() {
         print("StatusMenuController alive")
         
-        appDelegate = NSApplication.sharedApplication().delegate as? AppDelegate
+        appDelegate = NSApplication.shared().delegate as? AppDelegate
         
         if let button = statusItem.button {
             button.image = NSImage(named: "StatusBarButtonImageFail")
             statusItem.menu = menu;
             button.appearsDisabled = true
         }
-        menuItem.enabled = true
+        menuItem.isEnabled = true
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StatusMenuController.stateChange(_:)), name:"StateChange", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(StatusMenuController.stateChange(_:)), name:NSNotification.Name(rawValue: "StateChange"), object: nil)
     }
     
-    func stateChange(notification: NSNotification) {
+    func stateChange(_ notification: Notification) {
         
         if let info = notification.object as? [String: AnyObject] {
             if let title = info["title"] as? String {
@@ -46,10 +46,10 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
             if let image = info["image"] as? NSImage {
                 let destSize = NSMakeSize(CGFloat(20), CGFloat(20)), newImage = NSImage(size: destSize)
                 newImage.lockFocus()
-                image.drawInRect(NSMakeRect(0, 0, destSize.width, destSize.height), fromRect: NSMakeRect(0, 0, image.size.width, image.size.height), operation: NSCompositingOperation.CompositeSourceOver, fraction: CGFloat(1))
+                image.draw(in: NSMakeRect(0, 0, destSize.width, destSize.height), from: NSMakeRect(0, 0, image.size.width, image.size.height), operation: NSCompositingOperation.sourceOver, fraction: CGFloat(1))
                 newImage.unlockFocus()
                 newImage.size = destSize
-                let finalImage = NSImage(data: newImage.TIFFRepresentation!)!
+                let finalImage = NSImage(data: newImage.tiffRepresentation!)!
                 menuItem.image = finalImage
             } else {
                 menuItem.image = nil
@@ -57,21 +57,21 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
         }
     }
     
-    @IBAction func reauthorize(sender: AnyObject?) {
+    @IBAction func reauthorize(_ sender: AnyObject?) {
         //delete token & restart push manager
-        appDelegate!.userDefaults.removeObjectForKey("token")
+        appDelegate!.userDefaults.removeObject(forKey: "token")
         appDelegate!.loadPushManager()
     }
     
-    @IBAction func preferences(sender: AnyObject?) {
+    @IBAction func preferences(_ sender: AnyObject?) {
         appDelegate!.displayPreferencesWindow()
     }
     
-    @IBAction func setPassword(sender: AnyObject?) {
+    @IBAction func setPassword(_ sender: AnyObject?) {
         appDelegate!.pushManager?.displayPasswordForm()
     }
     
-    @IBAction func quit(sender: AnyObject?) {
-        NSApplication.sharedApplication().terminate(self)
+    @IBAction func quit(_ sender: AnyObject?) {
+        NSApplication.shared().terminate(self)
     }
 }

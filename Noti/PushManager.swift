@@ -12,22 +12,42 @@ import Foundation
 import Starscream
 import SwiftyJSON
 import Alamofire
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate {
     var socket:WebSocket?
-    let center = NSUserNotificationCenter.defaultUserNotificationCenter()
+    let center = NSUserNotificationCenter.default
     var pushHistory = [JSON]()
     var userInfo:JSON?
     var token:String
     var ephemerals:Ephemerals
     var crypt:Crypt?
     var killed = false
-    let userDefaults = NSUserDefaults.standardUserDefaults()
+    let userDefaults = UserDefaults.standard
     var userState: String
     
     init(token: String) {
         self.token = token
-        self.socket = WebSocket(url: NSURL(string: "wss://stream.pushbullet.com/websocket/" + token)!)
+        self.socket = WebSocket(url: URL(string: "wss://stream.pushbullet.com/websocket/" + token)!)
         self.ephemerals = Ephemerals(token: token);
         self.userState = "Initializing..."
         super.init()
@@ -54,7 +74,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     func initCrypt() {
-        let keyData = userDefaults.objectForKey("secureKey") as? NSData
+        let keyData = userDefaults.object(forKey: "secureKey") as? Data
         if keyData != nil {
             let key = keyData?.toArray()
             self.crypt = Crypt(key: key!)
@@ -66,22 +86,22 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         self.ephemerals.crypt = self.crypt
     }
     
-    func setState(state: String, image: NSImage? = nil, disabled: Bool? = nil) {
+    func setState(_ state: String, image: NSImage? = nil, disabled: Bool? = nil) {
         userState = state
         var object:[String: AnyObject] = [
-            "title": state
+            "title": state as AnyObject
         ]
         if image != nil {
             object["image"] = image!
         }
         if disabled != nil {
-            object["disabled"] = disabled
+            object["disabled"] = disabled as AnyObject?
         }
-        NSNotificationCenter.defaultCenter().postNotificationName("StateChange", object: object)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "StateChange"), object: object)
     }
     
     var _callback:(() -> Void)? = nil
-    func getUserInfo(callback: (() -> Void)?) {
+    func getUserInfo(_ callback: (() -> Void)?) {
         //todo: this is kinda dirty ...
         self._callback = callback
         
@@ -89,13 +109,13 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             "Access-Token": token
         ];
         
-        Alamofire.request(.GET, "https://api.pushbullet.com/v2/users/me", headers: headers)
+        Alamofire.request("https://api.pushbullet.com/v2/users/me", headers: headers)
             .responseString { response in
                 if let info = response.result.value {
                     debugPrint(info)
                     self.userInfo = JSON.parse(info)
                     
-                    if self.userInfo!["error"].isExists() {
+                    if self.userInfo!["error"].exists() {
                         self.killed = true
                         self.disconnect()
                         self.setState("Disconnected: " + self.userInfo!["error"]["message"].string!, disabled: true)
@@ -112,7 +132,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         self.setState("Failed to log in.")
                     } else {
                         self.setState("Failed to log in, retrying in 2 seconds...")
-                        NSTimer.scheduledTimerWithTimeInterval(2, target: NSBlockOperation(block: self.retryUserInfo), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
+                        Timer.scheduledTimer(timeInterval: 2, target: BlockOperation(block: self.retryUserInfo), selector: #selector(Operation.main), userInfo: nil, repeats: false)
                     }
                     
                 }
@@ -124,10 +144,10 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     
-    func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
+    func userNotificationCenter(_ center: NSUserNotificationCenter, didActivate notification: NSUserNotification) {
         switch notification.activationType {
-            case .ActionButtonClicked:
-                var alternateAction = notification.valueForKey("_alternateActionIndex") as! Int
+            case .actionButtonClicked:
+                var alternateAction = notification.value(forKey: "_alternateActionIndex") as! Int
                 
                 if(alternateAction == Int.max) {
                     //user did not use an alternate action, set the index to 0
@@ -146,17 +166,17 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     }
                 }
                 break;
-            case .ContentsClicked:
+            case .contentsClicked:
                 //check if this is the encryption warning notification
                 if notification.identifier?.characters.count > 12 {
-                    let index = notification.identifier!.startIndex.advancedBy(12)
-                    if notification.identifier?.substringToIndex(index) == "noti_encrypt" {
+                    let index = notification.identifier!.characters.index(notification.identifier!.startIndex, offsetBy: 12)
+                    if notification.identifier?.substring(to: index) == "noti_encrypt" {
                         displayPasswordForm()
                         return
                     }
                 }
                 
-                Alamofire.request(.GET, "https://update.pushbullet.com/android_mapping.json")
+                Alamofire.request("https://update.pushbullet.com/android_mapping.json")
                     .responseString { response in
                         if let result = response.result.value {
                             let mapping = JSON.parse(result)
@@ -164,7 +184,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                             for item in self.pushHistory {
                                 if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
                                     if let url = mapping[item["package_name"].string!].string {
-                                        NSWorkspace.sharedWorkspace().openURL(NSURL(string: url)!)
+                                        NSWorkspace.shared().open(URL(string: url)!)
                                     }
                                 }
                             }
@@ -180,7 +200,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 
                 break;
             
-            case .Replied:
+            case .replied:
                 let body = notification.response?.string
                 
                 func doQuickReply() {
@@ -194,19 +214,19 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         }
                     }
                     if(indexToBeRemoved != -1) {
-                        pushHistory.removeAtIndex(indexToBeRemoved)
+                        pushHistory.remove(at: indexToBeRemoved)
                     }
                 }
                 
                 //determine if we replied to a sms or a normal notification
                 if notification.identifier?.characters.count > 4 {
-                    let index = notification.identifier?.startIndex.advancedBy(4)
-                    if notification.identifier?.substringToIndex(index!) == "sms_" {
+                    let index = notification.identifier?.characters.index((notification.identifier?.startIndex)!, offsetBy: 4)
+                    if notification.identifier?.substring(to: index!) == "sms_" {
                         var indexToBeRemoved = -1, i = -1;
                         for item in pushHistory {
                             i += 1;
                             if item["type"].string == "sms_changed" {
-                                let metadata = notification.identifier?.substringFromIndex(index!).componentsSeparatedByString("|")
+                                let metadata = notification.identifier?.substring(from: index!).components(separatedBy: "|")
                                 let thread_id = metadata![1], source_device_iden = metadata![0], timestamp = metadata![2]
                                 
                                 for (_, sms):(String, JSON) in item["notifications"] {
@@ -223,7 +243,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                             }
                         }
                         if(indexToBeRemoved != -1) {
-                            pushHistory.removeAtIndex(indexToBeRemoved)
+                            pushHistory.remove(at: indexToBeRemoved)
                         }
                     } else {
                         doQuickReply()
@@ -246,7 +266,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     
     internal func websocketDidConnect(socket: WebSocket) {
         if let photo = self.userInfo!["image_url"].string {
-            Alamofire.request(.GET, photo)
+            Alamofire.request(photo)
                 .responseData { response in
                     self.setState("Logged in as: " + self.userInfo!["name"].string!, image: NSImage(data: response.result.value!), disabled: false)
             }
@@ -270,7 +290,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 setState("Disconnected, retrying...", disabled: true)
             }
             
-            NSTimer.scheduledTimerWithTimeInterval(5, target: NSBlockOperation(block: self.connect), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
+            Timer.scheduledTimer(timeInterval: 5, target: BlockOperation(block: self.connect), selector: #selector(Operation.main), userInfo: nil, repeats: false)
         } else {
             print("Not going to reconnect: I'm killed")
             setState("Disconnected. Please log in.", disabled: true)
@@ -287,8 +307,8 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             pwd.stringValue = "************"
         }
         
-        alert.addButtonWithTitle("Apply")
-        alert.addButtonWithTitle("Cancel")
+        alert.addButton(withTitle: "Apply")
+        alert.addButton(withTitle: "Cancel")
         alert.messageText = "Enter your PushBullet password"
         alert.informativeText = "Leave blank to disable encryption.\nMake sure you set the same password on your other devices as well."
         let button = alert.runModal()
@@ -300,9 +320,9 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             else if(pwd.stringValue != "") {
                 let iden = userInfo!["iden"].string!
                 let key = Crypt.generateKey(pwd.stringValue, salt: iden)
-                userDefaults.setObject(key, forKey: "secureKey")
+                userDefaults.set(key, forKey: "secureKey")
             } else {
-                userDefaults.removeObjectForKey("secureKey")
+                userDefaults.removeObject(forKey: "secureKey")
             }
             initCrypt()
             
@@ -328,14 +348,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 let push = message["push"];
                 pushHistory.append(push)
                 
-                if push["encrypted"].isExists() && push["encrypted"].bool! {
+                if push["encrypted"].exists() && push["encrypted"].bool! {
                     func warnUser() {
                         let noti = NSUserNotification()
                         noti.title = "I received data I couldn't understand!"
                         noti.informativeText = "It appears you're using encryption, click to set password."
                         noti.actionButtonTitle = "Enter password"
                         noti.identifier = "noti_encrypt" + String(arc4random())
-                        center.deliverNotification(noti)
+                        center.deliver(noti)
                     }
                     
                     if crypt != nil {
@@ -345,7 +365,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         } else {
                             message["push"] = JSON.parse(decrypted!)
                             //handle decrypted message
-                            websocketDidReceiveMessage(socket, text: message.rawString()!)
+                            websocketDidReceiveMessage(socket: socket, text: message.rawString()!)
                         }
                     } else {
                         warnUser()
@@ -363,21 +383,23 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         notification.title = push["title"].string
                         notification.informativeText = push["body"].string
                         notification.identifier = push["notification_id"].string
-                        let omitAppNameDefaultExists = userDefaults.objectForKey("roundedImages") != nil
-                        let omitAppName = omitAppNameDefaultExists ? userDefaults.boolForKey("omitAppName") : false;
+                        let omitAppNameDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
+                        let omitAppName = omitAppNameDefaultExists ? userDefaults.bool(forKey: "omitAppName") : false;
                         if !omitAppName {
                             notification.subtitle = push["application_name"].string
                         }
                         
                         if let icon = push["icon"].string {
-                            let data = NSData(base64EncodedString: icon, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                            let roundedImagesDefaultExists = userDefaults.objectForKey("roundedImages") != nil
-                            let roundedImages = roundedImagesDefaultExists ? userDefaults.boolForKey("roundedImages") : true;
+                            
+                            let data = Data(base64Encoded: icon, options: NSData.Base64DecodingOptions(rawValue: 0))!
+                            let roundedImagesDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
+                            let roundedImages = roundedImagesDefaultExists ? userDefaults.bool(forKey: "roundedImages") : true;
+                            var img = NSImage(data: data)!
                             if roundedImages {
-                                let img = RoundedImage(data: data)
-                                notification.setValue(img?.withRoundCorners(Int(img!.size.width) / 2), forKeyPath: "_identityImage")
+                                img = RoundedImage.create(Int(img.size.width) / 2, source: img)
+                                notification.setValue(img, forKeyPath: "_identityImage")
                             } else {
-                                notification.setValue(NSImage(data: data), forKeyPath: "_identityImage")
+                                notification.setValue(img, forKeyPath: "_identityImage")
                             }
                             
                             notification.setValue(false, forKeyPath: "_identityImageHasBorder")
@@ -385,12 +407,12 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         
                         notification.setValue(true, forKeyPath: "_showsButtons")
                         
-                        if push["conversation_iden"].isExists() {
+                        if push["conversation_iden"].exists() {
                             notification.hasReplyButton = true
                         }
                         
                         if let actions = push["actions"].array {
-                            if(actions.count == 1 || !(userInfo!["pro"].isExists())) {
+                            if(actions.count == 1 || !(userInfo!["pro"].exists())) {
                                 notification.actionButtonTitle = actions[0]["label"].string!
                             } else {
                                 var titles = [String]()
@@ -403,12 +425,12 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                             }
                         }
                         
-                        let soundDefaultExists = userDefaults.objectForKey("roundedImages") != nil
-                        let sound = soundDefaultExists ? userDefaults.stringForKey("sound") : "Glass";
+                        let soundDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
+                        let sound = soundDefaultExists ? userDefaults.string(forKey: "sound") : "Glass";
                         
                         notification.soundName = sound
                         
-                        center.deliverNotification(notification)
+                        center.deliver(notification)
                         break;
                     case "dismissal":
                         //loop through current user notifications, if identifier matches, remove it
@@ -427,12 +449,12 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                             }
                         }
                         if indexToBeRemoved != -1 {
-                            pushHistory.removeAtIndex(indexToBeRemoved)
+                            pushHistory.remove(at: indexToBeRemoved)
                         }
                         
                         break;
                     case "sms_changed":
-                        if push["notifications"].isExists() {
+                        if push["notifications"].exists() {
                             for sms in push["notifications"].array! {
                                 let notification = NSUserNotification()
                                 
@@ -446,13 +468,13 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                                 notification.soundName = "Glass"
                                 
                                 if let photo = sms["image_url"].string {
-                                    Alamofire.request(.GET, photo)
+                                    Alamofire.request(photo)
                                         .responseData { response in
                                             notification.setValue(NSImage(data: response.result.value!), forKey: "_identityImage")
-                                            self.center.deliverNotification(notification)
+                                            self.center.deliver(notification)
                                     }
                                 } else {
-                                    self.center.deliverNotification(notification)
+                                    self.center.deliver(notification)
                                 }
                             }
                         }
@@ -471,7 +493,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
     }
     
-    func websocketDidReceiveData(socket: WebSocket, data: NSData) {
+    func websocketDidReceiveData(socket: WebSocket, data: Data) {
         
     }
 }

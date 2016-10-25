@@ -22,7 +22,7 @@ class Ephemerals: NSObject {
         self.token = token
     }
     
-    internal func sendEphemeral(body: [String: AnyObject]) {
+    internal func sendEphemeral(_ body: [String: AnyObject]) {
         var body = body
         let headers = [
             "Access-Token": token
@@ -44,7 +44,7 @@ class Ephemerals: NSObject {
         debugPrint(body)
         print("----------------------")
         
-        Alamofire.request(.POST, "https://api.pushbullet.com/v2/ephemerals", headers: headers, encoding: .JSON, parameters: body)
+        Alamofire.request("https://api.pushbullet.com/v2/ephemerals", headers: headers, encoding: .JSON, parameters: body)
             .responseString { response in
                 var result = JSON.parse(response.result.value!)
                 if(response.response?.statusCode != 200) {
@@ -61,13 +61,13 @@ class Ephemerals: NSObject {
         }
     }
     
-    func respondToSMS(message: String!, thread_id: String!, source_device_iden: String!, source_user_iden: String!) {
+    func respondToSMS(_ message: String!, thread_id: String!, source_device_iden: String!, source_user_iden: String!) {
         print("respondToSMS", "message", message, "thread_id", thread_id, "source_device_iden", source_device_iden)
         
         //get api key from cookies
         var APIkey:String = ""
-        for cookie in NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies! {
-            if(cookie.domain == "www.pushbullet.com" && cookie.secure && cookie.name == "api_key" && cookie.path == "/") {
+        for cookie in HTTPCookieStorage.shared.cookies! {
+            if(cookie.domain == "www.pushbullet.com" && cookie.isSecure && cookie.name == "api_key" && cookie.path == "/") {
                 APIkey = cookie.value
             }
         }
@@ -90,7 +90,7 @@ class Ephemerals: NSObject {
             "key": source_device_iden + "_threads"
         ]
         
-        Alamofire.request(.POST, "https://api.pushbullet.com/v3/get-permanent", headers: headers, encoding: .JSON, parameters: body)
+        Alamofire.request("https://api.pushbullet.com/v3/get-permanent", headers: headers, encoding: .JSON, parameters: body)
             .responseString { response in
                 debugPrint(response)
                 var parsed = JSON.parse(response.result.value!)
@@ -123,7 +123,7 @@ class Ephemerals: NSObject {
         }
     }
     
-    func quickReply(push: JSON, reply: String) {
+    func quickReply(_ push: JSON, reply: String) {
         let body = [
             "type": "push",
             "push": [
@@ -134,12 +134,12 @@ class Ephemerals: NSObject {
                 "conversation_iden": push["conversation_iden"].string!,
                 "message": reply
             ]
-        ];
+        ] as [String : Any];
         
         sendEphemeral(body)
     }
     
-    func dismissPush(push: JSON, trigger_key: String?) {
+    func dismissPush(_ push: JSON, trigger_key: String?) {
         var body = [
             "type": "push",
             "push": [

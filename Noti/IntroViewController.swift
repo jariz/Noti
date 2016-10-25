@@ -15,22 +15,22 @@ class IntroViewController: NSViewController {
         if (self.view.window != nil) {
             self.view.window!.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
             self.view.window!.titlebarAppearsTransparent = true;
-            self.view.window!.movableByWindowBackground = true
+            self.view.window!.isMovableByWindowBackground = true
             self.view.window!.invalidateShadow()
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IntroViewController.authSuccess(_:)), name:"AuthSuccess", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(IntroViewController.authSuccess(_:)), name:NSNotification.Name(rawValue: "AuthSuccess"), object: nil)
     }
     
     @IBOutlet weak var authBtn:NSButton!;
     @IBOutlet weak var authTxt:NSTextField!;
     @IBOutlet weak var authImg:NSImageView!;
     
-    func authSuccess(notification: NSNotification) {
-        authBtn.enabled = false
+    func authSuccess(_ notification: Notification) {
+        authBtn.isEnabled = false
         self.authTxt.alphaValue = 1
         self.authTxt.alphaValue = self.authBtn.alphaValue
-        self.view.window!.styleMask -= NSClosableWindowMask
+        self.view.window!.styleMask.subtract(NSClosableWindowMask)
         
         NSAnimationContext.runAnimationGroup({ (context) -> Void in
             context.duration = 0.50
@@ -38,9 +38,9 @@ class IntroViewController: NSViewController {
             self.authBtn.animator().alphaValue = 0
             
             }, completionHandler: { () -> Void in
-                self.authTxt.hidden = true
-                self.authBtn.hidden = true
-                self.authImg.hidden = false
+                self.authTxt.isHidden = true
+                self.authBtn.isHidden = true
+                self.authImg.isHidden = false
                 self.authImg.alphaValue = 0
                 
                 NSAnimationContext.runAnimationGroup({ (context) -> Void in
@@ -50,14 +50,14 @@ class IntroViewController: NSViewController {
                 
         })
         
-        NSTimer.scheduledTimerWithTimeInterval(3, target: NSBlockOperation(block: self.view.window!.close), selector: #selector(NSOperation.main), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: 3, target: BlockOperation(block: self.view.window!.close), selector: #selector(Operation.main), userInfo: nil, repeats: false)
 
     }
     
-    @IBAction func startAuth(sender: AnyObject) {
+    @IBAction func startAuth(_ sender: AnyObject) {
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         
-        awc = storyboard.instantiateControllerWithIdentifier("AuthWindowController") as? NSWindowController
+        awc = storyboard.instantiateController(withIdentifier: "AuthWindowController") as? NSWindowController
         print("showWindow")
         awc!.showWindow(self)
     }
