@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SwCrypt/SwCrypt.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Noti.xcodeproj">
    </FileRef>
    <FileRef
