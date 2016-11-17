@@ -17,6 +17,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var iwc:NSWindowController?;
     var pwc:NSWindowController?;
     
+    func setPassword(password: String) {
+        pushManager?.setPassword(password: password)
+    }
+    
     func loadPushManager() {
         let token = userDefaults.string(forKey: "token")
         
@@ -46,7 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-//        loadPushManager()
+        loadPushManager()
         displayPreferencesWindow()
     }
 

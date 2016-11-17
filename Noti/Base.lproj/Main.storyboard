@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="10117"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="11201"/>
+        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -715,11 +717,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <visualEffectView appearanceType="vibrantDark" ambiguous="YES" blendingMode="behindWindow" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="Nm4-Q9-JOU">
+                            <visualEffectView appearanceType="vibrantDark" ambiguous="YES" blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="Nm4-Q9-JOU">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="300"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKn-aD-15h">
                                         <rect key="frame" x="162" y="175" width="157" height="39"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Hi, I'm Noti." id="mkR-ds-cVS">
                                             <font key="font" metaFont="systemThin" size="32"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -728,10 +731,12 @@
                                     </textField>
                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r7z-m4-oKo">
                                         <rect key="frame" x="215" y="219" width="50" height="43"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="IntroLogo" id="agJ-bf-md8"/>
                                     </imageView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W8u-rS-K3y">
                                         <rect key="frame" x="-2" y="108" width="484" height="34"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" id="Nb2-p2-Jv7">
                                             <font key="font" metaFont="system"/>
                                             <string key="title">I will be your tiny companion who lives in your menu bar.
@@ -742,6 +747,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eYa-QY-0Rq">
                                         <rect key="frame" x="-2" y="61" width="484" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="However first, I'll need you to" id="9KK-IE-h4J">
                                             <font key="font" metaFont="systemThin" size="13"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -750,6 +756,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                     </textField>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hzu-Ml-lzh">
                                         <rect key="frame" x="166" y="25" width="148" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Authenticate me!" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="C0Y-WG-ow8">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -760,6 +767,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                     </button>
                                     <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5gI-tM-4a2">
                                         <rect key="frame" x="223" y="41" width="34" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" image="NSMenuOnStateTemplate" id="49x-4g-e0H"/>
                                     </imageView>
                                 </subviews>
@@ -786,7 +794,7 @@ Whenever your devices have something to say, I'll let you know!</string>
             <objects>
                 <windowController storyboardIdentifier="PreferencesWindowController" id="IRr-8c-DaA" sceneMemberID="viewController">
                     <window key="window" title="Noti Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="9cq-Nf-Ydw">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" fullSizeContentView="YES"/>
                         <rect key="contentRect" x="163" y="199" width="480" height="100"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
                     </window>
@@ -806,12 +814,13 @@ Whenever your devices have something to say, I'll let you know!</string>
                         <rect key="frame" x="0.0" y="0.0" width="487" height="259"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <visualEffectView appearanceType="vibrantDark" ambiguous="YES" blendingMode="behindWindow" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="r10-Gz-oLv">
+                            <visualEffectView appearanceType="vibrantDark" ambiguous="YES" blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="r10-Gz-oLv">
                                 <rect key="frame" x="0.0" y="0.0" width="487" height="259"/>
                                 <subviews>
                                     <button fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uWb-nX-g3I">
-                                        <rect key="frame" x="235" y="168" width="234" height="14"/>
-                                        <buttonCell key="cell" type="check" title="Omit app name from notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="njW-Qk-xGY">
+                                        <rect key="frame" x="18" y="110" width="234" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Don't show app name" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="njW-Qk-xGY">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -820,8 +829,9 @@ Whenever your devices have something to say, I'll let you know!</string>
                                         </connections>
                                     </button>
                                     <button fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zfS-cF-KuW">
-                                        <rect key="frame" x="235" y="134" width="234" height="18"/>
-                                        <buttonCell key="cell" type="check" title="Display rounded images" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7aj-QI-djb">
+                                        <rect key="frame" x="18" y="83" width="234" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Round image thumbnails" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7aj-QI-djb">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -830,33 +840,35 @@ Whenever your devices have something to say, I'll let you know!</string>
                                         </connections>
                                     </button>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bjR-Vc-r47">
-                                        <rect key="frame" x="18" y="169" width="115" height="17"/>
+                                        <rect key="frame" x="18" y="175" width="115" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Notification sound" id="E6Q-rM-f4m">
                                             <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="textColor" red="0.76070064309999996" green="0.76083260770000005" blue="0.76069229839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A9R-tf-5rV">
-                                        <rect key="frame" x="48" y="207" width="148" height="17"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="NOTIFICATIONS" id="Tjj-7f-0Zq">
-                                            <font key="font" metaFont="systemLight" size="13"/>
-                                            <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
+                                        <rect key="frame" x="44" y="207" width="76" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Notifications" id="Tjj-7f-0Zq">
+                                            <font key="font" metaFont="cellTitle"/>
+                                            <color key="textColor" red="0.76070064306259155" green="0.76083260774612427" blue="0.760692298412323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ETN-53-ksc">
-                                        <rect key="frame" x="20" y="204" width="22" height="22"/>
+                                        <rect key="frame" x="20" y="206" width="18" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="IntroLogo" id="Ip1-b5-jbM"/>
                                     </imageView>
-                                    <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Lk8-We-v5E">
-                                        <rect key="frame" x="20" y="195" width="447" height="5"/>
-                                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <font key="titleFont" metaFont="system"/>
+                                    <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Lk8-We-v5E">
+                                        <rect key="frame" x="128" y="213" width="103" height="5"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </box>
                                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xfa-4L-8ed">
-                                        <rect key="frame" x="18" y="137" width="179" height="26"/>
+                                        <rect key="frame" x="18" y="143" width="157" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="G0p-cE-suD">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="menu"/>
@@ -868,32 +880,56 @@ Whenever your devices have something to say, I'll let you know!</string>
                                         </connections>
                                     </popUpButton>
                                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2vd-Wi-tae">
-                                        <rect key="frame" x="18" y="64" width="205" height="18"/>
+                                        <rect key="frame" x="256" y="176" width="205" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Enable end-to-end encryption" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="PLR-7x-lmc">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
+                                        <connections>
+                                            <action selector="encryptionEnabledChange:" target="et9-8v-2NC" id="Psu-ei-2yF"/>
+                                            <binding destination="bvX-cQ-qGd" name="value" keyPath="isLoginItem" id="URo-Ic-y4f"/>
+                                        </connections>
                                     </button>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q5d-8L-GAw">
-                                        <rect key="frame" x="48" y="101" width="148" height="17"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="ENCRYPTION" id="jCf-7i-721">
-                                            <font key="font" metaFont="systemLight" size="13"/>
-                                            <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
+                                        <rect key="frame" x="282" y="207" width="65" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Encryption" id="jCf-7i-721">
+                                            <font key="font" metaFont="cellTitle"/>
+                                            <color key="textColor" red="0.76070064309999996" green="0.76083260770000005" blue="0.76069229839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VPX-Yt-Nhb">
-                                        <rect key="frame" x="20" y="98" width="22" height="22"/>
+                                        <rect key="frame" x="258" y="207" width="18" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NotiEncryption" id="xyf-z0-DEd"/>
                                     </imageView>
-                                    <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="mr6-Kw-4s1">
-                                        <rect key="frame" x="20" y="89" width="447" height="5"/>
-                                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <font key="titleFont" metaFont="system"/>
+                                    <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="mr6-Kw-4s1">
+                                        <rect key="frame" x="355" y="213" width="104" height="5"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </box>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CEw-Ja-YpA">
+                                        <rect key="frame" x="44" y="50" width="48" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="General" id="fxB-gi-l29">
+                                            <font key="font" metaFont="cellTitle"/>
+                                            <color key="textColor" red="0.76070064309999996" green="0.76083260770000005" blue="0.76069229839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZ6-PE-oTd">
+                                        <rect key="frame" x="20" y="50" width="18" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NotiGeneral" id="od8-5w-V39"/>
+                                    </imageView>
+                                    <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="9X7-tH-cmb">
+                                        <rect key="frame" x="100" y="56" width="359" height="5"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </box>
                                     <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sbz-yV-V7T">
-                                        <rect key="frame" x="20" y="34" width="201" height="22"/>
+                                        <rect key="frame" x="258" y="146" width="201" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="Ern-xu-rFW">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -902,7 +938,32 @@ Whenever your devices have something to say, I'll let you know!</string>
                                                 <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                             </allowedInputSourceLocales>
                                         </secureTextFieldCell>
+                                        <connections>
+                                            <action selector="passwordChange:" target="et9-8v-2NC" id="yFK-mT-4vR"/>
+                                            <outlet property="delegate" destination="et9-8v-2NC" id="I9z-KU-ZEC"/>
+                                        </connections>
                                     </secureTextField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PKM-sP-Rmk">
+                                        <rect key="frame" x="256" y="93" width="204" height="42"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="If you choose to enter a password, this password will need to be entered on each of your devices." id="n1j-OD-3NC">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" red="0.76070064309999996" green="0.76083260770000005" blue="0.76069229839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <button fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XkG-l0-YcM">
+                                        <rect key="frame" x="18" y="19" width="234" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Start Noti on system startup" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="8eP-zg-2pM">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="systemStartupChange:" target="et9-8v-2NC" id="hTP-lt-WWH"/>
+                                            <binding destination="Rn0-51-ZbS" name="value" keyPath="values.omitAppName" id="W2q-Bg-l9l"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </visualEffectView>
                         </subviews>
@@ -912,7 +973,10 @@ Whenever your devices have something to say, I'll let you know!</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="enableEncryption" destination="2vd-Wi-tae" id="GZw-oJ-5bF"/>
+                        <outlet property="encryptionField" destination="sbz-yV-V7T" id="H5C-Al-Hdn"/>
                         <outlet property="sounds" destination="cfa-NA-uWQ" id="eT6-gV-GFb"/>
+                        <outlet property="systemStartup" destination="XkG-l0-YcM" id="gvh-Sn-fSK"/>
                     </connections>
                 </viewController>
                 <customObject id="l3N-hD-dMK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -923,6 +987,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                         <userDefinedRuntimeAttribute type="string" keyPath="initialValues.sound" value="Glass"/>
                     </userDefinedRuntimeAttributes>
                 </customObject>
+                <customObject id="bvX-cQ-qGd" customClass="EMCLoginItem"/>
                 <arrayController id="cfa-NA-uWQ"/>
             </objects>
             <point key="canvasLocation" x="-1154.5" y="75.5"/>
@@ -954,6 +1019,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                         <subviews>
                             <webView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qnp-YZ-1mA">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="350"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <webPreferences key="preferences" defaultFontSize="16" defaultFixedFontSize="13" minimumFontSize="0" plugInsEnabled="NO" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO" allowsAnimatedImages="NO" allowsAnimatedImageLooping="NO">
                                     <nil key="identifier"/>
                                 </webPreferences>
@@ -973,5 +1039,6 @@ Whenever your devices have something to say, I'll let you know!</string>
         <image name="IntroLogo" width="128" height="128"/>
         <image name="NSMenuOnStateTemplate" width="12" height="12"/>
         <image name="NotiEncryption" width="128" height="128"/>
+        <image name="NotiGeneral" width="128" height="128"/>
     </resources>
 </document>

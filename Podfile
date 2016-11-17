@@ -1,6 +1,6 @@
 use_frameworks!
-source 'https://github.com/jariz/Noti-Spec.git'
 source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/jariz/Noti-Spec.git'
 
 target 'Noti' do
     pod 'Starscream', '~> 2.0.0'
@@ -9,4 +9,5 @@ target 'Noti' do
     pod 'Sparkle', '~> 1.14.0'
     pod 'CryptoSwift', '~> 0.6.1'
     pod 'SwCrypt', '4.0.0'
+    pod 'EMCLoginItem', '~> 1.0.1'
 end

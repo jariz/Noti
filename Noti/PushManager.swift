@@ -12,26 +12,6 @@ import Foundation
 import Starscream
 import SwiftyJSON
 import Alamofire
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate {
     var socket:WebSocket?
@@ -168,7 +148,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 break;
             case .contentsClicked:
                 //check if this is the encryption warning notification
-                if notification.identifier?.characters.count > 12 {
+                if (notification.identifier?.characters.count)! > 12 {
                     let index = notification.identifier!.characters.index(notification.identifier!.startIndex, offsetBy: 12)
                     if notification.identifier?.substring(to: index) == "noti_encrypt" {
                         displayPasswordForm()
@@ -219,7 +199,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 }
                 
                 //determine if we replied to a sms or a normal notification
-                if notification.identifier?.characters.count > 4 {
+                if (notification.identifier?.characters.count)! > 4 {
                     let index = notification.identifier?.characters.index((notification.identifier?.startIndex)!, offsetBy: 4)
                     if notification.identifier?.substring(to: index!) == "sms_" {
                         var indexToBeRemoved = -1, i = -1;
@@ -318,15 +298,19 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 return
             }
             else if(pwd.stringValue != "") {
-                let iden = userInfo!["iden"].string!
-                let key = Crypt.generateKey(pwd.stringValue, salt: iden)
-                userDefaults.set(key, forKey: "secureKey")
+                self.setPassword(password: pwd.stringValue)
             } else {
                 userDefaults.removeObject(forKey: "secureKey")
             }
             initCrypt()
             
         }
+    }
+    
+    func setPassword(password: String) {
+        let iden = userInfo!["iden"].string!
+        let key = Crypt.generateKey(password, salt: iden)
+        userDefaults.set(key, forKey: "secureKey")
     }
     
     internal func websocketDidReceiveMessage(socket: WebSocket, text: String) {
