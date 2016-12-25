@@ -42,6 +42,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func displayPreferencesWindow() {
+        if(pushManager == nil) {
+            let alert = NSAlert()
+            alert.messageText = "Please authorize Noti before changing it's preferences."
+            alert.runModal()
+            return;
+        }
+        
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         pwc = storyboard.instantiateController(withIdentifier: "PreferencesWindowController") as? NSWindowController
         NSApplication.shared().activate(ignoringOtherApps: true)
@@ -51,7 +58,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         loadPushManager()
-        displayPreferencesWindow()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

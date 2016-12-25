@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="11201"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
@@ -665,10 +666,9 @@
                                 <action selector="reauthorize:" target="8Oo-kR-uVy" id="Iat-JG-VnX"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Set encryption password" keyEquivalent="E" id="Bxv-sA-grV">
-                            <modifierMask key="keyEquivalentModifierMask"/>
+                        <menuItem title="Preferences" enabled="NO" keyEquivalent="," id="3CX-aQ-6cw">
                             <connections>
-                                <action selector="setPassword:" target="8Oo-kR-uVy" id="zJ5-eK-Ogw"/>
+                                <action selector="preferences:" target="8Oo-kR-uVy" id="Zqn-ka-UXi"/>
                             </connections>
                         </menuItem>
                         <menuItem title="Check for updates" keyEquivalent="U" id="4ao-7K-V6w">
@@ -677,11 +677,7 @@
                                 <action selector="checkForUpdates:" target="s8W-Yb-maQ" id="gIv-17-fEP"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Preferences" keyEquivalent="," id="3CX-aQ-6cw">
-                            <connections>
-                                <action selector="preferences:" target="8Oo-kR-uVy" id="Zqn-ka-UXi"/>
-                            </connections>
-                        </menuItem>
+                        <menuItem isSeparatorItem="YES" id="DNo-XU-XQs"/>
                         <menuItem title="Quit" keyEquivalent="q" id="yQ6-dX-wom">
                             <connections>
                                 <action selector="quit:" target="8Oo-kR-uVy" id="Tey-PX-4y6"/>
@@ -825,7 +821,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
-                                            <binding destination="Rn0-51-ZbS" name="value" keyPath="values.omitAppName" id="CWo-it-hVW"/>
+                                            <binding destination="Rn0-51-ZbS" name="value" keyPath="values.omitAppName" id="z6e-qa-i4F"/>
                                         </connections>
                                     </button>
                                     <button fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zfS-cF-KuW">
@@ -836,7 +832,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
-                                            <binding destination="Rn0-51-ZbS" name="value" keyPath="values.roundedImages" id="TJo-Lg-H6e"/>
+                                            <binding destination="Rn0-51-ZbS" name="value" keyPath="values.roundedImages" id="ovv-qP-pqG"/>
                                         </connections>
                                     </button>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bjR-Vc-r47">
@@ -876,7 +872,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                         </popUpButtonCell>
                                         <connections>
                                             <binding destination="cfa-NA-uWQ" name="content" keyPath="arrangedObjects" id="YsA-sE-xg5"/>
-                                            <binding destination="Rn0-51-ZbS" name="selectedValue" keyPath="values.sound" previousBinding="YsA-sE-xg5" id="9v1-PN-6BO"/>
+                                            <binding destination="Rn0-51-ZbS" name="selectedValue" keyPath="values.sound" previousBinding="YsA-sE-xg5" id="GYY-Cg-Qyy"/>
                                         </connections>
                                     </popUpButton>
                                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2vd-Wi-tae">
@@ -888,7 +884,6 @@ Whenever your devices have something to say, I'll let you know!</string>
                                         </buttonCell>
                                         <connections>
                                             <action selector="encryptionEnabledChange:" target="et9-8v-2NC" id="Psu-ei-2yF"/>
-                                            <binding destination="bvX-cQ-qGd" name="value" keyPath="isLoginItem" id="URo-Ic-y4f"/>
                                         </connections>
                                     </button>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q5d-8L-GAw">
@@ -939,7 +934,6 @@ Whenever your devices have something to say, I'll let you know!</string>
                                             </allowedInputSourceLocales>
                                         </secureTextFieldCell>
                                         <connections>
-                                            <action selector="passwordChange:" target="et9-8v-2NC" id="yFK-mT-4vR"/>
                                             <outlet property="delegate" destination="et9-8v-2NC" id="I9z-KU-ZEC"/>
                                         </connections>
                                     </secureTextField>
@@ -961,7 +955,6 @@ Whenever your devices have something to say, I'll let you know!</string>
                                         </buttonCell>
                                         <connections>
                                             <action selector="systemStartupChange:" target="et9-8v-2NC" id="hTP-lt-WWH"/>
-                                            <binding destination="Rn0-51-ZbS" name="value" keyPath="values.omitAppName" id="W2q-Bg-l9l"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -973,20 +966,18 @@ Whenever your devices have something to say, I'll let you know!</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="controllah" destination="Rn0-51-ZbS" id="Eb3-QW-Htl"/>
+                        <outlet property="defaultsController" destination="Rn0-51-ZbS" id="KBu-Xe-cYx"/>
                         <outlet property="enableEncryption" destination="2vd-Wi-tae" id="GZw-oJ-5bF"/>
                         <outlet property="encryptionField" destination="sbz-yV-V7T" id="H5C-Al-Hdn"/>
+                        <outlet property="omitAppName" destination="uWb-nX-g3I" id="nJP-aH-2aU"/>
+                        <outlet property="roundedImages" destination="zfS-cF-KuW" id="JJs-7F-O5k"/>
                         <outlet property="sounds" destination="cfa-NA-uWQ" id="eT6-gV-GFb"/>
                         <outlet property="systemStartup" destination="XkG-l0-YcM" id="gvh-Sn-fSK"/>
                     </connections>
                 </viewController>
                 <customObject id="l3N-hD-dMK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <customObject id="Rn0-51-ZbS" customClass="NSUserDefaultsController">
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="initialValues.omitAppName" value="NO"/>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="initialValues.roundedImages" value="YES"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="initialValues.sound" value="Glass"/>
-                    </userDefinedRuntimeAttributes>
-                </customObject>
+                <customObject id="Rn0-51-ZbS" userLabel="Defaults Controller" customClass="NSUserDefaultsController"/>
                 <customObject id="bvX-cQ-qGd" customClass="EMCLoginItem"/>
                 <arrayController id="cfa-NA-uWQ"/>
             </objects>
@@ -1036,7 +1027,7 @@ Whenever your devices have something to say, I'll let you know!</string>
         </scene>
     </scenes>
     <resources>
-        <image name="IntroLogo" width="128" height="128"/>
+        <image name="IntroLogo" width="256" height="256"/>
         <image name="NSMenuOnStateTemplate" width="12" height="12"/>
         <image name="NotiEncryption" width="128" height="128"/>
         <image name="NotiGeneral" width="128" height="128"/>

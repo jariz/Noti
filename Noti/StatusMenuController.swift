@@ -58,17 +58,20 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     @IBAction func reauthorize(_ sender: AnyObject?) {
-        //delete token & restart push manager
-        appDelegate!.userDefaults.removeObject(forKey: "token")
-        appDelegate!.loadPushManager()
+        let alert = NSAlert()
+        alert.messageText = "Are you sure?"
+        alert.informativeText = "This will remove all asocciated PushBullet account information from Noti."
+        alert.addButton(withTitle: "Yes")
+        alert.addButton(withTitle: "No")
+        if(alert.runModal() == NSAlertFirstButtonReturn) {
+            //delete token & restart push manager
+            appDelegate!.userDefaults.removeObject(forKey: "token")
+            appDelegate!.loadPushManager()
+        }
     }
     
     @IBAction func preferences(_ sender: AnyObject?) {
         appDelegate!.displayPreferencesWindow()
-    }
-    
-    @IBAction func setPassword(_ sender: AnyObject?) {
-        appDelegate!.pushManager?.displayPasswordForm()
     }
     
     @IBAction func quit(_ sender: AnyObject?) {

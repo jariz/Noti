@@ -151,7 +151,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 if (notification.identifier?.characters.count)! > 12 {
                     let index = notification.identifier!.characters.index(notification.identifier!.startIndex, offsetBy: 12)
                     if notification.identifier?.substring(to: index) == "noti_encrypt" {
-                        displayPasswordForm()
+                        
                         return
                     }
                 }
@@ -161,12 +161,27 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         if let result = response.result.value {
                             let mapping = JSON.parse(result)
                             
+                            var indexToBeRemoved = -1, i = -1;
                             for item in self.pushHistory {
+                                i += 1;
                                 if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
                                     if let url = mapping[item["package_name"].string!].string {
                                         NSWorkspace.shared().open(URL(string: url)!)
+                                        
+                                        for noti in center.deliveredNotifications {
+                                            if noti.identifier == item["notification_id"].string {
+                                                center.removeDeliveredNotification(noti)
+                                                print("Removed a noti (", noti.identifier!, ")")
+                                            }
+                                        }
+                                        
+                                        indexToBeRemoved = i;
+                                        break;
                                     }
                                 }
+                            }
+                            if indexToBeRemoved != -1 {
+                                self.pushHistory.remove(at: indexToBeRemoved);
                             }
                         }
                 }
@@ -277,36 +292,6 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         }
     }
     
-    func displayPasswordForm() {
-        let alert = NSAlert()
-        let pwd = NSSecureTextField.init(frame: NSMakeRect(0, 0, 300, 24))
-        alert.accessoryView = pwd
-        
-        //indicate that encryption is enabled.
-        if crypt != nil {
-            pwd.stringValue = "************"
-        }
-        
-        alert.addButton(withTitle: "Apply")
-        alert.addButton(withTitle: "Cancel")
-        alert.messageText = "Enter your PushBullet password"
-        alert.informativeText = "Leave blank to disable encryption.\nMake sure you set the same password on your other devices as well."
-        let button = alert.runModal()
-        
-        if button == NSAlertFirstButtonReturn {
-            if(pwd.stringValue == "************") {
-                return
-            }
-            else if(pwd.stringValue != "") {
-                self.setPassword(password: pwd.stringValue)
-            } else {
-                userDefaults.removeObject(forKey: "secureKey")
-            }
-            initCrypt()
-            
-        }
-    }
-    
     func setPassword(password: String) {
         let iden = userInfo!["iden"].string!
         let key = Crypt.generateKey(password, salt: iden)
@@ -336,8 +321,8 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     func warnUser() {
                         let noti = NSUserNotification()
                         noti.title = "I received data I couldn't understand!"
-                        noti.informativeText = "It appears you're using encryption, click to set password."
-                        noti.actionButtonTitle = "Enter password"
+                        noti.informativeText = "It appears you're using encryption, click to open settings & set password."
+                        noti.actionButtonTitle = "Settings"
                         noti.identifier = "noti_encrypt" + String(arc4random())
                         center.deliver(noti)
                     }
@@ -367,7 +352,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         notification.title = push["title"].string
                         notification.informativeText = push["body"].string
                         notification.identifier = push["notification_id"].string
-                        let omitAppNameDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
+                        let omitAppNameDefaultExists = userDefaults.object(forKey: "omitAppName") != nil
                         let omitAppName = omitAppNameDefaultExists ? userDefaults.bool(forKey: "omitAppName") : false;
                         if !omitAppName {
                             notification.subtitle = push["application_name"].string
@@ -381,11 +366,8 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                             var img = NSImage(data: data)!
                             if roundedImages {
                                 img = RoundedImage.create(Int(img.size.width) / 2, source: img)
-                                notification.setValue(img, forKeyPath: "_identityImage")
-                            } else {
-                                notification.setValue(img, forKeyPath: "_identityImage")
                             }
-                            
+                            notification.setValue(img, forKeyPath: "_identityImage")
                             notification.setValue(false, forKeyPath: "_identityImageHasBorder")
                         }
                         
@@ -470,7 +452,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 }
                 break;
             default:
-                print("Unknown type of message ", message["type"].string)
+                print("Unknown type of message ", message["type"].string!)
                 break;
             }
         }
