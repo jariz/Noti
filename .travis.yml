@@ -2,3 +2,4 @@ osx_image: xcode8.2
 language: objective-c
 xcode_workspace: Noti.xcworkspace
 xcode_scheme: Noti
+script: xctool -workspace Noti.xcworkspace -scheme Noti
