@@ -2,7 +2,4 @@ osx_image: xcode8.2
 language: objective-c
 xcode_workspace: Noti.xcworkspace
 xcode_scheme: Noti
-install:
-  - sudo gem install xcpretty xcpretty-travis-formatter
-  - pod install
-script: xcodebuild -workspace Noti.xcworkspace -scheme Noti | xcpretty -f `xcpretty-travis-formatter`
+script: xcodebuild -workspace Noti.xcworkspace -scheme Noti

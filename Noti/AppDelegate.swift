@@ -15,6 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var pushManager: PushManager?
     let userDefaults: UserDefaults = UserDefaults.standard
     var iwc:NSWindowController?;
+    var pwc:NSWindowController?;
     
     func setPassword(password: String) {
         pushManager?.setPassword(password: password)
@@ -54,15 +55,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pwc!.showWindow(self)
         pwc!.window?.makeKeyAndOrderFront(self)
     }
-
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         loadPushManager()
     }
-
+    
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
-
-
+    
+    
 }
-

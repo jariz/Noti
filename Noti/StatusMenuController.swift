@@ -14,6 +14,7 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
     let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
     @IBOutlet weak var menu: NSMenu!
     @IBOutlet weak var menuItem: NSMenuItem!
+    var appDelegate: AppDelegate?;
     
     override func awakeFromNib() {
         print("StatusMenuController alive")
@@ -21,8 +22,9 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
         appDelegate = NSApplication.shared().delegate as? AppDelegate
         
         if let button = statusItem.button {
-            button.image = NSImage(named: "StatusBarButtonImage")
+            button.image = NSImage(named: "StatusBarButtonImageFail")
             statusItem.menu = menu;
+            button.appearsDisabled = true
         }
         menuItem.isEnabled = true
         
@@ -37,6 +39,7 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
             }
             
             if let disabled = info["disabled"] as? Bool {
+                statusItem.button?.image = NSImage(named: disabled ? "StatusBarButtonImageFail" : "StatusBarButtonImage")
                 statusItem.button?.appearsDisabled = disabled
             }
             
