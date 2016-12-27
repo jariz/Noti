@@ -151,9 +151,8 @@
 				TargetAttributes = {
 					49B43B071D1ADFB200A24585 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = JHKDY4UQ72;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -355,8 +354,9 @@
 			baseConfigurationReference = 0F7FEC6A353CB04118DDEBF6 /* Pods-Noti.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SwCrypt/build/Debug",
@@ -379,8 +379,9 @@
 			baseConfigurationReference = 6B7FFCDDDAD1689D9A4BE578 /* Pods-Noti.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = JHKDY4UQ72;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SwCrypt/build/Debug",
