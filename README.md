@@ -1,12 +1,24 @@
 <div align="center">
-<img src="https://raw.githubusercontent.com/jariz/Noti/master/Noti/Assets.xcassets/AppIcon.appiconset/256.png">
-<br><img src="https://jari.lol/0suH6tw4vE.svg">
+<img src="https://jari.lol/ZnN0TQeMmi.png">
+<br><img src="https://jari.lol/0suH6tw4vE.svg"><br><br>
 <p><a href="https://travis-ci.org/jariz/Noti/"><img src="https://travis-ci.org/jariz/Noti.svg?branch=master"></a></p>
 </div>
 
 ###What is Noti?  
-Noti will be your little companion living in your mac menu, relaying any notifications you get on your Android phone with [Pushbullet installed on it](https://pushbullet.com).  
+Noti is your little companion living in your mac menu, relaying any notifications you get on your Android phone with [Pushbullet installed on it](https://pushbullet.com)!  
 **Noti does one thing, and it does it really well: Notifications.**
+
+##Download
+
+###DMG
+Get the [latest .dmg here](https://github.com/jariz/Noti/releases/latest).  
+
+###brew cask
+Or, simply use [homebrew cask](https://github.com/caskroom/homebrew-cask/blob/master/README.md) and install it with a single command:  
+```
+brew cask install noti
+```
+
 
 ##Features
 

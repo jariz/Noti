@@ -11,7 +11,6 @@
 		4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */; };
 		4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3D21D23E6AB005F1641 /* IntroViewController.swift */; };
 		498275F21D35101A00AB7029 /* Crypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498275F11D35101A00AB7029 /* Crypt.swift */; };
-		498275FB1D3567D500AB7029 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498275FA1D3567D500AB7029 /* SwCrypt.swift */; };
 		498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498499FD1D1BE46F007FC963 /* PushManager.swift */; };
 		499DD0F61D2ACA0B00BB759D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 499DD0F51D2ACA0B00BB759D /* .gitignore */; };
 		499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */; };
@@ -28,12 +27,12 @@
 		4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
 		4901D3D21D23E6AB005F1641 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		498275F11D35101A00AB7029 /* Crypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypt.swift; sourceTree = "<group>"; };
-		498275F91D3567D500AB7029 /* SwCrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwCrypt.h; sourceTree = "<group>"; };
-		498275FA1D3567D500AB7029 /* SwCrypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwCrypt.swift; sourceTree = "<group>"; };
 		498499FD1D1BE46F007FC963 /* PushManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushManager.swift; sourceTree = "<group>"; };
 		499DD0F51D2ACA0B00BB759D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ephemerals.swift; sourceTree = "<group>"; };
 		499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
+		49AE29361DB4D19500B61843 /* libSwCrypt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSwCrypt.a; path = SwCrypt/build/Debug/libSwCrypt.a; sourceTree = "<group>"; };
+		49AE29531DB4D86E00B61843 /* SwCrypt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwCrypt.framework; path = SwCrypt/build/Debug/SwCrypt.framework; sourceTree = "<group>"; };
 		49B43B081D1ADFB200A24585 /* Noti.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Noti.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
@@ -80,8 +79,6 @@
 		49B43B0A1D1ADFB200A24585 /* Noti */ = {
 			isa = PBXGroup;
 			children = (
-				498275F91D3567D500AB7029 /* SwCrypt.h */,
-				498275FA1D3567D500AB7029 /* SwCrypt.swift */,
 				49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */,
 				49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */,
 				49B43B0F1D1ADFB200A24585 /* Assets.xcassets */,
@@ -100,6 +97,8 @@
 		5BAC699C03C9C573FDF4B2D8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49AE29531DB4D86E00B61843 /* SwCrypt.framework */,
+				49AE29361DB4D19500B61843 /* libSwCrypt.a */,
 				B2C7615AF577BAEAF32B8516 /* Pods_Noti.framework */,
 			);
 			name = Frameworks;
@@ -149,7 +148,8 @@
 				TargetAttributes = {
 					49B43B071D1ADFB200A24585 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = JHKDY4UQ72;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -238,7 +238,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				498275FB1D3567D500AB7029 /* SwCrypt.swift in Sources */,
 				4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */,
 				499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */,
 				498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */,
@@ -353,11 +352,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwCrypt/build/Debug",
+				);
 				INFOPLIST_FILE = Noti/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwCrypt/build/Debug",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = io.jari.Noti;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -368,11 +377,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = JHKDY4UQ72;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwCrypt/build/Debug",
+				);
 				INFOPLIST_FILE = Noti/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SwCrypt/build/Debug",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = io.jari.Noti;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

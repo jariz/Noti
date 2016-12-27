@@ -22,17 +22,17 @@ class Ephemerals: NSObject {
         self.token = token
     }
     
-    internal func sendEphemeral(body: [String: AnyObject]) {
+    internal func sendEphemeral(_ body: JSON) {
         var body = body
-        let headers = [
+        let headers: HTTPHeaders = [
             "Access-Token": token
         ];
         
-        if crypt != nil && body["type"] as? String == "push" {
+        if crypt != nil && body["type"].exists() && body["type"].stringValue == "push" {
             print("Encrypting ephemeral...")
             let json = JSON.init(body)
             
-            let cipher = crypt!.encryptMessage(json["push"].rawString()!)
+            let cipher = crypt!.encryptMessage(message: json["push"].rawString()!)
             body["push"] = [
                 "encrypted": true,
                 "ciphertext": cipher!
@@ -44,14 +44,14 @@ class Ephemerals: NSObject {
         debugPrint(body)
         print("----------------------")
         
-        Alamofire.request(.POST, "https://api.pushbullet.com/v2/ephemerals", headers: headers, encoding: .JSON, parameters: body)
+        Alamofire.request("https://api.pushbullet.com/v2/ephemerals", method: .post, parameters: body.dictionaryObject!, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
                 var result = JSON.parse(response.result.value!)
                 if(response.response?.statusCode != 200) {
                     
                     let alert = NSAlert()
                     alert.messageText = "Unable to send ephemeral!"
-                    if result["error"].isExists() {
+                    if result["error"].exists() {
                         alert.informativeText = result["error"]["type"].string! + ": " + result["error"]["message"].string!
                     }
                     
@@ -61,13 +61,13 @@ class Ephemerals: NSObject {
         }
     }
     
-    func respondToSMS(message: String!, thread_id: String!, source_device_iden: String!, source_user_iden: String!) {
+    func respondToSMS(_ message: String!, thread_id: String!, source_device_iden: String!, source_user_iden: String!) {
         print("respondToSMS", "message", message, "thread_id", thread_id, "source_device_iden", source_device_iden)
         
         //get api key from cookies
         var APIkey:String = ""
-        for cookie in NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies! {
-            if(cookie.domain == "www.pushbullet.com" && cookie.secure && cookie.name == "api_key" && cookie.path == "/") {
+        for cookie in HTTPCookieStorage.shared.cookies! {
+            if(cookie.domain == "www.pushbullet.com" && cookie.isSecure && cookie.name == "api_key" && cookie.path == "/") {
                 APIkey = cookie.value
             }
         }
@@ -86,17 +86,17 @@ class Ephemerals: NSObject {
         ];
         
         //get thread recipients & send reply to them
-        let body = [
+        let body:JSON = [
             "key": source_device_iden + "_threads"
         ]
         
-        Alamofire.request(.POST, "https://api.pushbullet.com/v3/get-permanent", headers: headers, encoding: .JSON, parameters: body)
+        Alamofire.request("https://api.pushbullet.com/v3/get-permanent", method: .post, parameters: body.dictionaryObject!, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
                 debugPrint(response)
                 var parsed = JSON.parse(response.result.value!)
                 
                 //decrypt if needed....
-                if self.crypt != nil && parsed["data"]["encrypted"].isExists() {
+                if self.crypt != nil && parsed["data"]["encrypted"].exists() {
                     parsed["data"] = JSON.parse((self.crypt!.decryptMessage(parsed["data"]["ciphertext"].string!))!)
                 }
                 
@@ -104,7 +104,7 @@ class Ephemerals: NSObject {
                     for thread in threads {
                         if thread["id"].string == thread_id {
                             for recipient in thread["recipients"].array! {
-                                let body = [
+                                let body:JSON = [
                                     "push": [
                                         "conversation_iden": recipient["address"].string!,
                                         "message": message,
@@ -123,8 +123,8 @@ class Ephemerals: NSObject {
         }
     }
     
-    func quickReply(push: JSON, reply: String) {
-        let body = [
+    func quickReply(_ push: JSON, reply: String) {
+        let body:JSON = [
             "type": "push",
             "push": [
                 "type": "messaging_extension_reply",
@@ -139,8 +139,8 @@ class Ephemerals: NSObject {
         sendEphemeral(body)
     }
     
-    func dismissPush(push: JSON, trigger_key: String?) {
-        var body = [
+    func dismissPush(_ push: JSON, trigger_key: String?) {
+        var body:JSON = [
             "type": "push",
             "push": [
                 "notification_id": push["notification_id"].string!,
@@ -151,8 +151,8 @@ class Ephemerals: NSObject {
         ];
         
         if (trigger_key != nil) {
-            var push = body["push"] as! [String: String]
-            push["trigger_action"] = trigger_key!
+            var push = body["push"];
+            push["trigger_action"] = JSON(trigger_key!)
             body["push"] = push
         }
         
