@@ -16,21 +16,21 @@ import SwiftyJSON
 
 class EphemeralService {
 
-    var token:String
-    var crypt:Crypt?
+    var token: String
+    var crypt: Crypt?
     
-    init(token:String) {
+    init(token: String) {
         self.token = token
     }
 
     private func send(ephemeral: Ephemeral) {
         var body = ephemeral.toJson()
 
-        if crypt != nil && ephemeral.type == "push" {
+        if let crypt = crypt, ephemeral.type == "push" {
             print("Encrypting ephemeral...")
             let json = JSON.init(body)
 
-            let cipher = crypt!.encryptMessage(message: json["push"].rawString()!)
+            let cipher = crypt.encryptMessage(message: json["push"].rawString()!)
             body["push"] = [
                 "encrypted": true,
                 "ciphertext": cipher!
@@ -95,8 +95,8 @@ class EphemeralService {
                 var parsed = JSON.parse(response.result.value!)
                 
                 //decrypt if needed....
-                if self.crypt != nil && parsed["data"]["encrypted"].exists() {
-                    parsed["data"] = JSON.parse((self.crypt!.decryptMessage(parsed["data"]["ciphertext"].string!))!)
+                if let crypt = self.crypt, parsed["data"]["encrypted"].exists() {
+                    parsed["data"] = JSON.parse((crypt.decryptMessage(parsed["data"]["ciphertext"].string!))!)
                 }
                 
                 if let threads = parsed["data"]["threads"].array {

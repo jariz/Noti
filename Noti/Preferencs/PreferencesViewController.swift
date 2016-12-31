@@ -28,11 +28,11 @@ open class PreferencesViewController: NSViewController {
     var FAKE_PASSWORD = "*********"
     
     override open func viewDidAppear() {
-        if (self.view.window != nil) {
-            self.view.window!.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
-            self.view.window!.titlebarAppearsTransparent = true
-            self.view.window!.isMovableByWindowBackground = true
-            self.view.window!.invalidateShadow()
+        if let window = self.view.window {
+            window.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
+            window.titlebarAppearsTransparent = true
+            window.isMovableByWindowBackground = true
+            window.invalidateShadow()
         }
     }
     
@@ -55,13 +55,13 @@ open class PreferencesViewController: NSViewController {
     open override func controlTextDidChange(_ obj: Notification) {
         //gets called every time password changes
         if(encryptionField.stringValue == FAKE_PASSWORD) {
-            return;
+            return
         } else if encryptionField.stringValue == "" {
             UserDefaults.standard.removeObject(forKey: "secureKey")
             enableEncryption.state = NSOffState
             encryptionField.isEnabled = false
             appDelegate?.pushManager?.initCrypt()
-            return;
+            return
         }
         
         appDelegate?.pushManager?.setPassword(password: encryptionField.stringValue)
@@ -72,7 +72,7 @@ open class PreferencesViewController: NSViewController {
     override open func viewDidLoad() {
         defaultsController.initialValues = [
             "sound": "Glass"
-        ];
+        ]
         
         //get all available system sounds
         let fileManager = FileManager.default
@@ -89,7 +89,7 @@ open class PreferencesViewController: NSViewController {
         
         //indicate that encryption is enabled
         if key != nil {
-            encryptionField.stringValue = FAKE_PASSWORD;
+            encryptionField.stringValue = FAKE_PASSWORD
         }
         
         //get initial login value
@@ -99,10 +99,10 @@ open class PreferencesViewController: NSViewController {
         
         //this is ugly, but I can't get the checkboxes to work through initialValues for some reason
         let omitAppNameDefaultExists = UserDefaults.standard.object(forKey: "omitAppName") != nil
-        let omitAppNameDefault = omitAppNameDefaultExists ? UserDefaults.standard.bool(forKey: "omitAppName") : false;
-        omitAppName.state = omitAppNameDefault ? NSOnState : NSOffState;
+        let omitAppNameDefault = omitAppNameDefaultExists ? UserDefaults.standard.bool(forKey: "omitAppName") : false
+        omitAppName.state = omitAppNameDefault ? NSOnState : NSOffState
         let roundedImagesDefaultExists = UserDefaults.standard.object(forKey: "roundedImages") != nil
-        let roundedImagesDefault = roundedImagesDefaultExists ? UserDefaults.standard.bool(forKey: "roundedImages") : true;
-        roundedImages.state = roundedImagesDefault ? NSOnState : NSOffState;
+        let roundedImagesDefault = roundedImagesDefaultExists ? UserDefaults.standard.bool(forKey: "roundedImages") : true
+        roundedImages.state = roundedImagesDefault ? NSOnState : NSOffState
     }
 }

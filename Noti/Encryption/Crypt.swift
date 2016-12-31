@@ -11,7 +11,7 @@ import CryptoSwift
 import SwCrypt
 
 open class Crypt {
-    var key: [UInt8];
+    var key: [UInt8]
     
     init(key: [UInt8]) {
         self.key = key
@@ -58,7 +58,7 @@ open class Crypt {
         data.append(contentsOf: iv.toArray())
         data.append(contentsOf: res!.0.toArray())
         
-        let out = Data(data).base64EncodedString();
+        let out = Data(data).base64EncodedString()
         
         return out
     }

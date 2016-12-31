@@ -13,11 +13,11 @@ class IntroViewController: NSViewController {
     var awc:NSWindowController?
     
     override func viewDidAppear() {
-        if (self.view.window != nil) {
-            self.view.window!.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
-            self.view.window!.titlebarAppearsTransparent = true
-            self.view.window!.isMovableByWindowBackground = true
-            self.view.window!.invalidateShadow()
+        if let window = self.view.window {
+            window.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
+            window.titlebarAppearsTransparent = true
+            window.isMovableByWindowBackground = true
+            window.invalidateShadow()
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(IntroViewController.authSuccess(_:)), name:NSNotification.Name(rawValue: "AuthSuccess"), object: nil)

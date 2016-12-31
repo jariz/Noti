@@ -15,23 +15,23 @@ import Cocoa
 class RoundedImage {
     internal static func addRoundedRectToPath(_ context:CGContext, rect:CGRect, ovalWidth:CGFloat, ovalHeight:CGFloat )
     {
-        let fw:CGFloat, fh:CGFloat;
+        let fw:CGFloat, fh:CGFloat
         if (ovalWidth == 0 || ovalHeight == 0) {
-            context.addRect(rect);
-            return;
+            context.addRect(rect)
+            return
         }
-        context.saveGState();
-        context.translateBy (x: rect.minX, y: rect.minY);
-        context.scaleBy (x: ovalWidth, y: ovalHeight);
-        fw = rect.width / ovalWidth;
-        fh = rect.height / ovalHeight;
-        context.move(to: CGPoint(x: fw, y: fh/2));
+        context.saveGState()
+        context.translateBy (x: rect.minX, y: rect.minY)
+        context.scaleBy (x: ovalWidth, y: ovalHeight)
+        fw = rect.width / ovalWidth
+        fh = rect.height / ovalHeight
+        context.move(to: CGPoint(x: fw, y: fh/2))
         context.addArc(tangent1End: CGPoint(x: fw, y: fh), tangent2End: CGPoint(x: fw / 2, y: fh), radius: 1)
         context.addArc(tangent1End: CGPoint(x: 0, y: fh), tangent2End: CGPoint(x: 0, y: fh / 2), radius: 1)
         context.addArc(tangent1End: CGPoint(x: 0, y: 0), tangent2End: CGPoint(x: fw / 2, y: 0), radius: 1)
         context.addArc(tangent1End: CGPoint(x: fw, y: 0), tangent2End: CGPoint(x: fw, y: fh / 2), radius: 1)
-        context.closePath();
-        context.restoreGState();
+        context.closePath()
+        context.restoreGState()
     }
     
     static func create(_ radius: Int, source: NSImage) -> NSImage {

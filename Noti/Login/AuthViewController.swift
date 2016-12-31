@@ -30,7 +30,7 @@ class AuthViewController: NSViewController, WebFrameLoadDelegate {
     
     func webView(_ sender: WebView!, didFinishLoadFor frame: WebFrame!) {
         //remove fugly loader that is stuck on page, even after loading (pushbullet get your shit together pls ty)
-        sender.stringByEvaluatingJavaScript(from: "var uglyDivs = document.querySelectorAll(\"#onecup .agree-page div:not(#header), #onecup .agree-page #header\"); if(uglyDivs.length > 0) for (var i = 0; i < uglyDivs.length; i++) uglyDivs[i].remove()")
+        sender.stringByEvaluatingJavaScript(from: "var uglyDivs = document.querySelectorAll(\"#onecup .agree-page div:not(#header), #onecup .agree-page #header\") if(uglyDivs.length > 0) for (var i = 0 i < uglyDivs.length i++) uglyDivs[i].remove()")
 
         if let ds = frame.dataSource,
             let url = ds.response.url,

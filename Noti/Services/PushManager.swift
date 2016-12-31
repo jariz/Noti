@@ -67,10 +67,9 @@ class PushManager: NSObject, WebSocketDelegate {
     }
     
     func initCrypt() {
-        let keyData = UserDefaults.standard.object(forKey: "secureKey") as? Data
-        if keyData != nil {
-            let key = keyData?.toArray()
-            self.crypt = Crypt(key: key!)
+        if let keyData = UserDefaults.standard.object(forKey: "secureKey") as? Data {
+            let key = keyData.toArray()
+            self.crypt = Crypt(key: key)
             print("Encryption enabled!")
         } else {
             self.crypt = nil
@@ -83,11 +82,11 @@ class PushManager: NSObject, WebSocketDelegate {
         var object:[String: AnyObject] = [
             "title": state as AnyObject
         ]
-        if image != nil {
-            object["image"] = image!
+        if let image = image {
+            object["image"] = image
         }
-        if disabled != nil {
-            object["disabled"] = disabled as AnyObject?
+        if let disabled = disabled as AnyObject? {
+            object["disabled"] = disabled
         }
         NotificationCenter.default.post(name: Notification.Name(rawValue: "StateChange"), object: object)
     }
@@ -123,8 +122,8 @@ class PushManager: NSObject, WebSocketDelegate {
         
         if(!self.killed) {
             print("Reconnecting in 5 sec")
-            if error != nil {
-                setState(state: "Disconnected: \(error!.localizedFailureReason != nil ? error!.localizedFailureReason! : error!.localizedDescription), retrying...", disabled: true)
+            if let error = error {
+                setState(state: "Disconnected: \(error.localizedFailureReason ?? error.localizedDescription), retrying...", disabled: true)
             }
             else {
                 setState(state: "Disconnected, retrying...", disabled: true)
@@ -158,14 +157,14 @@ class PushManager: NSObject, WebSocketDelegate {
                 NSUserNotificationCenter.default.deliver(noti)
             }
 
-            if crypt != nil {
-                let decrypted = crypt?.decryptMessage(push["ciphertext"].string!)
-                if decrypted == nil {
-                    warnUser()
-                } else {
-                    message["push"] = JSON.parse(decrypted!)
+            if let crypt = self.crypt {
+                let decrypted = crypt.decryptMessage(push["ciphertext"].string!)
+                if let decrypted = decrypted {
+                    message["push"] = JSON.parse(decrypted)
                     //handle decrypted message
                     websocketDidReceiveMessage(socket: socket, text: message.rawString()!)
+                } else {
+                    warnUser()
                 }
             } else {
                 warnUser()
@@ -185,7 +184,7 @@ class PushManager: NSObject, WebSocketDelegate {
                 notification.informativeText = push["body"].string
                 notification.identifier = push["notification_id"].string
                 let omitAppNameDefaultExists = userDefaults.object(forKey: "omitAppName") != nil
-                let omitAppName = omitAppNameDefaultExists ? userDefaults.bool(forKey: "omitAppName") : false;
+                let omitAppName = omitAppNameDefaultExists ? userDefaults.bool(forKey: "omitAppName") : false
                 if !omitAppName {
                     notification.subtitle = push["application_name"].string
                 }
@@ -194,7 +193,7 @@ class PushManager: NSObject, WebSocketDelegate {
 
                     let data = Data(base64Encoded: icon, options: NSData.Base64DecodingOptions(rawValue: 0))!
                     let roundedImagesDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
-                    let roundedImages = roundedImagesDefaultExists ? userDefaults.bool(forKey: "roundedImages") : true;
+                    let roundedImages = roundedImagesDefaultExists ? userDefaults.bool(forKey: "roundedImages") : true
                     var img = NSImage(data: data)!
                     if roundedImages {
                         img = RoundedImage.create(Int(img.size.width) / 2, source: img)
@@ -225,12 +224,12 @@ class PushManager: NSObject, WebSocketDelegate {
                 }
 
                 let soundDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
-                let sound = soundDefaultExists ? userDefaults.string(forKey: "sound") : "Glass";
+                let sound = soundDefaultExists ? userDefaults.string(forKey: "sound") : "Glass"
 
                 notification.soundName = sound
 
                 NSUserNotificationCenter.default.deliver(notification)
-                break;
+                break
             case "dismissal":
                 //loop through current user notifications, if identifier matches, remove it
                 for noti in NSUserNotificationCenter.default.deliveredNotifications {
@@ -369,10 +368,10 @@ extension PushManager: NSUserNotificationCenterDelegate {
                 if let result = response.result.value {
                     let mapping = JSON.parse(result)
 
-                    var indexToBeRemoved = -1, i = -1;
+                    var indexToBeRemoved = -1, i = -1
 
                     for item in self.pushHistory {
-                        i += 1;
+                        i += 1
                         guard item["notification_id"].string == notification.identifier && item["type"].string == "mirror" else {
                             continue
                         }
@@ -385,12 +384,12 @@ extension PushManager: NSUserNotificationCenterDelegate {
                                 }
                             }
 
-                            indexToBeRemoved = i;
-                            break;
+                            indexToBeRemoved = i
+                            break
                         }
                     }
                     if indexToBeRemoved != -1 {
-                        self.pushHistory.remove(at: indexToBeRemoved);
+                        self.pushHistory.remove(at: indexToBeRemoved)
                     }
                 }
         }

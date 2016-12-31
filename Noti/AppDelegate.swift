@@ -42,11 +42,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func displayPreferencesWindow() {
-        if(pushManager == nil) {
+        guard pushManager != nil else {
             let alert = NSAlert()
             alert.messageText = "Please authorize Noti before changing it's preferences."
             alert.runModal()
-            return;
+            return
         }
 
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
