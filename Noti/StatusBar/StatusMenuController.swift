@@ -10,20 +10,17 @@ import Foundation
 import Cocoa
 import ImageIO
 
-class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
+class StatusMenuController: NSObject, NSUserNotificationCenterDelegate, NSWindowDelegate {
     let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
     @IBOutlet weak var menu: NSMenu!
     @IBOutlet weak var menuItem: NSMenuItem!
-    var appDelegate: AppDelegate?;
     
     override func awakeFromNib() {
         print("StatusMenuController alive")
         
-        appDelegate = NSApplication.shared().delegate as? AppDelegate
-        
         if let button = statusItem.button {
             button.image = NSImage(named: "StatusBarButtonImageFail")
-            statusItem.menu = menu;
+            statusItem.menu = menu
             button.appearsDisabled = true
         }
         menuItem.isEnabled = true
@@ -56,6 +53,30 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
             }
         }
     }
+
+    @IBAction func openSms(_ sender: AnyObject?) {
+        let token = UserDefaults.standard.string(forKey: "token")
+
+        if let token = token {
+            let deviceService = DeviceService(token: token)
+            deviceService.fetchDevices(callback: { devices in
+                guard let device = devices.first else {
+                    print("No devices with SMS found")
+                    return
+                }
+                let smsService = SmsService(token: token, device: device)
+                let window = MessagingWindow(windowNibName: "MessagingWindow")
+                window.setup(smsService: smsService)
+
+                SharedAppDelegate.messagingWindow = window
+
+                NSApplication.shared().activate(ignoringOtherApps: true)
+                window.showWindow(self)
+                window.window?.delegate = self
+                window.window?.makeKeyAndOrderFront(self)
+            })
+        }
+    }
     
     @IBAction func reauthorize(_ sender: AnyObject?) {
         let alert = NSAlert()
@@ -65,16 +86,20 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
         alert.addButton(withTitle: "No")
         if(alert.runModal() == NSAlertFirstButtonReturn) {
             //delete token & restart push manager
-            appDelegate!.userDefaults.removeObject(forKey: "token")
-            appDelegate!.loadPushManager()
+            UserDefaults.standard.removeObject(forKey: "token")
+            SharedAppDelegate.loadPushManager()
         }
     }
-    
+
     @IBAction func preferences(_ sender: AnyObject?) {
-        appDelegate!.displayPreferencesWindow()
+        SharedAppDelegate.displayPreferencesWindow()
     }
     
     @IBAction func quit(_ sender: AnyObject?) {
         NSApplication.shared().terminate(self)
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        SharedAppDelegate.messagingWindow = nil
     }
 }

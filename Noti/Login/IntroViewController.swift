@@ -9,12 +9,13 @@
 import Cocoa
 
 class IntroViewController: NSViewController {
-    var awc:NSWindowController?;
+
+    var awc:NSWindowController?
     
     override func viewDidAppear() {
         if (self.view.window != nil) {
             self.view.window!.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
-            self.view.window!.titlebarAppearsTransparent = true;
+            self.view.window!.titlebarAppearsTransparent = true
             self.view.window!.isMovableByWindowBackground = true
             self.view.window!.invalidateShadow()
         }
@@ -22,9 +23,9 @@ class IntroViewController: NSViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(IntroViewController.authSuccess(_:)), name:NSNotification.Name(rawValue: "AuthSuccess"), object: nil)
     }
     
-    @IBOutlet weak var authBtn:NSButton!;
-    @IBOutlet weak var authTxt:NSTextField!;
-    @IBOutlet weak var authImg:NSImageView!;
+    @IBOutlet weak var authBtn:NSButton!
+    @IBOutlet weak var authTxt:NSTextField!
+    @IBOutlet weak var authImg:NSImageView!
     
     func authSuccess(_ notification: Notification) {
         authBtn.isEnabled = false
