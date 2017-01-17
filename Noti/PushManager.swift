@@ -144,6 +144,9 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                             break;
                         }
                     }
+                    else if item["iden"].string == notification.identifier && item["type"].string == "link" {           // Url type act different
+                        NSWorkspace.shared().open(URL(string: item["url"].string!)!)
+                    }
                 }
                 break;
             case .contentsClicked:
@@ -156,6 +159,9 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     }
                 }
                 
+                
+                
+                // Call the default action (whatsapp web, messenger, ...)
                 Alamofire.request("https://update.pushbullet.com/android_mapping.json")
                     .responseString { response in
                         if let result = response.result.value {
@@ -322,6 +328,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                             .responseString { response in
                                 if let result = response.result.value {
                                     let push = JSON.parse(result)["pushes"][0]  // get ["pushes"]
+                                    self.pushHistory.append(push)
                                     self.center.deliver(self.createNotification(push: push))
                                 }
                             };
@@ -429,11 +436,22 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     // Used in mirror and subtipe:push
     internal func createNotification(push : JSON) -> NSUserNotification{
         let notification = NSUserNotification()
-        notification.otherButtonTitle = "Dismiss    "
         notification.actionButtonTitle = "Show"
-        notification.title = push["title"].string
-        notification.informativeText = push["body"].string
-        notification.identifier = push["notification_id"].string
+        if let url = push["url"].string {                       // Special type of Noti: url type
+            notification.title = "Url"
+            notification.informativeText = url
+        }
+        else{                                                   // Normal notification with title and text
+            notification.title = push["title"].string
+            notification.informativeText = push["body"].string
+            notification.otherButtonTitle = "Dismiss    "
+        }
+        if let id = push["iden"].string{                        // id can be "iden"
+            notification.identifier = id
+        }
+        else{                                                   // or it can be "notification_id"
+            notification.identifier = push["notification_id"].string
+        }
         let omitAppNameDefaultExists = userDefaults.object(forKey: "omitAppName") != nil
         let omitAppName = omitAppNameDefaultExists ? userDefaults.bool(forKey: "omitAppName") : false;
         if !omitAppName {
