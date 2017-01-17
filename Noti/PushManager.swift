@@ -147,6 +147,9 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     else if item["iden"].string == notification.identifier && item["type"].string == "link" {           // Url type act different
                         NSWorkspace.shared().open(URL(string: item["url"].string!)!)
                     }
+                    else if item["iden"].string == notification.identifier && item["type"].string == "file" {           // This works only for image file retrieval it's different
+                        NSWorkspace.shared().open(URL(string: item["image_url"].string!)!)
+                    }
                 }
                 break;
             case .contentsClicked:
@@ -440,6 +443,10 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         if let url = push["url"].string {                       // Special type of Noti: url type
             notification.title = "Url"
             notification.informativeText = url
+        }
+        if let file = push["file_name"].string {                // Special type of Noti: file type
+            notification.title = file
+            notification.informativeText = push["file_type"].string
         }
         else{                                                   // Normal notification with title and text
             notification.title = push["title"].string
