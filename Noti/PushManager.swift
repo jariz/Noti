@@ -157,7 +157,6 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 if (notification.identifier?.characters.count)! > 12 {
                     let index = notification.identifier!.characters.index(notification.identifier!.startIndex, offsetBy: 12)
                     if notification.identifier?.substring(to: index) == "noti_encrypt" {
-                        
                         return
                     }
                 }
@@ -322,15 +321,12 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     }
                     else if(subtype == "push"){
                         // When you receive a tickle message, it means that a resource of the type push has changed.
-                        // Request the pushes that have changed since the last time we received them:
-                        // https://api.pushbullet.com/v2/pushes?modified_after=1399008037.849
+                        // Request only the latest push: In this case can be a file, a link or just a simple note
                         let headers = ["Access-Token": token];
-                        var now = Date()    
-                        now -= 5.0         // Here we take the latest 5 seconds TODO: better handling
-                        Alamofire.request("https://api.pushbullet.com/v2/pushes?modified_after="+now.timeIntervalSince1970.description, headers: headers)
+                        Alamofire.request("https://api.pushbullet.com/v2/pushes?limit=1", headers: headers)
                             .responseString { response in
                                 if let result = response.result.value {
-                                    let push = JSON.parse(result)["pushes"][0]  // get ["pushes"]
+                                    let push = JSON.parse(result)["pushes"][0]    // get ["pushes"] array
                                     self.pushHistory.append(push)
                                     self.center.deliver(self.createNotification(push: push))
                                 }
@@ -444,7 +440,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             notification.title = "Url"
             notification.informativeText = url
         }
-        if let file = push["file_name"].string {                // Special type of Noti: file type
+        else if let file = push["file_name"].string {           // Special type of Noti: file type
             notification.title = file
             notification.informativeText = push["file_type"].string
         }
