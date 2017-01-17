@@ -311,6 +311,26 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     if(subtype == "account") {
                         getUserInfo(nil)
                     }
+                    else if(subtype == "push"){
+                        // When you receive a tickle message, it means that a resource of the type push has changed.
+                        // Request the pushes that have changed since the last time we received them:
+                        // https://api.pushbullet.com/v2/pushes?modified_after=1399008037.849
+                        let headers = ["Access-Token": token];
+                        var now = Date()    
+                        now -= 5.0         // Here we take the latest 5 seconds TODO: better handling
+                        Alamofire.request("https://api.pushbullet.com/v2/pushes?modified_after="+now.timeIntervalSince1970.description, headers: headers)
+                            .responseString { response in
+                                if let result = response.result.value {
+                                    let push = JSON.parse(result)["pushes"][0]  // get ["pushes"]
+                                    let noti = NSUserNotification()
+                                    noti.title = push["title"].string
+                                    noti.informativeText = push["body"].string
+                                    noti.identifier = push["notification_id"].string
+                                    self.center.deliver(noti)
+                                }
+                            };
+                        
+                    }
                 }
                 break;
             case "push":
