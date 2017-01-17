@@ -322,11 +322,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                             .responseString { response in
                                 if let result = response.result.value {
                                     let push = JSON.parse(result)["pushes"][0]  // get ["pushes"]
-                                    let noti = NSUserNotification()
-                                    noti.title = push["title"].string
-                                    noti.informativeText = push["body"].string
-                                    noti.identifier = push["notification_id"].string
-                                    self.center.deliver(noti)
+                                    self.center.deliver(self.createNotification(push: push))
                                 }
                             };
                         
@@ -366,57 +362,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 if let pushType = push["type"].string {
                     switch(pushType) {
                     case "mirror":
-                        let notification = NSUserNotification()
-                        notification.otherButtonTitle = "Dismiss    "
-                        notification.actionButtonTitle = "Show"
-                        notification.title = push["title"].string
-                        notification.informativeText = push["body"].string
-                        notification.identifier = push["notification_id"].string
-                        let omitAppNameDefaultExists = userDefaults.object(forKey: "omitAppName") != nil
-                        let omitAppName = omitAppNameDefaultExists ? userDefaults.bool(forKey: "omitAppName") : false;
-                        if !omitAppName {
-                            notification.subtitle = push["application_name"].string
-                        }
-                        
-                        if let icon = push["icon"].string {
-                            
-                            let data = Data(base64Encoded: icon, options: NSData.Base64DecodingOptions(rawValue: 0))!
-                            let roundedImagesDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
-                            let roundedImages = roundedImagesDefaultExists ? userDefaults.bool(forKey: "roundedImages") : true;
-                            var img = NSImage(data: data)!
-                            if roundedImages {
-                                img = RoundedImage.create(Int(img.size.width) / 2, source: img)
-                            }
-                            notification.setValue(img, forKeyPath: "_identityImage")
-                            notification.setValue(false, forKeyPath: "_identityImageHasBorder")
-                        }
-                        
-                        notification.setValue(true, forKeyPath: "_showsButtons")
-                        
-                        if push["conversation_iden"].exists() {
-                            notification.hasReplyButton = true
-                        }
-                        
-                        if let actions = push["actions"].array {
-                            if(actions.count == 1 || !(userInfo!["pro"].exists())) {
-                                notification.actionButtonTitle = actions[0]["label"].string!
-                            } else {
-                                var titles = [String]()
-                                for action in actions {
-                                    titles.append(action["label"].string!)
-                                }
-                                notification.actionButtonTitle = "Actions"
-                                notification.setValue(true, forKeyPath: "_alwaysShowAlternateActionMenu")
-                                notification.setValue(titles, forKeyPath: "_alternateActionButtonTitles")
-                            }
-                        }
-                        
-                        let soundDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
-                        let sound = soundDefaultExists ? userDefaults.string(forKey: "sound") : "Glass";
-                        
-                        notification.soundName = sound
-                        
-                        center.deliver(notification)
+                        center.deliver(createNotification(push: push))
                         break;
                     case "dismissal":
                         //loop through current user notifications, if identifier matches, remove it
@@ -477,6 +423,61 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             }
         }
         
+    }
+    
+    // Given a push JSON object from Pushbullet create a notification
+    // Used in mirror and subtipe:push
+    internal func createNotification(push : JSON) -> NSUserNotification{
+        let notification = NSUserNotification()
+        notification.otherButtonTitle = "Dismiss    "
+        notification.actionButtonTitle = "Show"
+        notification.title = push["title"].string
+        notification.informativeText = push["body"].string
+        notification.identifier = push["notification_id"].string
+        let omitAppNameDefaultExists = userDefaults.object(forKey: "omitAppName") != nil
+        let omitAppName = omitAppNameDefaultExists ? userDefaults.bool(forKey: "omitAppName") : false;
+        if !omitAppName {
+            notification.subtitle = push["application_name"].string
+        }
+        
+        if let icon = push["icon"].string {
+            let data = Data(base64Encoded: icon, options: NSData.Base64DecodingOptions(rawValue: 0))!
+            let roundedImagesDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
+            let roundedImages = roundedImagesDefaultExists ? userDefaults.bool(forKey: "roundedImages") : true;
+            var img = NSImage(data: data)!
+            if roundedImages {
+                img = RoundedImage.create(Int(img.size.width) / 2, source: img)
+            }
+            notification.setValue(img, forKeyPath: "_identityImage")
+            notification.setValue(false, forKeyPath: "_identityImageHasBorder")
+        }
+        
+        notification.setValue(true, forKeyPath: "_showsButtons")
+        
+        if push["conversation_iden"].exists() {
+            notification.hasReplyButton = true
+        }
+        
+        if let actions = push["actions"].array {
+            if(actions.count == 1 || !(userInfo!["pro"].exists())) {
+                notification.actionButtonTitle = actions[0]["label"].string!
+            } else {
+                var titles = [String]()
+                for action in actions {
+                    titles.append(action["label"].string!)
+                }
+                notification.actionButtonTitle = "Actions"
+                notification.setValue(true, forKeyPath: "_alwaysShowAlternateActionMenu")
+                notification.setValue(titles, forKeyPath: "_alternateActionButtonTitles")
+            }
+        }
+        
+        let soundDefaultExists = userDefaults.object(forKey: "sound") != nil                // issue 38 https://github.com/jariz/Noti/issues/38
+        let sound = soundDefaultExists ? userDefaults.string(forKey: "sound") : "Glass";
+        
+        notification.soundName = sound
+        
+        return notification
     }
     
     func websocketDidReceiveData(socket: WebSocket, data: Data) {
