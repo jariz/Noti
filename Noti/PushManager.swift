@@ -148,7 +148,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         NSWorkspace.shared().open(URL(string: item["url"].string!)!)
                     }
                     else if item["iden"].string == notification.identifier && item["type"].string == "file" {           // This works only for image file retrieval it's different
-                        NSWorkspace.shared().open(URL(string: item["image_url"].string!)!)
+                        NSWorkspace.shared().open(URL(string: item["file_url"].string!)!)
                     }
                 }
                 break;
