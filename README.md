@@ -18,6 +18,7 @@ Or, simply use [homebrew cask](https://github.com/caskroom/homebrew-cask/blob/ma
 ```
 brew cask install noti
 ```
+(homebrew must be updated, if not  ```brew update```)
 
 
 ##Features
