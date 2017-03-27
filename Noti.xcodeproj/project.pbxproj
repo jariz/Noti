@@ -8,37 +8,68 @@
 
 /* Begin PBXBuildFile section */
 		162B919FE4321ED9BC86AD09 /* Pods_Noti.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2C7615AF577BAEAF32B8516 /* Pods_Noti.framework */; };
-		4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */; };
-		4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3D21D23E6AB005F1641 /* IntroViewController.swift */; };
-		498275F21D35101A00AB7029 /* Crypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498275F11D35101A00AB7029 /* Crypt.swift */; };
-		498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498499FD1D1BE46F007FC963 /* PushManager.swift */; };
+		1D1F989C1E18325B00DEBC7C /* Crypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F98991E18325B00DEBC7C /* Crypt.swift */; };
+		1D3E1EA51E1831D300438152 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3E1E931E1831D300438152 /* AuthViewController.swift */; };
+		1D3E1EA61E1831D300438152 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3E1E941E1831D300438152 /* IntroViewController.swift */; };
+		1D3E1EA71E1831D300438152 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3E1E971E1831D300438152 /* PreferencesViewController.swift */; };
+		1D3E1EA81E1831D300438152 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D3E1E9A1E1831D300438152 /* Assets.xcassets */; };
+		1D3E1EA91E1831D300438152 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D3E1E9B1E1831D300438152 /* Info.plist */; };
+		1D3E1EAC1E1831D300438152 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3E1EA01E1831D300438152 /* StatusMenuController.swift */; };
+		1D3E1EAD1E1831D300438152 /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3E1EA21E1831D300438152 /* RoundedImage.swift */; };
+		1D8D63631E18338700AE71D1 /* HackyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D63621E18338700AE71D1 /* HackyRepository.swift */; };
+		1D8D63681E1833AC00AE71D1 /* DeviceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D63641E1833AC00AE71D1 /* DeviceService.swift */; };
+		1D8D636A1E1833AC00AE71D1 /* SmsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D63661E1833AC00AE71D1 /* SmsService.swift */; };
+		1D8D636B1E1833AC00AE71D1 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D63671E1833AC00AE71D1 /* UserService.swift */; };
+		1D8D63761E1834A600AE71D1 /* MessageTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D636C1E1834A600AE71D1 /* MessageTableCellView.swift */; };
+		1D8D63771E1834A600AE71D1 /* MessageTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D8D636D1E1834A600AE71D1 /* MessageTableCellView.xib */; };
+		1D8D63781E1834A600AE71D1 /* MessagingWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D636E1E1834A600AE71D1 /* MessagingWindow.swift */; };
+		1D8D63791E1834A600AE71D1 /* MessagingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D8D636F1E1834A600AE71D1 /* MessagingWindow.xib */; };
+		1D8D637A1E1834A600AE71D1 /* ThreadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D63701E1834A600AE71D1 /* ThreadsViewController.swift */; };
+		1D8D637B1E1834A600AE71D1 /* ThreadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D8D63711E1834A600AE71D1 /* ThreadsViewController.xib */; };
+		1D8D637C1E1834A600AE71D1 /* ThreadTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D63721E1834A600AE71D1 /* ThreadTableCellView.swift */; };
+		1D8D637D1E1834A600AE71D1 /* ThreadTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D8D63731E1834A600AE71D1 /* ThreadTableCellView.xib */; };
+		1D8D637E1E1834A600AE71D1 /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D63741E1834A600AE71D1 /* ThreadViewController.swift */; };
+		1D8D637F1E1834A600AE71D1 /* ThreadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D8D63751E1834A600AE71D1 /* ThreadViewController.xib */; };
+		1D8D63811E18366100AE71D1 /* PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D63801E18366100AE71D1 /* PushManager.swift */; };
+		1D8D63831E183A2100AE71D1 /* EphemeralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D63821E183A2100AE71D1 /* EphemeralService.swift */; };
 		499DD0F61D2ACA0B00BB759D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 499DD0F51D2ACA0B00BB759D /* .gitignore */; };
-		499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */; };
-		499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */; };
 		49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */; };
-		49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */; };
-		49B43B101D1ADFB200A24585 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B0F1D1ADFB200A24585 /* Assets.xcassets */; };
 		49B43B131D1ADFB200A24585 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B111D1ADFB200A24585 /* Main.storyboard */; };
 		49B43B1B1D1AE0F200A24585 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B1A1D1AE0F200A24585 /* Podfile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0F7FEC6A353CB04118DDEBF6 /* Pods-Noti.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Noti.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Noti/Pods-Noti.debug.xcconfig"; sourceTree = "<group>"; };
-		4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
-		4901D3D21D23E6AB005F1641 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
-		498275F11D35101A00AB7029 /* Crypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypt.swift; sourceTree = "<group>"; };
-		498499FD1D1BE46F007FC963 /* PushManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushManager.swift; sourceTree = "<group>"; };
+		1D1F98991E18325B00DEBC7C /* Crypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypt.swift; sourceTree = "<group>"; };
+		1D3E1E931E1831D300438152 /* AuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		1D3E1E941E1831D300438152 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		1D3E1E971E1831D300438152 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
+		1D3E1E9A1E1831D300438152 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1D3E1E9B1E1831D300438152 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1D3E1EA01E1831D300438152 /* StatusMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
+		1D3E1EA21E1831D300438152 /* RoundedImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
+		1D8D63621E18338700AE71D1 /* HackyRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HackyRepository.swift; sourceTree = "<group>"; };
+		1D8D63641E1833AC00AE71D1 /* DeviceService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceService.swift; sourceTree = "<group>"; };
+		1D8D63661E1833AC00AE71D1 /* SmsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmsService.swift; sourceTree = "<group>"; };
+		1D8D63671E1833AC00AE71D1 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		1D8D636C1E1834A600AE71D1 /* MessageTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTableCellView.swift; sourceTree = "<group>"; };
+		1D8D636D1E1834A600AE71D1 /* MessageTableCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageTableCellView.xib; sourceTree = "<group>"; };
+		1D8D636E1E1834A600AE71D1 /* MessagingWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagingWindow.swift; sourceTree = "<group>"; };
+		1D8D636F1E1834A600AE71D1 /* MessagingWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagingWindow.xib; sourceTree = "<group>"; };
+		1D8D63701E1834A600AE71D1 /* ThreadsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadsViewController.swift; sourceTree = "<group>"; };
+		1D8D63711E1834A600AE71D1 /* ThreadsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThreadsViewController.xib; sourceTree = "<group>"; };
+		1D8D63721E1834A600AE71D1 /* ThreadTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadTableCellView.swift; sourceTree = "<group>"; };
+		1D8D63731E1834A600AE71D1 /* ThreadTableCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThreadTableCellView.xib; sourceTree = "<group>"; };
+		1D8D63741E1834A600AE71D1 /* ThreadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
+		1D8D63751E1834A600AE71D1 /* ThreadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThreadViewController.xib; sourceTree = "<group>"; };
+		1D8D63801E18366100AE71D1 /* PushManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushManager.swift; sourceTree = "<group>"; };
+		1D8D63821E183A2100AE71D1 /* EphemeralService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralService.swift; sourceTree = "<group>"; };
 		499DD0F51D2ACA0B00BB759D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ephemerals.swift; sourceTree = "<group>"; };
-		499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
 		49AE29361DB4D19500B61843 /* libSwCrypt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSwCrypt.a; path = SwCrypt/build/Debug/libSwCrypt.a; sourceTree = "<group>"; };
 		49AE29531DB4D86E00B61843 /* SwCrypt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwCrypt.framework; path = SwCrypt/build/Debug/SwCrypt.framework; sourceTree = "<group>"; };
 		49B43B081D1ADFB200A24585 /* Noti.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Noti.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
-		49B43B0F1D1ADFB200A24585 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49B43B121D1ADFB200A24585 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		49B43B141D1ADFB200A24585 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49B43B1A1D1AE0F200A24585 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6B7FFCDDDAD1689D9A4BE578 /* Pods-Noti.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Noti.release.xcconfig"; path = "Pods/Target Support Files/Pods-Noti/Pods-Noti.release.xcconfig"; sourceTree = "<group>"; };
 		B2C7615AF577BAEAF32B8516 /* Pods_Noti.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Noti.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +87,93 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D1F98981E18325B00DEBC7C /* Encryption */ = {
+			isa = PBXGroup;
+			children = (
+				1D1F98991E18325B00DEBC7C /* Crypt.swift */,
+			);
+			path = Encryption;
+			sourceTree = "<group>";
+		};
+		1D3E1E921E1831D300438152 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1D3E1E931E1831D300438152 /* AuthViewController.swift */,
+				1D3E1E941E1831D300438152 /* IntroViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		1D3E1E951E1831D300438152 /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				1D8D636C1E1834A600AE71D1 /* MessageTableCellView.swift */,
+				1D8D636D1E1834A600AE71D1 /* MessageTableCellView.xib */,
+				1D8D636E1E1834A600AE71D1 /* MessagingWindow.swift */,
+				1D8D636F1E1834A600AE71D1 /* MessagingWindow.xib */,
+				1D8D63701E1834A600AE71D1 /* ThreadsViewController.swift */,
+				1D8D63711E1834A600AE71D1 /* ThreadsViewController.xib */,
+				1D8D63721E1834A600AE71D1 /* ThreadTableCellView.swift */,
+				1D8D63731E1834A600AE71D1 /* ThreadTableCellView.xib */,
+				1D8D63741E1834A600AE71D1 /* ThreadViewController.swift */,
+				1D8D63751E1834A600AE71D1 /* ThreadViewController.xib */,
+			);
+			path = Messaging;
+			sourceTree = "<group>";
+		};
+		1D3E1E961E1831D300438152 /* Preferencs */ = {
+			isa = PBXGroup;
+			children = (
+				1D3E1E971E1831D300438152 /* PreferencesViewController.swift */,
+			);
+			path = Preferencs;
+			sourceTree = "<group>";
+		};
+		1D3E1E981E1831D300438152 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				1D8D63621E18338700AE71D1 /* HackyRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		1D3E1E991E1831D300438152 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1D3E1E9A1E1831D300438152 /* Assets.xcassets */,
+				1D3E1E9B1E1831D300438152 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1D3E1E9C1E1831D300438152 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1D8D63821E183A2100AE71D1 /* EphemeralService.swift */,
+				1D8D63801E18366100AE71D1 /* PushManager.swift */,
+				1D8D63641E1833AC00AE71D1 /* DeviceService.swift */,
+				1D8D63661E1833AC00AE71D1 /* SmsService.swift */,
+				1D8D63671E1833AC00AE71D1 /* UserService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1D3E1E9F1E1831D300438152 /* StatusBar */ = {
+			isa = PBXGroup;
+			children = (
+				1D3E1EA01E1831D300438152 /* StatusMenuController.swift */,
+			);
+			path = StatusBar;
+			sourceTree = "<group>";
+		};
+		1D3E1EA11E1831D300438152 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1D3E1EA21E1831D300438152 /* RoundedImage.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		49B43AFF1D1ADFB100A24585 = {
 			isa = PBXGroup;
 			children = (
@@ -79,17 +197,17 @@
 		49B43B0A1D1ADFB200A24585 /* Noti */ = {
 			isa = PBXGroup;
 			children = (
+				1D1F98981E18325B00DEBC7C /* Encryption */,
+				1D3E1E921E1831D300438152 /* Login */,
+				1D3E1E951E1831D300438152 /* Messaging */,
+				1D3E1E961E1831D300438152 /* Preferencs */,
+				1D3E1E981E1831D300438152 /* Repositories */,
+				1D3E1E991E1831D300438152 /* Resources */,
+				1D3E1E9C1E1831D300438152 /* Services */,
+				1D3E1E9F1E1831D300438152 /* StatusBar */,
+				1D3E1EA11E1831D300438152 /* Utils */,
 				49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */,
-				49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */,
-				49B43B0F1D1ADFB200A24585 /* Assets.xcassets */,
 				49B43B111D1ADFB200A24585 /* Main.storyboard */,
-				4901D3D21D23E6AB005F1641 /* IntroViewController.swift */,
-				49B43B141D1ADFB200A24585 /* Info.plist */,
-				498499FD1D1BE46F007FC963 /* PushManager.swift */,
-				4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */,
-				499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */,
-				499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */,
-				498275F11D35101A00AB7029 /* Crypt.swift */,
 			);
 			path = Noti;
 			sourceTree = "<group>";
@@ -176,10 +294,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D8D63791E1834A600AE71D1 /* MessagingWindow.xib in Resources */,
 				499DD0F61D2ACA0B00BB759D /* .gitignore in Resources */,
 				49B43B1B1D1AE0F200A24585 /* Podfile in Resources */,
-				49B43B101D1ADFB200A24585 /* Assets.xcassets in Resources */,
+				1D3E1EA81E1831D300438152 /* Assets.xcassets in Resources */,
+				1D8D637F1E1834A600AE71D1 /* ThreadViewController.xib in Resources */,
+				1D8D637B1E1834A600AE71D1 /* ThreadsViewController.xib in Resources */,
+				1D8D63771E1834A600AE71D1 /* MessageTableCellView.xib in Resources */,
+				1D3E1EA91E1831D300438152 /* Info.plist in Resources */,
 				49B43B131D1ADFB200A24585 /* Main.storyboard in Resources */,
+				1D8D637D1E1834A600AE71D1 /* ThreadTableCellView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,14 +362,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */,
-				499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */,
-				498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */,
-				49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */,
-				4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */,
+				1D8D637A1E1834A600AE71D1 /* ThreadsViewController.swift in Sources */,
+				1D8D637C1E1834A600AE71D1 /* ThreadTableCellView.swift in Sources */,
+				1D3E1EA61E1831D300438152 /* IntroViewController.swift in Sources */,
+				1D8D63761E1834A600AE71D1 /* MessageTableCellView.swift in Sources */,
+				1D3E1EA51E1831D300438152 /* AuthViewController.swift in Sources */,
 				49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */,
-				499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */,
-				498275F21D35101A00AB7029 /* Crypt.swift in Sources */,
+				1D8D636A1E1833AC00AE71D1 /* SmsService.swift in Sources */,
+				1D3E1EA71E1831D300438152 /* PreferencesViewController.swift in Sources */,
+				1D8D637E1E1834A600AE71D1 /* ThreadViewController.swift in Sources */,
+				1D8D63631E18338700AE71D1 /* HackyRepository.swift in Sources */,
+				1D8D636B1E1833AC00AE71D1 /* UserService.swift in Sources */,
+				1D8D63831E183A2100AE71D1 /* EphemeralService.swift in Sources */,
+				1D3E1EAC1E1831D300438152 /* StatusMenuController.swift in Sources */,
+				1D8D63781E1834A600AE71D1 /* MessagingWindow.swift in Sources */,
+				1D3E1EAD1E1831D300438152 /* RoundedImage.swift in Sources */,
+				1D1F989C1E18325B00DEBC7C /* Crypt.swift in Sources */,
+				1D8D63811E18366100AE71D1 /* PushManager.swift in Sources */,
+				1D8D63681E1833AC00AE71D1 /* DeviceService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,7 +491,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SwCrypt/build/Debug",
 				);
-				INFOPLIST_FILE = Noti/Info.plist;
+				INFOPLIST_FILE = Noti/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -382,7 +516,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SwCrypt/build/Debug",
 				);
-				INFOPLIST_FILE = Noti/Info.plist;
+				INFOPLIST_FILE = Noti/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

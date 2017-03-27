@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
@@ -671,6 +671,12 @@
                                 <action selector="preferences:" target="8Oo-kR-uVy" id="Zqn-ka-UXi"/>
                             </connections>
                         </menuItem>
+                        <menuItem title="Open SMS" enabled="NO" id="cnB-5h-jcc" userLabel="Open SMS">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="openSms:" target="8Oo-kR-uVy" id="dTf-qy-47I"/>
+                            </connections>
+                        </menuItem>
                         <menuItem title="Check for updates" keyEquivalent="U" id="4ao-7K-V6w">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
@@ -1027,7 +1033,7 @@ Whenever your devices have something to say, I'll let you know!</string>
         </scene>
     </scenes>
     <resources>
-        <image name="IntroLogo" width="256" height="256"/>
+        <image name="IntroLogo" width="128" height="128"/>
         <image name="NSMenuOnStateTemplate" width="12" height="12"/>
         <image name="NotiEncryption" width="128" height="128"/>
         <image name="NotiGeneral" width="128" height="128"/>
