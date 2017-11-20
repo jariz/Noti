@@ -11,7 +11,7 @@ import Cocoa
 import ImageIO
 
 class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
-    let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     @IBOutlet weak var menu: NSMenu!
     @IBOutlet weak var menuItem: NSMenuItem!
     var appDelegate: AppDelegate?;
@@ -19,10 +19,10 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
     override func awakeFromNib() {
         print("StatusMenuController alive")
         
-        appDelegate = NSApplication.shared().delegate as? AppDelegate
+        appDelegate = NSApplication.shared.delegate as? AppDelegate
         
         if let button = statusItem.button {
-            button.image = NSImage(named: "StatusBarButtonImageFail")
+            button.image = NSImage(named: NSImage.Name(rawValue: "StatusBarButtonImageFail"))
             statusItem.menu = menu;
             button.appearsDisabled = true
         }
@@ -39,7 +39,7 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
             }
             
             if let disabled = info["disabled"] as? Bool {
-                statusItem.button?.image = NSImage(named: disabled ? "StatusBarButtonImageFail" : "StatusBarButtonImage")
+                statusItem.button?.image = NSImage(named: NSImage.Name(rawValue: disabled ? "StatusBarButtonImageFail" : "StatusBarButtonImage"))
                 statusItem.button?.appearsDisabled = disabled
             }
             
@@ -63,7 +63,7 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
         alert.informativeText = "This will remove all asocciated PushBullet account information from Noti."
         alert.addButton(withTitle: "Yes")
         alert.addButton(withTitle: "No")
-        if(alert.runModal() == NSAlertFirstButtonReturn) {
+        if(alert.runModal() == NSApplication.ModalResponse.alertFirstButtonReturn) {
             //delete token & restart push manager
             appDelegate!.userDefaults.removeObject(forKey: "token")
             appDelegate!.loadPushManager()
@@ -75,6 +75,6 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     @IBAction func quit(_ sender: AnyObject?) {
-        NSApplication.shared().terminate(self)
+        NSApplication.shared.terminate(self)
     }
 }

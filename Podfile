@@ -7,7 +7,7 @@ target 'Noti' do
     pod 'SwiftyJSON', '~> 3.1.1'
     pod 'Alamofire', '~> 4.0.1'
     pod 'Sparkle', '~> 1.14.0'
-    pod 'CryptoSwift', '~> 0.6.1'
+    pod 'CryptoSwift', '~> 0.8.0'
     pod 'SwCrypt', '4.0.0'
     pod 'EMCLoginItem', '~> 1.0.1'
 end

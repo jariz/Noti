@@ -166,7 +166,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                                 i += 1;
                                 if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
                                     if let url = mapping[item["package_name"].string!].string {
-                                        NSWorkspace.shared().open(URL(string: url)!)
+                                        NSWorkspace.shared.open(URL(string: url)!)
                                         
                                         for noti in center.deliveredNotifications {
                                             if noti.identifier == item["notification_id"].string {
