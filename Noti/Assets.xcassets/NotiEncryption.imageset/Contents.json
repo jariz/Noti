@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "mac",
-      "filename" : "IntroLogo-1.png",
+      "filename" : "NotiEncryption.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
-      "filename" : "IntroLogo@2x-1.png",
+      "filename" : "NotiEncryption@2x.png",
       "scale" : "2x"
     }
   ],

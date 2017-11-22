@@ -31,7 +31,7 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(StatusMenuController.stateChange(_:)), name:NSNotification.Name(rawValue: "StateChange"), object: nil)
     }
     
-    func stateChange(_ notification: Notification) {
+    @objc func stateChange(_ notification: Notification) {
         
         if let info = notification.object as? [String: AnyObject] {
             if let title = info["title"] as? String {

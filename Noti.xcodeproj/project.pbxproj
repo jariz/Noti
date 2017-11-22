@@ -10,6 +10,7 @@
 		162B919FE4321ED9BC86AD09 /* Pods_Noti.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2C7615AF577BAEAF32B8516 /* Pods_Noti.framework */; };
 		4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */; };
 		4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901D3D21D23E6AB005F1641 /* IntroViewController.swift */; };
+		491E887B1FC588F70048215F /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491E887A1FC588F70048215F /* PreferencesViewController.swift */; };
 		498275F21D35101A00AB7029 /* Crypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498275F11D35101A00AB7029 /* Crypt.swift */; };
 		498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498499FD1D1BE46F007FC963 /* PushManager.swift */; };
 		499DD0F61D2ACA0B00BB759D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 499DD0F51D2ACA0B00BB759D /* .gitignore */; };
@@ -26,6 +27,7 @@
 		0F7FEC6A353CB04118DDEBF6 /* Pods-Noti.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Noti.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Noti/Pods-Noti.debug.xcconfig"; sourceTree = "<group>"; };
 		4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
 		4901D3D21D23E6AB005F1641 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		491E887A1FC588F70048215F /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		498275F11D35101A00AB7029 /* Crypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypt.swift; sourceTree = "<group>"; };
 		498499FD1D1BE46F007FC963 /* PushManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushManager.swift; sourceTree = "<group>"; };
 		499DD0F51D2ACA0B00BB759D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				49B43B0F1D1ADFB200A24585 /* Assets.xcassets */,
 				49B43B111D1ADFB200A24585 /* Main.storyboard */,
 				4901D3D21D23E6AB005F1641 /* IntroViewController.swift */,
+				491E887A1FC588F70048215F /* PreferencesViewController.swift */,
 				49B43B141D1ADFB200A24585 /* Info.plist */,
 				498499FD1D1BE46F007FC963 /* PushManager.swift */,
 				4901D3CE1D1C121D005F1641 /* StatusMenuController.swift */,
@@ -228,7 +231,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -240,6 +243,7 @@
 			files = (
 				4901D3D31D23E6AB005F1641 /* IntroViewController.swift in Sources */,
 				499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */,
+				491E887B1FC588F70048215F /* PreferencesViewController.swift in Sources */,
 				498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */,
 				49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */,
 				4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */,

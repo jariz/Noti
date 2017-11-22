@@ -14,6 +14,7 @@ import SwiftyJSON
 import Alamofire
 
 class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate {
+    
     var socket:WebSocket?
     let center = NSUserNotificationCenter.default
     var pushHistory = [JSON]()
@@ -259,7 +260,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         socket!.connect()
     }
     
-    internal func websocketDidConnect(socket: WebSocket) {
+    func websocketDidConnect(socket: WebSocketClient) {
         if let photo = self.userInfo!["image_url"].string {
             Alamofire.request(photo)
                 .responseData { response in
@@ -273,7 +274,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         print("PushManager", "Is connected")
     }
     
-    internal func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
+    func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
         print("PushManager", "Is disconnected: \(error?.localizedDescription)")
         
         if(!self.killed) {
@@ -298,7 +299,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         userDefaults.set(key, forKey: "secureKey")
     }
     
-    internal func websocketDidReceiveMessage(socket: WebSocket, text: String) {
+    func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
         print("PushManager", "receive", text)
         
         var message = JSON.parse(text);
@@ -459,7 +460,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
     }
     
-    func websocketDidReceiveData(socket: WebSocket, data: Data) {
+    func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
         
     }
 }
