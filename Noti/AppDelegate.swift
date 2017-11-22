@@ -55,15 +55,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pwc!.showWindow(self)
         pwc!.window?.makeKeyAndOrderFront(self)
     }
-
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         loadPushManager()
     }
-
+    
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
-
-
+    
+    
 }
-

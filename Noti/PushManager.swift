@@ -279,7 +279,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         if(!self.killed) {
             print("Reconnecting in 5 sec");
             if error != nil {
-                setState("Disconnected: \(error!.localizedFailureReason != nil ? error!.localizedFailureReason! : error!.localizedDescription), retrying...", disabled: true)
+                setState("Disconnected: \(error!.localizedDescription), retrying...", disabled: true)
             }
             else {
                 setState("Disconnected, retrying...", disabled: true)
