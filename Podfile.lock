@@ -5,7 +5,7 @@ PODS:
   - Sparkle (1.14.0)
   - Starscream (3.0.2)
   - SwCrypt (4.0.0)
-  - SwiftyJSON (3.1.1)
+  - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - Alamofire (~> 4.0.1)
@@ -23,8 +23,8 @@ SPEC CHECKSUMS:
   Sparkle: ccd95233b12a3e3d4eeb55ff01dd4c8bb8188b07
   Starscream: b512c62f6706421221b5ceb2ba01a9f58aca5bea
   SwCrypt: 107e7a971662bd10212a696354f943b127de371d
-  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
 PODFILE CHECKSUM: 171514eacd4bbc8b6f9bae9ce9370f8630759e82
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.2.0.rc.1
