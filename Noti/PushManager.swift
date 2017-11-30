@@ -25,12 +25,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     var killed = false
     let userDefaults = UserDefaults.standard
     var userState: String
+    var nopTimer : Timer
     
     init(token: String) {
         self.token = token
         self.socket = WebSocket(url: URL(string: "wss://stream.pushbullet.com/websocket/" + token)!)
         self.ephemerals = Ephemerals(token: token);
         self.userState = "Initializing..."
+        self.nopTimer = Timer()
         super.init()
         
         center.delegate = self
@@ -43,12 +45,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     deinit {
-        disconnect()
+        disconnect(attemptReconnect:false)
     }
     
-    internal func disconnect() {
+    @objc internal func disconnect(attemptReconnect: Bool = true) {
         //stops attempts to reconnect
-        self.killed = true
+        if !attemptReconnect {
+            self.killed = true
+        }
         
         //disconnect now!
         self.socket!.disconnect(forceTimeout: 0)
@@ -97,8 +101,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     self.userInfo = JSON(parseJSON:info)
                     
                     if self.userInfo!["error"].exists() {
-                        self.killed = true
-                        self.disconnect()
+                        self.disconnect(attemptReconnect:false)
                         self.setState("Disconnected: " + self.userInfo!["error"]["message"].string!, disabled: true)
                     } else {
                         if callback != nil {
@@ -109,7 +112,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 } else if response.result.error != nil {
                     if callback == nil {
                         self.killed = true
-                        self.disconnect()
+                        self.disconnect(attemptReconnect:false)
                         self.setState("Failed to log in.")
                     } else {
                         self.setState("Failed to log in, retrying in 2 seconds...")
@@ -305,7 +308,9 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
         if let type = message["type"].string {
             switch type {
-                
+            case "nop":
+                self.nopTimer.invalidate()  // Resetting nopTimer
+                self.nopTimer = Timer.scheduledTimer(timeInterval: 35.0, target: self, selector: #selector(PushManager.disconnect), userInfo: nil, repeats: false)
             case "tickle":
                 if let subtype = message["subtype"].string {
                     if(subtype == "account") {
