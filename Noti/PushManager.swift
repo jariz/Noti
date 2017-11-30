@@ -25,12 +25,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     var killed = false
     let userDefaults = UserDefaults.standard
     var userState: String
+    var nopTimer : Timer
     
     init(token: String) {
         self.token = token
         self.socket = WebSocket(url: URL(string: "wss://stream.pushbullet.com/websocket/" + token)!)
         self.ephemerals = Ephemerals(token: token);
         self.userState = "Initializing..."
+        self.nopTimer = Timer()
         super.init()
         
         center.delegate = self
@@ -52,6 +54,13 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
         //disconnect now!
         self.socket!.disconnect(forceTimeout: 0)
+    }
+    
+    @objc internal func nopTimeout(){
+        // On nopTimeout somenthing append at the network:
+        // Pushbullet is unreachable
+        print("nopTimeout triggered")
+        self.socket!.disconnect(forceTimeout: 0)    //disconnect now! (will trigger automatical reconnect)
     }
     
     func initCrypt() {
@@ -305,7 +314,9 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         
         if let type = message["type"].string {
             switch type {
-                
+            case "nop":
+                self.nopTimer.invalidate()  // Resetting nopTimer
+                self.nopTimer = Timer.scheduledTimer(timeInterval: 35.0, target: self, selector: #selector(PushManager.nopTimeout), userInfo: nil, repeats: false)
             case "tickle":
                 if let subtype = message["subtype"].string {
                     if(subtype == "account") {
