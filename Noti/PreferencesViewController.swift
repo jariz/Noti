@@ -37,7 +37,7 @@ open class PreferencesViewController: NSViewController {
     }
     
     @IBAction func encryptionEnabledChange(_ sender: NSButton) {
-        encryptionField.isEnabled = sender.state == .off
+        encryptionField.isEnabled = sender.state == .on
         if sender.state == .off {
             UserDefaults.standard.removeObject(forKey: "secureKey")
             appDelegate?.pushManager?.initCrypt()

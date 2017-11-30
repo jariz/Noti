@@ -331,10 +331,8 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 }
                 break;
             case "push":
-                let push = message["push"];
+                let push = checkEncryption(message["push"]);    // Check for encryption and decrypt
                 pushHistory.append(push)
-                
-                message["push"] = checkEncryption(push) // Check for encryption and decrypt
                 
                 if let pushType = push["type"].string {
                     switch(pushType) {
@@ -509,9 +507,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     warnUser()
                     return JSON.null
                 } else {
-                    var newMsg = message
-                    newMsg["push"] = JSON(parseJSON:decrypted!)
-                    return newMsg
+                    return JSON(parseJSON:decrypted!)
                 }
             } else {
                 warnUser()
