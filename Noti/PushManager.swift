@@ -45,22 +45,17 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     deinit {
-        disconnect()
+        disconnect(attemptReconnect:false)
     }
     
-    internal func disconnect() {
+    @objc internal func disconnect(attemptReconnect: Bool = true) {
         //stops attempts to reconnect
-        self.killed = true
+        if !attemptReconnect {
+            self.killed = true
+        }
         
         //disconnect now!
         self.socket!.disconnect(forceTimeout: 0)
-    }
-    
-    @objc internal func nopTimeout(){
-        // On nopTimeout somenthing append at the network:
-        // Pushbullet is unreachable
-        print("nopTimeout triggered")
-        self.socket!.disconnect(forceTimeout: 0)    //disconnect now! (will trigger automatical reconnect)
     }
     
     func initCrypt() {
@@ -106,8 +101,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     self.userInfo = JSON(parseJSON:info)
                     
                     if self.userInfo!["error"].exists() {
-                        self.killed = true
-                        self.disconnect()
+                        self.disconnect(attemptReconnect:false)
                         self.setState("Disconnected: " + self.userInfo!["error"]["message"].string!, disabled: true)
                     } else {
                         if callback != nil {
@@ -118,7 +112,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 } else if response.result.error != nil {
                     if callback == nil {
                         self.killed = true
-                        self.disconnect()
+                        self.disconnect(attemptReconnect:false)
                         self.setState("Failed to log in.")
                     } else {
                         self.setState("Failed to log in, retrying in 2 seconds...")
@@ -316,7 +310,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             switch type {
             case "nop":
                 self.nopTimer.invalidate()  // Resetting nopTimer
-                self.nopTimer = Timer.scheduledTimer(timeInterval: 35.0, target: self, selector: #selector(PushManager.nopTimeout), userInfo: nil, repeats: false)
+                self.nopTimer = Timer.scheduledTimer(timeInterval: 35.0, target: self, selector: #selector(PushManager.disconnect), userInfo: nil, repeats: false)
             case "tickle":
                 if let subtype = message["subtype"].string {
                     if(subtype == "account") {
