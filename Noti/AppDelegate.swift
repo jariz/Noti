@@ -8,6 +8,8 @@
 
 import Cocoa
 import Starscream
+import SwiftyBeaver
+let log = SwiftyBeaver.self
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -57,6 +59,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let file = FileDestination()  // Adding file destination of log output
+        var url = try? FileManager.default.url(for: .libraryDirectory,      // getting ~/Library/
+                                               in: .userDomainMask,
+                                               appropriateFor: nil,
+                                               create: true)
+        url = url?.appendingPathComponent("Logs/Noti.log")
+        file.logFileURL = url
+        log.addDestination(file)
         loadPushManager()
     }
     
