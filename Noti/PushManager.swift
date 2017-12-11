@@ -102,6 +102,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     self.userInfo = JSON(parseJSON:info)
                     
                     if self.userInfo!["error"].exists() {
+                        log.error("user info error during request of user info: \(self.userInfo!["error"]["message"].string!)")
                         self.disconnect(attemptReconnect:false)
                         self.setState("Disconnected: " + self.userInfo!["error"]["message"].string!, disabled: true)
                     } else {
@@ -111,6 +112,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     }
                     
                 } else if response.result.error != nil {
+                    log.error("response error requesting user info")
                     if callback == nil {
                         self.killed = true
                         self.disconnect(attemptReconnect:false)

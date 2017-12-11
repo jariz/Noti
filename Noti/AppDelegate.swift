@@ -59,7 +59,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let file = FileDestination()  // Adding file destination of log output
+        let file = FileDestination()                                        // Adding file destination of log output
+        let console = ConsoleDestination()                                  // log to Xcode Console
+        console.format = "$DHH:mm:ss$d $L $M"                               // clean console log
         var url = try? FileManager.default.url(for: .libraryDirectory,      // getting ~/Library/
                                                in: .userDomainMask,
                                                appropriateFor: nil,
@@ -67,11 +69,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         url = url?.appendingPathComponent("Logs/Noti.log")
         file.logFileURL = url
         log.addDestination(file)
+        log.addDestination(console)
         loadPushManager()
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
+        log.info("Going to terminate Noti.")
     }
     
     
