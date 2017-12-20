@@ -14,6 +14,7 @@ import SwiftyJSON
 import Alamofire
 
 class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate {
+    
     var socket:WebSocket?
     let center = NSUserNotificationCenter.default
     var pushHistory = [JSON]()
@@ -24,30 +25,35 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     var killed = false
     let userDefaults = UserDefaults.standard
     var userState: String
+    var nopTimer : Timer
     
     init(token: String) {
         self.token = token
         self.socket = WebSocket(url: URL(string: "wss://stream.pushbullet.com/websocket/" + token)!)
         self.ephemerals = Ephemerals(token: token);
         self.userState = "Initializing..."
+        self.nopTimer = Timer()
         super.init()
         
         center.delegate = self
         self.initCrypt()
         
-        print("Getting user info...")
+        log.debug("Getting user info...")
         getUserInfo {
             self.connect()
         }
     }
     
     deinit {
-        disconnect()
+        disconnect(attemptReconnect:false)
     }
     
-    internal func disconnect() {
+    @objc internal func disconnect(attemptReconnect: Bool = true) {
+        log.warning("Trigged disconnect")
         //stops attempts to reconnect
-        self.killed = true
+        if !attemptReconnect {
+            self.killed = true
+        }
         
         //disconnect now!
         self.socket!.disconnect(forceTimeout: 0)
@@ -58,10 +64,10 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         if keyData != nil {
             let key = keyData?.toArray()
             self.crypt = Crypt(key: key!)
-            print("Encryption enabled!")
+            log.debug("Encryption enabled!")
         } else {
             self.crypt = nil
-            print("Encryption not enabled")
+            log.debug("Encryption not enabled")
         }
         self.ephemerals.crypt = self.crypt
     }
@@ -93,11 +99,11 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             .responseString { response in
                 if let info = response.result.value {
                     debugPrint(info)
-                    self.userInfo = JSON.parse(info)
+                    self.userInfo = JSON(parseJSON:info)
                     
                     if self.userInfo!["error"].exists() {
-                        self.killed = true
-                        self.disconnect()
+                        log.error("user info error during request of user info: \(self.userInfo!["error"]["message"].string!)")
+                        self.disconnect(attemptReconnect:false)
                         self.setState("Disconnected: " + self.userInfo!["error"]["message"].string!, disabled: true)
                     } else {
                         if callback != nil {
@@ -106,9 +112,10 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     }
                     
                 } else if response.result.error != nil {
+                    log.error("response error requesting user info")
                     if callback == nil {
                         self.killed = true
-                        self.disconnect()
+                        self.disconnect(attemptReconnect:false)
                         self.setState("Failed to log in.")
                     } else {
                         self.setState("Failed to log in, retrying in 2 seconds...")
@@ -137,6 +144,8 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 print("action")
                 print("alternate?", alternateAction)
                 
+                handleNotification(notification)
+                
                 for item in pushHistory {
                     if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
                         if let actions = item["actions"].array {
@@ -147,26 +156,23 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 }
                 break;
             case .contentsClicked:
-                //check if this is the encryption warning notification
-                if (notification.identifier?.characters.count)! > 12 {
-                    let index = notification.identifier!.characters.index(notification.identifier!.startIndex, offsetBy: 12)
-                    if notification.identifier?.substring(to: index) == "noti_encrypt" {
-                        
-                        return
-                    }
+                //check if this is the encryption warning notification (Swift4 new strings)
+                if(notification.identifier?.hasPrefix("noti_encrypt"))!{
+                    return
                 }
+                handleNotification(notification)
                 
                 Alamofire.request("https://update.pushbullet.com/android_mapping.json")
                     .responseString { response in
                         if let result = response.result.value {
-                            let mapping = JSON.parse(result)
+                            let mapping = JSON(parseJSON:result)
                             
                             var indexToBeRemoved = -1, i = -1;
                             for item in self.pushHistory {
                                 i += 1;
                                 if item["notification_id"].string == notification.identifier && item["type"].string == "mirror" {
                                     if let url = mapping[item["package_name"].string!].string {
-                                        NSWorkspace.shared().open(URL(string: url)!)
+                                        NSWorkspace.shared.open(URL(string: url)!)
                                         
                                         for noti in center.deliveredNotifications {
                                             if noti.identifier == item["notification_id"].string {
@@ -249,7 +255,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 
             break;
         default:
-            print("did not understand activation type", notification.activationType.rawValue)
+            log.error("did not understand activation type \(notification.activationType.rawValue)")
             break;
         }
     }
@@ -259,7 +265,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         socket!.connect()
     }
     
-    internal func websocketDidConnect(socket: WebSocket) {
+    func websocketDidConnect(socket: WebSocketClient) {
         if let photo = self.userInfo!["image_url"].string {
             Alamofire.request(photo)
                 .responseData { response in
@@ -270,14 +276,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         }
         
         
-        print("PushManager", "Is connected")
+        log.debug("PushManager", "Is connected")
     }
     
-    internal func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
-        print("PushManager", "Is disconnected: \(error?.localizedDescription)")
+    func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
+        log.warning("PushManager", "Is disconnected: \(error?.localizedDescription)")
         
         if(!self.killed) {
-            print("Reconnecting in 5 sec");
+            log.info("Reconnecting in 5 sec");
             if error != nil {
                 setState("Disconnected: \(error!.localizedDescription), retrying...", disabled: true)
             }
@@ -287,7 +293,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             
             Timer.scheduledTimer(timeInterval: 5, target: BlockOperation(block: self.connect), selector: #selector(Operation.main), userInfo: nil, repeats: false)
         } else {
-            print("Not going to reconnect: I'm killed")
+            log.error("Not going to reconnect: I'm killed")
             setState("Disconnected. Please log in.", disabled: true)
         }
     }
@@ -298,105 +304,43 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         userDefaults.set(key, forKey: "secureKey")
     }
     
-    internal func websocketDidReceiveMessage(socket: WebSocket, text: String) {
+    func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
         print("PushManager", "receive", text)
         
-        var message = JSON.parse(text);
+        var message = JSON(parseJSON:text);
         
         if let type = message["type"].string {
             switch type {
-                
+            case "nop":
+                self.nopTimer.invalidate()  // Resetting nopTimer
+                self.nopTimer = Timer.scheduledTimer(timeInterval: 35.0, target: self, selector: #selector(PushManager.disconnect), userInfo: nil, repeats: false)
             case "tickle":
                 if let subtype = message["subtype"].string {
                     if(subtype == "account") {
                         getUserInfo(nil)
                     }
+                    else if(subtype == "push"){
+                        // When you receive a tickle message, it means that a resource of the type push has changed.
+                        // Request only the latest push: In this case can be a file, a link or just a simple note
+                        Alamofire.request("https://api.pushbullet.com/v2/pushes?limit=1", headers: ["Access-Token": token])
+                            .responseString { response in
+                                if let result = response.result.value {
+                                    let push = JSON(parseJSON:result)["pushes"][0]    // get ["pushes"][latest] array
+                                    self.pushHistory.append(push)
+                                    self.center.deliver(self.createNotification(push))
+                                }
+                        };
+                    }
                 }
                 break;
             case "push":
-                let push = message["push"];
+                let push = checkEncryption(message["push"]);    // Check for encryption and decrypt
                 pushHistory.append(push)
-                
-                if push["encrypted"].exists() && push["encrypted"].bool! {
-                    func warnUser() {
-                        let noti = NSUserNotification()
-                        noti.title = "I received data I couldn't understand!"
-                        noti.informativeText = "It appears you're using encryption, click to open settings & set password."
-                        noti.actionButtonTitle = "Settings"
-                        noti.identifier = "noti_encrypt" + String(arc4random())
-                        center.deliver(noti)
-                    }
-                    
-                    if crypt != nil {
-                        let decrypted = crypt?.decryptMessage(push["ciphertext"].string!)
-                        if decrypted == nil {
-                            warnUser()
-                        } else {
-                            message["push"] = JSON.parse(decrypted!)
-                            //handle decrypted message
-                            websocketDidReceiveMessage(socket: socket, text: message.rawString()!)
-                        }
-                    } else {
-                        warnUser()
-                    }
-                    
-                    return
-                }
                 
                 if let pushType = push["type"].string {
                     switch(pushType) {
                     case "mirror":
-                        let notification = NSUserNotification()
-                        notification.otherButtonTitle = "Dismiss    "
-                        notification.actionButtonTitle = "Show"
-                        notification.title = push["title"].string
-                        notification.informativeText = push["body"].string
-                        notification.identifier = push["notification_id"].string
-                        let omitAppNameDefaultExists = userDefaults.object(forKey: "omitAppName") != nil
-                        let omitAppName = omitAppNameDefaultExists ? userDefaults.bool(forKey: "omitAppName") : false;
-                        if !omitAppName {
-                            notification.subtitle = push["application_name"].string
-                        }
-                        
-                        if let icon = push["icon"].string {
-                            
-                            let data = Data(base64Encoded: icon, options: NSData.Base64DecodingOptions(rawValue: 0))!
-                            let roundedImagesDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
-                            let roundedImages = roundedImagesDefaultExists ? userDefaults.bool(forKey: "roundedImages") : true;
-                            var img = NSImage(data: data)!
-                            if roundedImages {
-                                img = RoundedImage.create(Int(img.size.width) / 2, source: img)
-                            }
-                            notification.setValue(img, forKeyPath: "_identityImage")
-                            notification.setValue(false, forKeyPath: "_identityImageHasBorder")
-                        }
-                        
-                        notification.setValue(true, forKeyPath: "_showsButtons")
-                        
-                        if push["conversation_iden"].exists() {
-                            notification.hasReplyButton = true
-                        }
-                        
-                        if let actions = push["actions"].array {
-                            if(actions.count == 1 || !(userInfo!["pro"].exists())) {
-                                notification.actionButtonTitle = actions[0]["label"].string!
-                            } else {
-                                var titles = [String]()
-                                for action in actions {
-                                    titles.append(action["label"].string!)
-                                }
-                                notification.actionButtonTitle = "Actions"
-                                notification.setValue(true, forKeyPath: "_alwaysShowAlternateActionMenu")
-                                notification.setValue(titles, forKeyPath: "_alternateActionButtonTitles")
-                            }
-                        }
-                        
-                        let soundDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
-                        let sound = soundDefaultExists ? userDefaults.string(forKey: "sound") : "Glass";
-                        
-                        notification.soundName = sound
-                        
-                        center.deliver(notification)
+                        center.deliver(createNotification(push))
                         break;
                     case "dismissal":
                         //loop through current user notifications, if identifier matches, remove it
@@ -446,20 +390,137 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         }
                         break;
                     default:
-                        print("Unknown type of push", pushType)
+                        log.warning("Unknown type of push", pushType)
                         break;
                     }
                 }
                 break;
             default:
-                print("Unknown type of message ", message["type"].string!)
+                log.warning("Unknown type of message ", message["type"].string!)
                 break;
             }
         }
         
     }
     
-    func websocketDidReceiveData(socket: WebSocket, data: Data) {
+    // Given a push JSON object from Pushbullet create a notification
+    // Used in mirror and subtype:push
+    internal func createNotification(_ msg : JSON) -> NSUserNotification{
+        var push = checkEncryption(msg)                                     // If it's encrypted, decrypt it
+        let notification = NSUserNotification()
+        if(push == JSON.null || push["dismissed"].boolValue){               // If somenthing went wrong or it's already dismissed
+            return notification
+        }
+        notification.actionButtonTitle = "Show"
+        if let type = push["type"].string {
+            print(push)
+            switch type {
+            case "link" :                                                     // Special type of Noti: url type
+                notification.title = "Url"                                  // We have no title here
+                notification.informativeText = push["url"].string
+                notification.identifier = "noti_url" + push["iden"].string!     // We need to recognize it after user pressed
+            case "file" :                                                   // Special type of Noti: file type
+                notification.title = push["file_name"].string               // Using the file name as title
+                notification.informativeText = push["image_url"].string     // and file type as description
+                notification.identifier = "noti_file" + push["iden"].string!
+            case "note" :                                                   // Special type of Noti: note (seems like a self message)
+                notification.title = push["sender_name"].string
+                notification.informativeText = push["body"].string
+                notification.identifier = "noti_note" + push["iden"].string!
+                notification.actionButtonTitle = "Dismiss"
+            default :                                                       // Default: all other Noty
+                notification.title = push["title"].string
+                notification.informativeText = push["body"].string
+                notification.otherButtonTitle = "Dismiss    "
+                notification.identifier = push["notification_id"].string
+            }
+        }
+        let omitAppNameDefaultExists = userDefaults.object(forKey: "omitAppName") != nil
+        let omitAppName = omitAppNameDefaultExists ? userDefaults.bool(forKey: "omitAppName") : false;
+        if !omitAppName {
+            notification.subtitle = push["application_name"].string
+        }
+        
+        if let icon = push["icon"].string {
+            let data = Data(base64Encoded: icon, options: NSData.Base64DecodingOptions(rawValue: 0))!
+            let roundedImagesDefaultExists = userDefaults.object(forKey: "roundedImages") != nil
+            let roundedImages = roundedImagesDefaultExists ? userDefaults.bool(forKey: "roundedImages") : true;
+            var img = NSImage(data: data)!
+            if roundedImages {
+                img = RoundedImage.create(Int(img.size.width) / 2, source: img)
+            }
+            notification.setValue(img, forKeyPath: "_identityImage")
+            notification.setValue(false, forKeyPath: "_identityImageHasBorder")
+        }
+        
+        notification.setValue(true, forKeyPath: "_showsButtons")
+        
+        if push["conversation_iden"].exists() {
+            notification.hasReplyButton = true
+        }
+        
+        if let actions = push["actions"].array {
+            if(actions.count == 1 || !(userInfo!["pro"].exists())) {
+                notification.actionButtonTitle = actions[0]["label"].string!
+            } else {
+                var titles = [String]()
+                for action in actions {
+                    titles.append(action["label"].string!)
+                }
+                notification.actionButtonTitle = "Actions"
+                notification.setValue(true, forKeyPath: "_alwaysShowAlternateActionMenu")
+                notification.setValue(titles, forKeyPath: "_alternateActionButtonTitles")
+            }
+        }
+        
+        let soundDefaultExists = userDefaults.object(forKey: "sound") != nil                // issue 38 https://github.com/jariz/Noti/issues/38
+        let sound = soundDefaultExists ? userDefaults.string(forKey: "sound") : "Glass";
+        
+        notification.soundName = sound
+        
+        return notification
+    }
+    
+    internal func handleNotification(_ notification : NSUserNotification){
+        //check if it's opening an url type of notification
+        if((notification.identifier?.hasPrefix("noti_url"))! || (notification.identifier?.hasPrefix("noti_file"))!){
+            NSWorkspace.shared.open(URL(string: notification.informativeText!)!)    // Just open the message URL
+            return
+        }
+    }
+    
+    // Given a push JSON object return:
+    // 1- The input object if no encryption is present
+    // 2- A new object with "push" parameter decrypted
+    // 3- JSON.null and display a notification of error
+    internal func checkEncryption(_ message : JSON) -> JSON{
+        if message["encrypted"].exists() && message["encrypted"].bool! {
+            func warnUser() {
+                let noti = NSUserNotification()
+                noti.title = "I received data I couldn't understand!"
+                noti.informativeText = "It appears you're using encryption, click to open settings & set password."
+                noti.actionButtonTitle = "Settings"
+                noti.identifier = "noti_encrypt" + String(arc4random())
+                center.deliver(noti)
+            }
+            
+            if crypt != nil {
+                let decrypted = crypt?.decryptMessage(message["ciphertext"].string!)
+                if decrypted == nil {
+                    warnUser()
+                    return JSON.null
+                } else {
+                    return JSON(parseJSON:decrypted!)
+                }
+            } else {
+                warnUser()
+                return JSON.null
+            }
+        }
+        return message
+    }
+    
+    func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
         
     }
 }
