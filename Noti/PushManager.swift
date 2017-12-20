@@ -38,7 +38,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         center.delegate = self
         self.initCrypt()
         
-        print("Getting user info...")
+        log.debug("Getting user info...")
         getUserInfo {
             self.connect()
         }
@@ -49,6 +49,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     @objc internal func disconnect(attemptReconnect: Bool = true) {
+        log.warning("Trigged disconnect")
         //stops attempts to reconnect
         if !attemptReconnect {
             self.killed = true
@@ -63,10 +64,10 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         if keyData != nil {
             let key = keyData?.toArray()
             self.crypt = Crypt(key: key!)
-            print("Encryption enabled!")
+            log.debug("Encryption enabled!")
         } else {
             self.crypt = nil
-            print("Encryption not enabled")
+            log.debug("Encryption not enabled")
         }
         self.ephemerals.crypt = self.crypt
     }
@@ -101,6 +102,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     self.userInfo = JSON(parseJSON:info)
                     
                     if self.userInfo!["error"].exists() {
+                        log.error("user info error during request of user info: \(self.userInfo!["error"]["message"].string!)")
                         self.disconnect(attemptReconnect:false)
                         self.setState("Disconnected: " + self.userInfo!["error"]["message"].string!, disabled: true)
                     } else {
@@ -110,6 +112,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                     }
                     
                 } else if response.result.error != nil {
+                    log.error("response error requesting user info")
                     if callback == nil {
                         self.killed = true
                         self.disconnect(attemptReconnect:false)
@@ -252,7 +255,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 
             break;
         default:
-            print("did not understand activation type", notification.activationType.rawValue)
+            log.error("did not understand activation type \(notification.activationType.rawValue)")
             break;
         }
     }
@@ -273,14 +276,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         }
         
         
-        print("PushManager", "Is connected")
+        log.debug("PushManager", "Is connected")
     }
     
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-        print("PushManager", "Is disconnected: \(error?.localizedDescription)")
+        log.warning("PushManager", "Is disconnected: \(error?.localizedDescription)")
         
         if(!self.killed) {
-            print("Reconnecting in 5 sec");
+            log.info("Reconnecting in 5 sec");
             if error != nil {
                 setState("Disconnected: \(error!.localizedDescription), retrying...", disabled: true)
             }
@@ -290,7 +293,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             
             Timer.scheduledTimer(timeInterval: 5, target: BlockOperation(block: self.connect), selector: #selector(Operation.main), userInfo: nil, repeats: false)
         } else {
-            print("Not going to reconnect: I'm killed")
+            log.error("Not going to reconnect: I'm killed")
             setState("Disconnected. Please log in.", disabled: true)
         }
     }
@@ -387,13 +390,13 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         }
                         break;
                     default:
-                        print("Unknown type of push", pushType)
+                        log.warning("Unknown type of push", pushType)
                         break;
                     }
                 }
                 break;
             default:
-                print("Unknown type of message ", message["type"].string!)
+                log.warning("Unknown type of message ", message["type"].string!)
                 break;
             }
         }
