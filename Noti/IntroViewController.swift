@@ -13,7 +13,7 @@ class IntroViewController: NSViewController {
     
     override func viewDidAppear() {
         if (self.view.window != nil) {
-            self.view.window!.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
+            self.view.window!.appearance = NSAppearance(named: NSAppearance.Name.vibrantDark)
             self.view.window!.titlebarAppearsTransparent = true;
             self.view.window!.isMovableByWindowBackground = true
             self.view.window!.invalidateShadow()
@@ -26,11 +26,11 @@ class IntroViewController: NSViewController {
     @IBOutlet weak var authTxt:NSTextField!;
     @IBOutlet weak var authImg:NSImageView!;
     
-    func authSuccess(_ notification: Notification) {
+    @objc func authSuccess(_ notification: Notification) {
         authBtn.isEnabled = false
         self.authTxt.alphaValue = 1
         self.authTxt.alphaValue = self.authBtn.alphaValue
-        self.view.window!.styleMask.subtract(NSClosableWindowMask)
+        //self.view.window!.styleMask.subtract(NSClosableWindowMask)
         
         NSAnimationContext.runAnimationGroup({ (context) -> Void in
             context.duration = 0.50
@@ -55,9 +55,9 @@ class IntroViewController: NSViewController {
     }
     
     @IBAction func startAuth(_ sender: AnyObject) {
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil)
         
-        awc = storyboard.instantiateController(withIdentifier: "AuthWindowController") as? NSWindowController
+        awc = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "AuthWindowController")) as? NSWindowController
         print("showWindow")
         awc!.showWindow(self)
     }
