@@ -48,15 +48,22 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         disconnect(attemptReconnect:false)
     }
     
+    @objc internal func disconnectForTimeout() {
+        log.warning("Disconnected for timeout (nop not received)")
+        disconnect(attemptReconnect: true)
+    }
+    
     @objc internal func disconnect(attemptReconnect: Bool = true) {
-        log.warning("Trigged disconnect")
+        log.warning("Trigged disconnect attemptReconnect:\(attemptReconnect)")
         //stops attempts to reconnect
         if !attemptReconnect {
             self.killed = true
         }
         
         //disconnect now!
-        self.socket!.disconnect(forceTimeout: 0)
+        if(self.socket!.isConnected){
+            self.socket!.disconnect(forceTimeout: 0)
+        }
     }
     
     func initCrypt() {
@@ -313,7 +320,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             switch type {
             case "nop":
                 self.nopTimer.invalidate()  // Resetting nopTimer
-                self.nopTimer = Timer.scheduledTimer(timeInterval: 35.0, target: self, selector: #selector(PushManager.disconnect), userInfo: nil, repeats: false)
+                self.nopTimer = Timer.scheduledTimer(timeInterval: 35.0, target: self, selector: #selector(PushManager.disconnectForTimeout), userInfo: nil, repeats: false)
             case "tickle":
                 if let subtype = message["subtype"].string {
                     if(subtype == "account") {
