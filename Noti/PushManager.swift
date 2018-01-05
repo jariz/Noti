@@ -286,7 +286,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-        log.warning("PushManager is disconnected: \(error!.localizedDescription)")
+        log.warning("PushManager is disconnected: \(error?.localizedDescription ?? "")")
         
         if(!self.killed) {
             log.info("Reconnecting in 5 sec");
