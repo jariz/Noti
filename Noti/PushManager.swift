@@ -54,14 +54,14 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     @objc internal func disconnect(attemptReconnect: Bool = true) {
-        log.warning("Trigged disconnect attemptReconnect:\(attemptReconnect)")
+        log.warning("Triggered disconnect attemptReconnect:\(attemptReconnect)")
         //stops attempts to reconnect
         if !attemptReconnect {
             self.killed = true
         }
         
         //disconnect now!
-        if(self.socket!.isConnected){
+        if self.socket!.isConnected {
             self.socket!.disconnect(forceTimeout: 0)
         }
     }
@@ -121,7 +121,6 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 } else if response.result.error != nil {
                     log.error("response error requesting user info")
                     if callback == nil {
-                        self.killed = true
                         self.disconnect(attemptReconnect:false)
                         self.setState("Failed to log in.")
                     } else {
@@ -283,11 +282,11 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         }
         
         
-        log.debug("PushManager", "Is connected")
+        log.debug("PushManager is connected")
     }
     
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-        log.warning("PushManager", "Is disconnected: \(error?.localizedDescription)")
+        log.warning("PushManager is disconnected: \(error!.localizedDescription)")
         
         if(!self.killed) {
             log.info("Reconnecting in 5 sec");
