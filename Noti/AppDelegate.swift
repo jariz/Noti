@@ -62,6 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let file = FileDestination()                                        // Adding file destination of log output
         let console = ConsoleDestination()                                  // log to Xcode Console
         console.format = "$DHH:mm:ss$d $L $M"                               // clean console log
+        file.format = "$Ddd-MM-yyyy HH:mm:ss$d $L $F:$l - $M"                     // clean file log format
         var url = try? FileManager.default.url(for: .libraryDirectory,      // getting ~/Library/
                                                in: .userDomainMask,
                                                appropriateFor: nil,

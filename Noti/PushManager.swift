@@ -38,7 +38,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         center.delegate = self
         self.initCrypt()
         
-        log.debug("Getting user info...")
+        log.debug("Init Noti")
         getUserInfo {
             self.connect()
         }
@@ -48,15 +48,22 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         disconnect(attemptReconnect:false)
     }
     
+    @objc internal func disconnectForTimeout() {
+        log.warning("Disconnected for timeout (nop not received)")
+        disconnect(attemptReconnect: true)
+    }
+    
     @objc internal func disconnect(attemptReconnect: Bool = true) {
-        log.warning("Trigged disconnect")
+        log.warning("Triggered disconnect attemptReconnect:\(attemptReconnect), isConnected:\(self.socket!.isConnected)")
         //stops attempts to reconnect
         if !attemptReconnect {
             self.killed = true
         }
         
         //disconnect now!
-        self.socket!.disconnect(forceTimeout: 0)
+        if self.socket!.isConnected {
+            self.socket!.disconnect(forceTimeout: 0)
+        }
     }
     
     func initCrypt() {
@@ -88,6 +95,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     
     var _callback:(() -> Void)? = nil
     func getUserInfo(_ callback: (() -> Void)?) {
+        log.debug("Getting user info...")
         //todo: this is kinda dirty ...
         self._callback = callback
         
@@ -114,7 +122,6 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 } else if response.result.error != nil {
                     log.error("response error requesting user info")
                     if callback == nil {
-                        self.killed = true
                         self.disconnect(attemptReconnect:false)
                         self.setState("Failed to log in.")
                     } else {
@@ -261,6 +268,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
     }
     
     func connect() {
+        log.debug("Connecting to Pushbullet")
         socket!.delegate = self
         socket!.connect()
     }
@@ -276,11 +284,11 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
         }
         
         
-        log.debug("PushManager", "Is connected")
+        log.debug("PushManager is connected")
     }
     
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-        log.warning("PushManager", "Is disconnected: \(error?.localizedDescription)")
+        log.warning("PushManager is disconnected: \(error?.localizedDescription ?? "")")
         
         if(!self.killed) {
             log.info("Reconnecting in 5 sec");
@@ -313,15 +321,17 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
             switch type {
             case "nop":
                 self.nopTimer.invalidate()  // Resetting nopTimer
-                self.nopTimer = Timer.scheduledTimer(timeInterval: 35.0, target: self, selector: #selector(PushManager.disconnect), userInfo: nil, repeats: false)
+                self.nopTimer = Timer.scheduledTimer(timeInterval: 35.0, target: self, selector: #selector(PushManager.disconnectForTimeout), userInfo: nil, repeats: false)
             case "tickle":
                 if let subtype = message["subtype"].string {
                     if(subtype == "account") {
+                        log.debug("TICKLE -> account")
                         getUserInfo(nil)
                     }
                     else if(subtype == "push"){
                         // When you receive a tickle message, it means that a resource of the type push has changed.
                         // Request only the latest push: In this case can be a file, a link or just a simple note
+                        log.debug("TICKLE -> push")
                         Alamofire.request("https://api.pushbullet.com/v2/pushes?limit=1", headers: ["Access-Token": token])
                             .responseString { response in
                                 if let result = response.result.value {
@@ -340,10 +350,12 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 if let pushType = push["type"].string {
                     switch(pushType) {
                     case "mirror":
+                        log.debug("PUSH -> mirror")
                         center.deliver(createNotification(push))
                         break;
                     case "dismissal":
                         //loop through current user notifications, if identifier matches, remove it
+                        log.debug("PUSH -> dismiss")
                         for noti in center.deliveredNotifications {
                             if noti.identifier == push["notification_id"].string {
                                 center.removeDeliveredNotification(noti)
@@ -364,6 +376,7 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                         
                         break;
                     case "sms_changed":
+                        log.debug("PUSH -> sms_changed")
                         if push["notifications"].exists() {
                             for sms in push["notifications"].array! {
                                 let notification = NSUserNotification()
