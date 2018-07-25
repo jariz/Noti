@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Noti/PushManager.swift"
-            timestampString = "504373796.799237"
+            timestampString = "535471172.913964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
-            landmarkName = "setPassword(password:)"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
+            landmarkName = "websocketDidDisconnect(socket:error:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

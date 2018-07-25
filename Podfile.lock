@@ -18,6 +18,18 @@ DEPENDENCIES:
   - SwiftyBeaver
   - SwiftyJSON (~> 3.1.1)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - CryptoSwift
+    - EMCLoginItem
+    - Sparkle
+    - Starscream
+    - SwiftyBeaver
+    - SwiftyJSON
+  https://github.com/jariz/Noti-Spec.git:
+    - SwCrypt
+
 SPEC CHECKSUMS:
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   CryptoSwift: f81907430ebbe38b8404b4f6fb40f3c576a8755f
@@ -30,4 +42,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7481dc9ca87f0ae2c2cf3cd704c80fb346debf7e
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.5.3
