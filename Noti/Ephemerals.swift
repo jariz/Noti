@@ -46,7 +46,7 @@ class Ephemerals: NSObject {
         
         Alamofire.request("https://api.pushbullet.com/v2/ephemerals", method: .post, parameters: body.dictionaryObject!, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
-                var result = JSON.parse(response.result.value!)
+                var result = JSON(parseJSON: response.result.value!)
                 if(response.response?.statusCode != 200) {
                     
                     let alert = NSAlert()
@@ -93,11 +93,11 @@ class Ephemerals: NSObject {
         Alamofire.request("https://api.pushbullet.com/v3/get-permanent", method: .post, parameters: body.dictionaryObject!, encoding: JSONEncoding.default, headers: headers)
             .responseString { response in
                 debugPrint(response)
-                var parsed = JSON.parse(response.result.value!)
+                var parsed = JSON(parseJSON: response.result.value!)
                 
                 //decrypt if needed....
                 if self.crypt != nil && parsed["data"]["encrypted"].exists() {
-                    parsed["data"] = JSON.parse((self.crypt!.decryptMessage(parsed["data"]["ciphertext"].string!))!)
+                    parsed["data"] = JSON(parseJSON: (self.crypt!.decryptMessage(parsed["data"]["ciphertext"].string!))!)
                 }
                 
                 if let threads = parsed["data"]["threads"].array {
