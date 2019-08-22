@@ -17,7 +17,6 @@
 		499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0F71D2D7BBF00BB759D /* Ephemerals.swift */; };
 		499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DD0FB1D2D8FAC00BB759D /* RoundedImage.swift */; };
 		49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */; };
-		49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */; };
 		49B43B101D1ADFB200A24585 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B0F1D1ADFB200A24585 /* Assets.xcassets */; };
 		49B43B131D1ADFB200A24585 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B111D1ADFB200A24585 /* Main.storyboard */; };
 		49B43B1B1D1AE0F200A24585 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 49B43B1A1D1AE0F200A24585 /* Podfile */; };
@@ -37,7 +36,6 @@
 		49AE29531DB4D86E00B61843 /* SwCrypt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwCrypt.framework; path = SwCrypt/build/Debug/SwCrypt.framework; sourceTree = "<group>"; };
 		49B43B081D1ADFB200A24585 /* Noti.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Noti.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		49B43B0F1D1ADFB200A24585 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49B43B121D1ADFB200A24585 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		49B43B141D1ADFB200A24585 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 			isa = PBXGroup;
 			children = (
 				49B43B0B1D1ADFB200A24585 /* AppDelegate.swift */,
-				49B43B0D1D1ADFB200A24585 /* AuthViewController.swift */,
 				49B43B0F1D1ADFB200A24585 /* Assets.xcassets */,
 				49B43B111D1ADFB200A24585 /* Main.storyboard */,
 				4901D3D21D23E6AB005F1641 /* IntroViewController.swift */,
@@ -160,6 +157,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -251,7 +249,6 @@
 				499DD0FC1D2D8FAC00BB759D /* RoundedImage.swift in Sources */,
 				491E887B1FC588F70048215F /* PreferencesViewController.swift in Sources */,
 				498499FE1D1BE46F007FC963 /* PushManager.swift in Sources */,
-				49B43B0E1D1ADFB200A24585 /* AuthViewController.swift in Sources */,
 				4901D3CF1D1C121D005F1641 /* StatusMenuController.swift in Sources */,
 				49B43B0C1D1ADFB200A24585 /* AppDelegate.swift in Sources */,
 				499DD0F81D2D7BBF00BB759D /* Ephemerals.swift in Sources */,

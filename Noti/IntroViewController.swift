@@ -9,6 +9,8 @@
 import Cocoa
 
 class IntroViewController: NSViewController {
+    let clientId = "lIdYYNaWmj7ZJaCaycRXevhQz9yhdeJS"
+    let redirectUri = "noti://redirect"
     var awc:NSWindowController?;
     
     override func viewDidAppear() {
@@ -55,10 +57,7 @@ class IntroViewController: NSViewController {
     }
     
     @IBAction func startAuth(_ sender: AnyObject) {
-        let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil)
-        
-        awc = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "AuthWindowController")) as? NSWindowController
-        print("showWindow")
-        awc!.showWindow(self)
+        let url = URL(string: "https://www.pushbullet.com/authorize?client_id=\(clientId)&redirect_uri=\(redirectUri)&response_type=token&scope=everything")
+        NSWorkspace.shared.open(url!)
     }
 }

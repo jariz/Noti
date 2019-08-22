@@ -79,5 +79,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         log.info("Going to terminate Noti.")
     }
 
+    func application(_ application: NSApplication, open urls: [URL]) {
+        // Extract access token from redirect uri
+        guard let fragment = urls.first?.fragment else { return }
 
+        let parts = fragment.split(separator: "=")
+        if parts.count != 2 {
+            return
+        }
+        
+        let token = parts[1]
+        userDefaults.setValue(token, forKeyPath: "token")
+        loadPushManager()
+
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "AuthSuccess"), object: nil)
+    }
 }
