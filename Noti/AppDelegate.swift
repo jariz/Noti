@@ -81,17 +81,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func application(_ application: NSApplication, open urls: [URL]) {
         // Extract access token from redirect uri
-        guard let fragment = urls.first?.fragment else { return }
+        guard let url = URLComponents(url: urls.first!, resolvingAgainstBaseURL: true) else { return }
+        guard let token = url.fragment?.split(separator: "=")[1] else { return }
+        guard let receivedNonce = url.queryItems?.first(where: { $0.name == "nonce" })?.value else { return }
+        guard let storedNonce = userDefaults.string(forKey: "nonce") else { return }
 
-        let parts = fragment.split(separator: "=")
-        if parts.count != 2 {
+        // Verify nonce
+        if receivedNonce != storedNonce {
             return
         }
-        
-        let token = parts[1]
+
+        // Dispose to prevent replays
+        userDefaults.removeObject(forKey: "nonce")
+
         userDefaults.setValue(token, forKeyPath: "token")
         loadPushManager()
-
         NotificationCenter.default.post(name: Notification.Name(rawValue: "AuthSuccess"), object: nil)
     }
 }
