@@ -9,6 +9,7 @@
 import Cocoa
 
 class IntroViewController: NSViewController {
+    let appDelegate = NSApp.delegate as! AppDelegate
     let authUrl = "https://www.pushbullet.com/authorize"
     let clientId = "lIdYYNaWmj7ZJaCaycRXevhQz9yhdeJS"
     let redirectUri = "noti://redirect"
@@ -76,7 +77,7 @@ class IntroViewController: NSViewController {
 
     @IBAction func startAuth(_ sender: AnyObject) {
         guard let nonce = generateNonce() else { return }
-        UserDefaults.standard.set(nonce, forKey: "nonce")
+        appDelegate.nonce = nonce
 
         var url = URLComponents(string: authUrl)!
         url.queryItems = [

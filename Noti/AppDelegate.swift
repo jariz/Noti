@@ -18,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let userDefaults: UserDefaults = UserDefaults.standard
     var iwc:NSWindowController?;
     var pwc:NSWindowController?;
+    var nonce: String? = nil;
 
     func setPassword(password: String) {
         pushManager?.setPassword(password: password)
@@ -84,15 +85,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let url = URLComponents(url: urls.first!, resolvingAgainstBaseURL: true) else { return }
         guard let token = url.fragment?.split(separator: "=")[1] else { return }
         guard let receivedNonce = url.queryItems?.first(where: { $0.name == "nonce" })?.value else { return }
-        guard let storedNonce = userDefaults.string(forKey: "nonce") else { return }
 
         // Verify nonce
-        if receivedNonce != storedNonce {
+        if receivedNonce != nonce {
             return
         }
 
         // Dispose to prevent replays
-        userDefaults.removeObject(forKey: "nonce")
+        nonce = nil
 
         userDefaults.setValue(token, forKeyPath: "token")
         loadPushManager()
