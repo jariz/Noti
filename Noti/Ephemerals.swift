@@ -144,7 +144,7 @@ class Ephemerals: NSObject {
             "type": "push",
             "push": [
                 "notification_id": push["notification_id"].string!,
-                "notification_tag": push["notification_tag"].string!,
+                "notification_tag": push["notification_tag"].string,
                 "package_name": push["package_name"].string!,
                 "source_user_iden": push["source_user_iden"].string!,
                 "type": "dismissal"
