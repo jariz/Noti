@@ -6,12 +6,12 @@
 
 ### What is Noti?  
 Noti is your little companion living in your mac menu, relaying any notifications you get on your Android phone with [Pushbullet installed on it](https://pushbullet.com)!  
-**Noti does one thing, and it does it really well: Notifications.**
+**Noti does one thing, and it does it really well: notifications.**
 
 ## Download
 
 ### DMG
-Get the [latest .dmg here](https://github.com/jariz/Noti/releases/latest).  
+Get the [latest .DMG here](https://github.com/jariz/Noti/releases/latest).  
 
 ### brew cask
 Or, simply use [homebrew cask](https://github.com/caskroom/homebrew-cask/blob/master/README.md) and install it with a single command:  
