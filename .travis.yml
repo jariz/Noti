@@ -1,4 +1,4 @@
-osx_image: xcode9.1
+osx_image: xcode11
 language: objective-c
 xcode_workspace: Noti.xcworkspace
 xcode_scheme: Noti

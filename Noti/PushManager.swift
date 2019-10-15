@@ -227,8 +227,8 @@ class PushManager: NSObject, WebSocketDelegate, NSUserNotificationCenterDelegate
                 }
                 
                 //determine if we replied to a sms or a normal notification
-                if (notification.identifier?.characters.count)! > 4 {
-                    let index = notification.identifier?.characters.index((notification.identifier?.startIndex)!, offsetBy: 4)
+                if (notification.identifier?.count)! > 4 {
+                    let index = notification.identifier?.index((notification.identifier?.startIndex)!, offsetBy: 4)
                     if notification.identifier?.substring(to: index!) == "sms_" {
                         var indexToBeRemoved = -1, i = -1;
                         for item in pushHistory {
