@@ -1,5 +1,6 @@
 ----
-**UNMAINTAINED**: Noti is now unmaintained. If you wish to take over maintainership, please reach out to me on [twitter](https://twitter.com/jari_io).
+**UNMAINTAINED**: Noti is now unmaintained. If you wish to take over maintainership, please reach out to me on [twitter](https://twitter.com/jari_io).  
+**PLEASE NOTE**: the noti.center domain has been hijacked and filled with spam and shouldn't be considered legitimate anymore. This repo is the only official place to get noti on the web.
 
 ---
 
