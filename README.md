@@ -1,3 +1,9 @@
+----
+**UNMAINTAINED**: Noti is now unmaintained. If you wish to take over maintainership, please reach out to me on [twitter](https://twitter.com/jari_io).
+
+---
+
+
 <div align="center">
 <img src="https://jari.lol/ZnN0TQeMmi.png">
 <br><img src="https://jari.lol/0suH6tw4vE.svg"><br><br>
