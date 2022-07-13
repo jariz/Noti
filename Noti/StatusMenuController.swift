@@ -22,7 +22,7 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
         appDelegate = NSApplication.shared.delegate as? AppDelegate
         
         if let button = statusItem.button {
-            button.image = NSImage(named: NSImage.Name(rawValue: "StatusBarButtonImageFail"))
+            button.image = NSImage(named: "StatusBarButtonImageFail")
             statusItem.menu = menu;
             button.appearsDisabled = true
         }
@@ -39,7 +39,7 @@ class StatusMenuController: NSObject, NSUserNotificationCenterDelegate {
             }
             
             if let disabled = info["disabled"] as? Bool {
-                statusItem.button?.image = NSImage(named: NSImage.Name(rawValue: disabled ? "StatusBarButtonImageFail" : "StatusBarButtonImage"))
+                statusItem.button?.image = NSImage(named: disabled ? "StatusBarButtonImageFail" : "StatusBarButtonImage")
                 statusItem.button?.appearsDisabled = disabled
             }
             

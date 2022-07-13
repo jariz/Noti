@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="11762"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -692,10 +690,13 @@
         <scene sceneID="nqJ-Nt-r4F">
             <objects>
                 <windowController storyboardIdentifier="IntroWindowController" id="pfC-yc-kZb" sceneMemberID="viewController">
-                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="alertPanel" frameAutosaveName="" id="BzP-7X-X1L">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="alertPanel" frameAutosaveName="" id="BzP-7X-X1L">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" fullSizeContentView="YES"/>
                         <rect key="contentRect" x="-1626" y="-38" width="480" height="300"/>
                         <rect key="screenRect" x="-1920" y="-400" width="1920" height="1177"/>
+                        <connections>
+                            <outlet property="delegate" destination="pfC-yc-kZb" id="qyq-1C-Wbh"/>
+                        </connections>
                     </window>
                     <connections>
                         <segue destination="8up-zh-MBQ" kind="relationship" relationship="window.shadowedContentViewController" id="Y6w-Il-oLb"/>
@@ -716,7 +717,7 @@
                             <visualEffectView appearanceType="vibrantDark" ambiguous="YES" blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="Nm4-Q9-JOU">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="300"/>
                                 <subviews>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKn-aD-15h">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKn-aD-15h">
                                         <rect key="frame" x="162" y="175" width="157" height="39"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Hi, I'm Noti." id="mkR-ds-cVS">
@@ -730,7 +731,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="IntroLogo" id="agJ-bf-md8"/>
                                     </imageView>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W8u-rS-K3y">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W8u-rS-K3y">
                                         <rect key="frame" x="-2" y="108" width="484" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" id="Nb2-p2-Jv7">
@@ -741,7 +742,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eYa-QY-0Rq">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eYa-QY-0Rq">
                                         <rect key="frame" x="-2" y="61" width="484" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="However first, I'll need you to" id="9KK-IE-h4J">
@@ -789,10 +790,13 @@ Whenever your devices have something to say, I'll let you know!</string>
         <scene sceneID="uOX-0h-npz">
             <objects>
                 <windowController storyboardIdentifier="PreferencesWindowController" id="IRr-8c-DaA" sceneMemberID="viewController">
-                    <window key="window" title="Noti Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="9cq-Nf-Ydw">
+                    <window key="window" title="Noti Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="9cq-Nf-Ydw">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" fullSizeContentView="YES"/>
                         <rect key="contentRect" x="163" y="199" width="480" height="100"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+                        <connections>
+                            <outlet property="delegate" destination="IRr-8c-DaA" id="uHD-tk-a95"/>
+                        </connections>
                     </window>
                     <connections>
                         <segue destination="et9-8v-2NC" kind="relationship" relationship="window.shadowedContentViewController" id="C9t-aU-7LW"/>
@@ -835,7 +839,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                             <binding destination="Rn0-51-ZbS" name="value" keyPath="values.roundedImages" id="ovv-qP-pqG"/>
                                         </connections>
                                     </button>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bjR-Vc-r47">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bjR-Vc-r47">
                                         <rect key="frame" x="18" y="175" width="115" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Notification sound" id="E6Q-rM-f4m">
@@ -844,7 +848,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A9R-tf-5rV">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A9R-tf-5rV">
                                         <rect key="frame" x="44" y="207" width="76" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Notifications" id="Tjj-7f-0Zq">
@@ -886,7 +890,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                             <action selector="encryptionEnabledChange:" target="et9-8v-2NC" id="Psu-ei-2yF"/>
                                         </connections>
                                     </button>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q5d-8L-GAw">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q5d-8L-GAw">
                                         <rect key="frame" x="282" y="207" width="65" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Encryption" id="jCf-7i-721">
@@ -904,7 +908,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                         <rect key="frame" x="355" y="213" width="104" height="5"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </box>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CEw-Ja-YpA">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CEw-Ja-YpA">
                                         <rect key="frame" x="44" y="50" width="48" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="General" id="fxB-gi-l29">
@@ -922,12 +926,12 @@ Whenever your devices have something to say, I'll let you know!</string>
                                         <rect key="frame" x="100" y="56" width="359" height="5"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </box>
-                                    <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sbz-yV-V7T">
+                                    <secureTextField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sbz-yV-V7T">
                                         <rect key="frame" x="258" y="146" width="201" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="Ern-xu-rFW">
                                             <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <allowedInputSourceLocales>
                                                 <string>NSAllRomanInputSourcesLocaleIdentifier</string>
@@ -937,7 +941,7 @@ Whenever your devices have something to say, I'll let you know!</string>
                                             <outlet property="delegate" destination="et9-8v-2NC" id="I9z-KU-ZEC"/>
                                         </connections>
                                     </secureTextField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PKM-sP-Rmk">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PKM-sP-Rmk">
                                         <rect key="frame" x="256" y="93" width="204" height="42"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="If you choose to enter a password, this password will need to be entered on each of your devices." id="n1j-OD-3NC">
@@ -983,51 +987,9 @@ Whenever your devices have something to say, I'll let you know!</string>
             </objects>
             <point key="canvasLocation" x="-1154.5" y="75.5"/>
         </scene>
-        <!--Window Controller-->
-        <scene sceneID="R2V-B0-nI4">
-            <objects>
-                <windowController storyboardIdentifier="AuthWindowController" id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Authorization needed" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="IQv-IB-iLA">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
-                        <rect key="contentRect" x="196" y="240" width="480" height="350"/>
-                        <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
-                    </window>
-                    <connections>
-                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
-                    </connections>
-                </windowController>
-                <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="75" y="250"/>
-        </scene>
-        <!--Auth View Controller-->
-        <scene sceneID="hIz-AP-VOD">
-            <objects>
-                <viewController storyboardIdentifier="AuthViewController" id="XfG-lQ-9wD" customClass="AuthViewController" customModule="Noti" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="350"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <webView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qnp-YZ-1mA">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="350"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <webPreferences key="preferences" defaultFontSize="16" defaultFixedFontSize="13" minimumFontSize="0" plugInsEnabled="NO" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO" allowsAnimatedImages="NO" allowsAnimatedImageLooping="NO">
-                                    <nil key="identifier"/>
-                                </webPreferences>
-                            </webView>
-                        </subviews>
-                    </view>
-                    <connections>
-                        <outlet property="webView" destination="Qnp-YZ-1mA" id="naR-Jo-5Pt"/>
-                    </connections>
-                </viewController>
-                <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="199" y="917"/>
-        </scene>
     </scenes>
     <resources>
-        <image name="IntroLogo" width="256" height="256"/>
+        <image name="IntroLogo" width="128" height="128"/>
         <image name="NSMenuOnStateTemplate" width="12" height="12"/>
         <image name="NotiEncryption" width="128" height="128"/>
         <image name="NotiGeneral" width="128" height="128"/>
